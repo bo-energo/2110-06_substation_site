@@ -5,7 +5,8 @@
 
 .chart-blockLegends{
     border: 1px solid black;
-    border-radius: 3px;
+    border-radius: 5px;
+    padding-right: 1px;
     max-height: 60vh;
     min-height: 60vh;
     width: 100%;
@@ -33,4 +34,5 @@
   min-width: 100%;
   min-height: 27vh;
   border: 1px solid black;
+  border-radius: 5px;
 }  

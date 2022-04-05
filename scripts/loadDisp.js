@@ -80,7 +80,7 @@ function createChartComponent(){
     $(`
     <div class="d-flex chart-blockLegends">
         <div class="chartW">
-            <div class="bg-secondary text-white p-2">График</div>
+            <div class="bg-secondary text-white p-2 rounded-start">График</div>
             <div class="chart"></div>
         </div>
         <div class="legend-tableData">
@@ -130,34 +130,46 @@ function createEventArchiveCompoinent(){
 
 //Демонстрационный график
 function createDemoChart(){
-    // let t1 =[];
-    // let t2 =[];
+    let t1 =[];
+    let t2 =[];
+    let t3 =[];
+    let t4 =[];
 
-    // for (let i = 0; i < 10; i++) {
-    //     t1.push(getRandomArbitrary(0, 101));
-    //     t2.push(getRandomArbitrary(0, 101));
-    // }
+    for (let i = 0; i < 10; i++) {
+        t1.push(getRandomArbitrary(0, 101));
+        t2.push(getRandomArbitrary(0, 101));
+        t3.push(getRandomArbitrary(0, 101));
+        t4.push(getRandomArbitrary(0, 101));
+    }
 
-
-    var traceA = {
-        x: [1, 2, 3, 4, 16, 17, 26],
-        y: [1, 40, 9, 60, 4, 20, 10],
-        type: 'scatter'
-    };
 
     // var traceA = {
-    //     x: t1,
-    //     y: t2,
+    //     x: [1, 2, 3, 4, 16, 17, 26],
+    //     y: [1, 40, 9, 60, 4, 20, 10],
     //     type: 'scatter'
     // };
 
-    var data = [traceA];
+    var traceA = {
+        x: t1.sort(comparer),
+        y: t2.sort(),
+        type: 'scatter',
+        showlegend:false
+    };
+
+    var traceB = {
+        x: t3.sort(comparer),
+        y: t4.sort(),
+        type: 'scatter',
+        showlegend: false
+    };
+
+    var data = [traceA, traceB];
 
     var layout = {
         autosize: true,
         height:500,
         margin:{
-            pad:5,
+            pad:2,
             l:80,
             t:50,
             r:10,
@@ -178,6 +190,15 @@ function createDemoChart(){
 
     
     Plotly.newPlot($('.chart').get(0), data, layout, config);
+}
+
+function comparer(one, two){
+    if(one < two)
+        return -1;
+    else if (one > two)
+        return 1;
+    else
+        return 0;
 }
 
 //Создание легенд
