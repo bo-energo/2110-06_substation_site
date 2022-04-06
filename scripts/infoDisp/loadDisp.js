@@ -84,9 +84,7 @@ function createChartComponent(){
             <div class="chart"></div>
         </div>
         <div class="legend-tableData">
-            <div class="legends">
-                <div class="bg-secondary text-white p-2">Легенды</div>
-            </div>
+            <div class="legends"></div>
             <div class="dataTable"></div>
         </div>
     </div>
@@ -203,6 +201,7 @@ function comparer(one, two){
 
 //Создание легенд
 function createLegends(data){
+    $(`<div class="bg-secondary text-white p-2">Легенды</div>`).appendTo('.legends');
     $(`
     <div class="accordion" id="accordionPanelsStayOpenExample"></div>
     `).appendTo('.legends');
@@ -274,4 +273,5 @@ function createDataTable(_dataForTable){
         
     }
 }
+
 

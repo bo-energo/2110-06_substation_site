@@ -28,6 +28,8 @@ function createCategory(){
         <button type="button" class="btnMenu"></button>
     </div>
     `).appendTo('.innerContiner');
+
+
     for (let i = 0; i < categories.length; i++) {
         $(`<div class="accordion tr" id="accordionExample">
             <div class="accordion-item">
