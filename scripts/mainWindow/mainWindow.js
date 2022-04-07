@@ -35,7 +35,8 @@ function createCategory(){
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button ${categories[i].bg} ${categories[i].colorText}" type="button" data-bs-toggle="collapse" 
-                        data-bs-target="#${categories[i].title}" aria-expanded="true" aria-controls="${categories[i].title}"> ${categories[i].title}
+                        data-bs-target="#${categories[i].title}" aria-expanded="true" aria-controls="${categories[i].title}"> 
+                        ${categories[i].title} (${disps.filter(d => d.state == categories[i].title).length})
                     </button>
                 </h2>
                 <div id="${categories[i].title}" class="accordion-collapse collapse show" aria-labelledby="headingOne" >
