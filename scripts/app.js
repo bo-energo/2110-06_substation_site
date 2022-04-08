@@ -23,9 +23,12 @@ let categories = [
 
 createCategory(categories);
 fillDispList(disps);
+addLeftMenu();
 
 $('.disp').click((e) => {
     let discriptionDisp = e.currentTarget.innerText.split('\n');
     loadDisp(discriptionDisp[0])
     //console.log(discriptionDisp);
 });
+
+

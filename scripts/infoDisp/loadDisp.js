@@ -46,6 +46,7 @@ function loadDisp(titleDisp) {
 
     console.log(dataForTable);
     $('.innerContiner').empty();
+
     createBtnCallLeftMenu();
     createTab();
     createChart();
@@ -53,6 +54,7 @@ function loadDisp(titleDisp) {
     createDemoChart($(`.chart`).css("height"));
     createEventArchiveCompoinent();
     
+    addLeftMenu();
 }
 
 
@@ -243,7 +245,7 @@ function createLegends(_legends) {
 //Создание компонента таблицы данных
 function createDataTable(_dataForTable) {
     $(`
-    <div class="dataTable"></div>
+    <div class="dataTable p-2"></div>
     `).appendTo(".groupLegends-dataTable");
 
 

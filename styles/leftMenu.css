@@ -1,0 +1,17 @@
+.leftMenu{
+    width: 15vw;
+    height: 70%;
+    position: absolute;
+    z-index: 1000;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-top: 5%;
+    margin-left: -300px;
+}
+
+
+@media (max-height: 700px) {
+    .leftMenu {
+        margin-top: 15%;
+    }
+}
