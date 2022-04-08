@@ -1,4 +1,10 @@
 //данные для демо
+function getRandomArbitrary(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+}
+
 let gases = {
     title: "Концентрации",
     values: [
@@ -21,10 +27,10 @@ let workParams = {
     ]
 }
 
-let data = [gases, workParams];
+let _legends = [gases, workParams];
 
-let dataForTable =[
-    { title: "CO", ppm: getRandomArbitrary(0, 300), percent: getRandomArbitrary(0, 300), DZ:100, PDZ:150},
+let dataForTable = [
+    { title: "CO", ppm: getRandomArbitrary(0, 300), percent: getRandomArbitrary(0, 300), DZ: 100, PDZ: 150 },
     { title: "CO2", ppm: getRandomArbitrary(0, 300), percent: getRandomArbitrary(0, 300), DZ: 3000, PDZ: 7000 },
     { title: "C2H2", ppm: getRandomArbitrary(0, 300), percent: getRandomArbitrary(0, 300), DZ: 8, PDZ: 20 },
     { title: "C2H4", ppm: getRandomArbitrary(0, 300), percent: getRandomArbitrary(0, 300), DZ: 20, PDZ: 50 },
@@ -41,63 +47,28 @@ function loadDisp(titleDisp) {
     console.log(dataForTable);
     $('.innerContiner').empty();
     createBtnCallLeftMenu();
-    createTabsComponents();
-    createDemoChart();
-}
-
-//Создание компонентов вкладок
-function createTabsComponents(){
-    $(`
-    <div class="tabsContainer"></div>
-    `).appendTo('.innerContiner');
-
-    $(`
-    <nav>
-        <div class="nav nav-tabs" id="nav-tab" role="tablist">
-            <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
-                aria-controls="nav-home" aria-selected="true">Газы</a>
-            <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab"
-                aria-controls="nav-profile" aria-selected="false">Влагосодержание</a>
-        </div>
-    </nav>
-    `).appendTo('.tabsContainer');
-
-    createChartComponent();
+    createTab();
+    createChart();
+    createDataForChart();
+    createDemoChart($(`.chart`).css("height"));
     createEventArchiveCompoinent();
+    
 }
+
 
 //Создание компонента кнопки вызывающей боковое меню
 function createBtnCallLeftMenu() {
     $(`
     <div class="btnMenu flex-fill bd-highlight">
         <button type="button" class="btnMenu"></button>
-      </div>
+    </div>
     `).appendTo('.innerContiner');
 }
 
-//Создание компонентов графика, легенд, таблицы данных под легендами
-function createChartComponent(){
-    $(`
-    <div class="d-flex chart-blockLegends">
-        <div class="chartW">
-            <div class="bg-secondary text-white p-2 rounded-start">График</div>
-            <div class="chart"></div>
-        </div>
-        <div class="legend-tableData">
-            <div class="legends"></div>
-            <div class="dataTable"></div>
-        </div>
-    </div>
-    `).appendTo('.tabsContainer');
-    
-    createLegends(data);
-    createDataTable(dataForTable);
-}
-
 //Создание компонентов архива событий
-function createEventArchiveCompoinent(){
+function createEventArchiveCompoinent() {
     $(`
-    <div id="eventArchive">
+    <div class="archiveContent">
         <div class="bg-secondary text-white p-3">Дигностика</div>
             <div class="d-flex justify-content-around mt-1">
                 <div class="align-self-center">От: тут календарь</div>
@@ -123,15 +94,15 @@ function createEventArchiveCompoinent(){
 
         <div></div>
     </div>
-    `).appendTo('.tabsContainer');
+    `).appendTo('.tabsContiner');
 }
 
 //Демонстрационный график
-function createDemoChart(){
-    let t1 =[];
-    let t2 =[];
-    let t3 =[];
-    let t4 =[];
+function createDemoChart(ht) {
+    let t1 = [];
+    let t2 = [];
+    let t3 = [];
+    let t4 = [];
 
     for (let i = 0; i < 10; i++) {
         t1.push(getRandomArbitrary(0, 101));
@@ -151,7 +122,7 @@ function createDemoChart(){
         x: t1.sort(comparer),
         y: t2.sort(),
         type: 'scatter',
-        showlegend:false
+        showlegend: false
     };
 
     var traceB = {
@@ -165,14 +136,13 @@ function createDemoChart(){
 
     var layout = {
         autosize: true,
-        height:500,
-        margin:{
-            pad:2,
-            l:80,
-            t:50,
-            r:10,
-            b:20,
-        },                
+        margin: {
+            pad: 2,
+            l: 80,
+            t: 50,
+            r: 10,
+            b: 50,
+        },
         title: '',
         xaxis: {
         },
@@ -183,15 +153,16 @@ function createDemoChart(){
     };
     var config = {
         responsive: true,
-        displayModeBar: false
+        displayModeBar: false,
+        scrollZoom: true
     }
 
-    
+
     Plotly.newPlot($('.chart').get(0), data, layout, config);
 }
 
-function comparer(one, two){
-    if(one < two)
+function comparer(one, two) {
+    if (one < two)
         return -1;
     else if (one > two)
         return 1;
@@ -199,44 +170,89 @@ function comparer(one, two){
         return 0;
 }
 
-//Создание легенд
-function createLegends(data){
-    $(`<div class="bg-secondary text-white p-2">Легенды</div>`).appendTo('.legends');
+//Создание контейнеров для вкладок, графиков и архива
+function createTab() {
     $(`
-    <div class="accordion" id="accordionPanelsStayOpenExample"></div>
-    `).appendTo('.legends');
+    <div class="tabsContiner"></div>
+    `).appendTo(".innerContiner");
 
-    for (let i = 0; i < data.length; i++) {
+    $(`
+    <nav>
+        <div class="nav nav-tabs" id="nav-tab" role="tablist">
+            <a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
+                aria-controls="nav-home" aria-selected="true">Газы</a>
+            <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab"
+                aria-controls="nav-profile" aria-selected="false">Влагосодержание</a>
+        </div>
+    </nav>
+    <div class="chartContent d-flex"></div>
+    
+    `).appendTo('.tabsContiner');
+}
+//Создание компонента графика
+function createChart() {
+    $(`
+    <div class="outterContainerChart">
+        <div class="bg-secondary text-white p-2 rounded">График</div>
+        <div class="chart"></div>
+    </div>
+    `).appendTo(".chartContent");
+}
+//Создание компонента данных для графика(легенды, таблица данных)
+function createDataForChart() {
+    $(`
+    <div class="groupLegends-dataTable"></div>
+    `).appendTo(".chartContent");
+
+    createLegends(_legends);
+    createDataTable(dataForTable);
+}
+//Создание компонента легенд
+function createLegends(_legends) {
+    $(`
+    <div class="legends">
+        <div class="bg-secondary text-white p-2 rounded">Дегенды</div>
+    </div>
+    `).appendTo(".groupLegends-dataTable");
+
+    for (let i = 0; i < _legends.length; i++) {
         $(`
         <div class="accordion-item" id="accItem${i}">
             <h2 class="accordion-header" id="panelsStayOpen-heading${i}">
                 <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse${i}" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
-                    ${data[i].title}
+                    ${_legends[i].title}
                 </button>
             </h2>
         </div>
-        `).appendTo('.accordion');
+        `).appendTo('.legends');
 
-        for (let j = 0; j < data[i].values.length; j++) {
+        for (let j = 0; j < _legends[i].values.length; j++) {
             $(`
             <div id="panelsStayOpen-collapse${i}" class="accordion-collapse collapse " aria-labelledby="panelsStayOpen-heading${i}">
                 <div class="accordion-body">
                     <input type="checkbox" id="happy" value="yes">
-                    <label for="happy">${data[i].values[j].title}</label>
+                    <label for="happy">${_legends[i].values[j].title}</label>
                 </div>
             </div>
             `).appendTo(`#accItem${i}`);
-            
+
         }
-        
+
     }
 }
+//Создание компонента таблицы данных
+function createDataTable(_dataForTable) {
+    $(`
+    <div class="dataTable"></div>
+    `).appendTo(".groupLegends-dataTable");
 
-//Создание таблицы данных под легендами
-function createDataTable(_dataForTable){
+
     $(`
     <div class="container m-0 p-0">
-        <div class="bg-secondary text-white p-2">Данные</div>
+        
+        <div class="row bg-secondary text-white p-2 rounded">
+            <div>Данные</div>
+        </div>
         <div class="row row-cols-5">
             <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark"></div>
             <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">ppm</div>
@@ -250,16 +266,16 @@ function createDataTable(_dataForTable){
     let danger = "bg-danger";
     let warning = "bg-warning";
     let normal = "bg-body";
-    let v= "";
+    let v = "";
     for (let i = 0; i < _dataForTable.length; i++) {
-        if (_dataForTable[i].ppm >= _dataForTable[i].PDZ){
+        if (_dataForTable[i].ppm >= _dataForTable[i].PDZ) {
             v = danger;
         }
-        else if (_dataForTable[i].ppm >= _dataForTable[i].DZ && _dataForTable[i].ppm < _dataForTable[i].PDZ){
+        else if (_dataForTable[i].ppm >= _dataForTable[i].DZ && _dataForTable[i].ppm < _dataForTable[i].PDZ) {
             v = warning;
         }
-        else{
-            v=normal;
+        else {
+            v = normal;
         }
         $(`
         <div class="row row-cols-5">
@@ -269,9 +285,6 @@ function createDataTable(_dataForTable){
             <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].DZ}</div>
             <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].PDZ}</div>
         </div>
-        `).appendTo('.container');
-        
+        `).appendTo('.dataTable');
     }
 }
-
-
