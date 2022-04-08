@@ -66,12 +66,16 @@
     margin-top: 5px;
     overflow: scroll;
 }
-@media (max-height: 800px) {
+@media (max-height: 700px) {
     body{
         overflow: scroll;
     }
     .chart {
         height: 92%;
+    }
+    .groupLegends-dataTable {
+        overflow: scroll;
+        margin-top: 5%;
     }
 }
 
@@ -94,7 +98,6 @@
     .groupLegends-dataTable {
         width: 100%;
         height: 40vh;
-        margin-top: 5px;
         margin-left: 0;
         display: flex;
     }
