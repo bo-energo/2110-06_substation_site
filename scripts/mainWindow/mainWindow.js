@@ -38,9 +38,6 @@ function fillDispList(disps) {
 
 function initMainWindow(_categories, _disps){
     $('.innerContiner').empty();
-    // $(`
-    // <div class="d-flex container-fluid listDisps"></div>
-    // `).appendTo('.innerContiner');
 
     createCategory(_categories);
     fillDispList(_disps)

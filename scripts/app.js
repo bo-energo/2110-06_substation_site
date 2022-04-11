@@ -21,9 +21,8 @@ let categories = [
     { title: 'Empty', bg: 'bg-white', colorText: 'text-dark' }];
 
 
-
 initMainWindow(categories, disps);
-addLeftMenu();
+addLeftMenu(disps);
 
 $('.disp').click((e) => {
     let discriptionDisp = e.currentTarget.innerText.split('\n');
