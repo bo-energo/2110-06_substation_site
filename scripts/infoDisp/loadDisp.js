@@ -47,24 +47,12 @@ function loadDisp(titleDisp) {
     console.log(dataForTable);
     $('.innerContiner').empty();
 
-    createBtnCallLeftMenu();
     createTab();
     createChart();
     createDataForChart();
     createDemoChart($(`.chart`).css("height"));
     createEventArchiveCompoinent();
     
-    addLeftMenu();
-}
-
-
-//Создание компонента кнопки вызывающей боковое меню
-function createBtnCallLeftMenu() {
-    $(`
-    <div class="btnMenu flex-fill bd-highlight">
-        <button type="button" class="btnMenu"></button>
-    </div>
-    `).appendTo('.innerContiner');
 }
 
 //Создание компонентов архива событий

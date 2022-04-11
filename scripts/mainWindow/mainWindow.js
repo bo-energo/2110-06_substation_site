@@ -1,13 +1,5 @@
 
 function createCategory(categories) {
-    $('.innerContiner').empty();
-    $(`
-    <div class="btnMenu">
-        <button type="button" class="btnMenu">
-        </button>
-    </div>
-    `).appendTo('.innerContiner');
-
     for (let i = 0; i < categories.length; i++) {
         $(`<div class="accordion tr" id="accordionExample">
             <div class="accordion-item">
@@ -44,3 +36,12 @@ function fillDispList(disps) {
     }
 }
 
+function initMainWindow(_categories, _disps){
+    $('.innerContiner').empty();
+    // $(`
+    // <div class="d-flex container-fluid listDisps"></div>
+    // `).appendTo('.innerContiner');
+
+    createCategory(_categories);
+    fillDispList(_disps)
+}

@@ -4,30 +4,26 @@ body {
   padding: 0;
 }
 
-
 .barMneu {
   height: 5vh;
 }
 
+
+.leftPnael{
+  width: 3%;
+  min-width: 3%;
+}
+
+.innerContiner{
+  width: 100%;
+  margin-left: 5px;
+}
 
 
 .tr {
   width: 25%;
 }
 
-.btnMenu {
-  min-width: 30px;
-  min-height: 30px;
-  max-width: 30px;
-  max-height: 30px;
-  background-color: transparent;
-  border: 1px solid transparent;
 
-  background-image: url("/images/btn-menu.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-  margin-right: 1%;
-  margin-top: 1%;
-}
 
 
