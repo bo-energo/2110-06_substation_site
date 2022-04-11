@@ -224,7 +224,8 @@ function createLegends(_legends) {
         $(`
         <div class="accordion-item" id="accItem${i}">
             <h2 class="accordion-header" id="panelsStayOpen-heading${i}">
-                <button class="accordion-button " type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse${i}" aria-expanded="true" aria-controls="panelsStayOpen-collapseOne">
+                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse${i}" 
+                aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
                     ${_legends[i].title}
                 </button>
             </h2>

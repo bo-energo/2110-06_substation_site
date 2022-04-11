@@ -4,8 +4,8 @@ function createCategory(categories) {
         $(`<div class="accordion tr" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
-                    <button class="accordion-button ${categories[i].bg} ${categories[i].colorText}" type="button" data-bs-toggle="collapse" 
-                        data-bs-target="#${categories[i].title}" aria-expanded="true" aria-controls="${categories[i].title}"> 
+                    <button class="accordion-button ${categories[i].bg} ${categories[i].colorText}" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#${categories[i].title}" aria-expanded="false" aria-controls="${categories[i].title}"> 
                         ${categories[i].title} (${disps.filter(d => d.state == categories[i].title).length})
                     </button>
                 </h2>
