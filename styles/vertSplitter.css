@@ -1,0 +1,12 @@
+#splitterVertical {
+    width: 3px;
+    background-color: black;
+    cursor: col-resize;
+    position: absolute;
+}
+
+@media (max-width: 1000px) {
+    #splitterVertical {
+        display: none;
+    }
+}

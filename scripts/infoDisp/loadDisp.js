@@ -39,6 +39,18 @@ let dataForTable = [
     { title: "CH4", ppm: getRandomArbitrary(0, 300), percent: getRandomArbitrary(0, 300), DZ: 40, PDZ: 70 }
 ]
 
+let t1 = [];
+let t2 = [];
+let t3 = [];
+let t4 = [];
+
+for (let i = 0; i < 10; i++) {
+    t1.push(getRandomArbitrary(0, 101));
+    t2.push(getRandomArbitrary(0, 101));
+    t3.push(getRandomArbitrary(0, 101));
+    t4.push(getRandomArbitrary(0, 101));
+}
+
 
 
 
@@ -49,10 +61,13 @@ function loadDisp(titleDisp) {
 
     createTab();
     createChart();
+    createVertSplitter();
     createDataForChart();
     createDemoChart($(`.chart`).css("height"));
     createEventArchiveCompoinent();
     
+    init('splitterVertical', 'leftBlock', 'rightBlock', parseInt($('.leftPnael').css('width')));
+    SpliterSetEvent();
 }
 
 //Создание компонентов архива событий
@@ -89,17 +104,17 @@ function createEventArchiveCompoinent() {
 
 //Демонстрационный график
 function createDemoChart(ht) {
-    let t1 = [];
-    let t2 = [];
-    let t3 = [];
-    let t4 = [];
+    // let t1 = [];
+    // let t2 = [];
+    // let t3 = [];
+    // let t4 = [];
 
-    for (let i = 0; i < 10; i++) {
-        t1.push(getRandomArbitrary(0, 101));
-        t2.push(getRandomArbitrary(0, 101));
-        t3.push(getRandomArbitrary(0, 101));
-        t4.push(getRandomArbitrary(0, 101));
-    }
+    // for (let i = 0; i < 10; i++) {
+    //     t1.push(getRandomArbitrary(0, 101));
+    //     t2.push(getRandomArbitrary(0, 101));
+    //     t3.push(getRandomArbitrary(0, 101));
+    //     t4.push(getRandomArbitrary(0, 101));
+    // }
 
 
     // var traceA = {
@@ -182,7 +197,7 @@ function createTab() {
 //Создание компонента графика
 function createChart() {
     $(`
-    <div class="outterContainerChart">
+    <div class="outterContainerChart" id='leftBlock'>
         <div class="bg-secondary text-white p-2 rounded">График</div>
         <div class="chart"></div>
     </div>
@@ -191,7 +206,7 @@ function createChart() {
 //Создание компонента данных для графика(легенды, таблица данных)
 function createDataForChart() {
     $(`
-    <div class="groupLegends-dataTable"></div>
+    <div class="groupLegends-dataTable" id='rightBlock'></div>
     `).appendTo(".chartContent");
 
     createLegends(_legends);
@@ -277,4 +292,10 @@ function createDataTable(_dataForTable) {
         </div>
         `).appendTo('.dataTable');
     }
+}
+//Создание вертикального сплитера
+function createVertSplitter(){
+    $(`
+    <div id="splitterVertical"></div>
+    `).appendTo('.chartContent');
 }

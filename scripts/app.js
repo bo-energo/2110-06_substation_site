@@ -20,14 +20,18 @@ let categories = [
     { title: 'Critical', bg: 'bg-danger', colorText: 'text-white' },
     { title: 'Empty', bg: 'bg-white', colorText: 'text-dark' }];
 
+let discriptionDisp;
 
 initMainWindow(categories, disps);
 addLeftMenu(disps);
 
 $('.disp').click((e) => {
-    let discriptionDisp = e.currentTarget.innerText.split('\n');
+    discriptionDisp = e.currentTarget.innerText.split('\n');
     loadDisp(discriptionDisp[0])
     //console.log(discriptionDisp);
 });
 
-
+window.onresize = function () {
+    loadDisp(discriptionDisp[0]);
+    console.log('lol');
+}
