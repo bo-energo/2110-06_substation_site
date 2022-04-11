@@ -9,24 +9,51 @@
     margin-left: -360px;
 }
 
+
 .btnMenu {
-    min-width: 30px;
-    min-height: 30px;
-    max-width: 30px;
-    max-height: 30px;
-    background-color: transparent;
-    border: 1px solid transparent;
-
-    background-image: url("/images/btn-menu.png");
-    background-repeat: no-repeat;
-    background-size: cover;
-    margin-right: 1%;
-    margin-top: 1%;
+    cursor: pointer;
 }
-
+.b1,
+.b2,
+.b3 {
+    width: 36px;
+    height: 5px;
+    background-color: #000;
+    margin: 5px 0;
+    transition: 0.3s;
+}
 
 @media (max-height: 700px) {
     .leftMenu {
         margin-top: 15%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .b1,
+    .b2,
+    .b3 {
+        width: 25px;
+    }
+}
+
+@media (max-width: 800px) {
+
+    .b1,
+    .b2,
+    .b3 {
+        width: 20px;
+    }
+}
+
+@media (max-width: 800px) {
+    .btnMenu {
+        margin-top: 3px;
+    }
+
+    .b1,
+    .b2,
+    .b3 {
+        width: 15px;
     }
 }

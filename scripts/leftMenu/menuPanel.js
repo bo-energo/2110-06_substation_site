@@ -47,10 +47,17 @@ function moveToLeftMenu() {
 
 //Создание кнопки леовго меню
 function createBtnMenuLeft(){
+    // $(`
+    // <div class="btnMenu">
+    //     <button type="button" class="btnMenu">
+    //     </button>
+    // </div>
+    // `).appendTo('.leftPnael');
     $(`
     <div class="btnMenu">
-        <button type="button" class="btnMenu">
-        </button>
+        <div class="b1"></div>
+        <div class="b2"></div>
+        <div class="b3"></div>
     </div>
     `).appendTo('.leftPnael');
 }
@@ -61,7 +68,7 @@ function addLeftMenu(){
     createBtnMenuLeft();
     createLeftMenu();
 
-    $('.btnMenu button').click(() => {
+    $('.btnMenu').click(() => {
         displayMenu();
     })
 
