@@ -21,8 +21,8 @@ let categories = [
     { title: 'Empty', bg: 'bg-white', colorText: 'text-dark' }];
 
 
-createCategory(categories);
-fillDispList(disps);
+
+initMainWindow(categories, disps);
 addLeftMenu();
 
 $('.disp').click((e) => {
