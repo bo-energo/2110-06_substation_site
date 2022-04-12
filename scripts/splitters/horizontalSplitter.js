@@ -1,9 +1,14 @@
 /*
 -Использовать только с JQuery
--Создаёться экземпляр класса, конструктор принимает 4 аргумента(id сплиттера, id верхнего блока, id нижнего блока, отступ по оси Y)
+-Создаёться экземпляр класса, 
+    конструктор принимает 4 аргумента
+        (id сплиттера, id верхнего блока, 
+        id нижнего блока, отступ по оси Y, 
+        если есть вертикальный сплитер передаём id необязательный параметр,
+        фун-ия обратного вызова необязательный параметр)
 -У экземпляра вызываеться метод use
 -Пример использования 
-    let hS = new HorizontalSplitter('horizontalVertical', 'top', 'bot', 10);
+    let hS = new HorizontalSplitter('testSplitter', 'testChartContent', 'testArchiveContent', 100, 'splitterVertical', createDemoChart);
     hS.use();
 */
 
@@ -19,7 +24,7 @@ class HorizontalSplitter{
     callBack;
 
 
-    constructor(_idHorSplitter, _idUpperBlock, _idBottomBlock, _offsetY, _idVerticalSplitter="", _callBack){
+    constructor(_idHorSplitter, _idUpperBlock, _idBottomBlock, _offsetY, _idVerticalSplitter="", _callBack=null){
         this.idHorSplitter = _idHorSplitter;
         this.idUpperBlock = _idUpperBlock;
         this.idBottomBlock = _idBottomBlock;
@@ -65,7 +70,8 @@ class HorizontalSplitter{
         else
             return;
 
-        this.callBack();
+        if(this.callBack != null)
+            this.callBack();
     }
 
     splitterMove = (e) => {

@@ -69,8 +69,9 @@ function loadDisp(titleDisp) {
     createDemoChart($(`.chart`).css("height"));
     createEventArchiveCompoinent();
     
-    init('splitterVertical', 'leftBlock', 'rightBlock', parseInt($('.leftPnael').css('width')));
-    SpliterSetEvent();
+
+    let vS = new VerticalSplitter('splitterVertical', 'leftBlock', 'rightBlock', 58, createDemoChart);
+    vS.use();
 
     let hS = new HorizontalSplitter('testSplitter', 'testChartContent', 'testArchiveContent', 100, 'splitterVertical', createDemoChart);
     hS.use();
