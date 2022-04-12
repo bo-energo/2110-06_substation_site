@@ -61,6 +61,9 @@ function loadDisp(titleDisp) {
 
     createTab();
     createChart();
+
+    $('<div id="testSplitter"></div>').appendTo('.tabsContiner');
+
     createVertSplitter();
     createDataForChart();
     createDemoChart($(`.chart`).css("height"));
@@ -68,12 +71,17 @@ function loadDisp(titleDisp) {
     
     init('splitterVertical', 'leftBlock', 'rightBlock', parseInt($('.leftPnael').css('width')));
     SpliterSetEvent();
+
+    let hS = new HorizontalSplitter('testSplitter', 'testChartContent', 'testArchiveContent', 100, 'splitterVertical', createDemoChart);
+    hS.use();
+    
 }
+
 
 //Создание компонентов архива событий
 function createEventArchiveCompoinent() {
     $(`
-    <div class="archiveContent">
+    <div class="archiveContent" id="testArchiveContent">
         <div class="bg-secondary text-white p-3">Дигностика</div>
             <div class="d-flex justify-content-around mt-1">
                 <div class="align-self-center">От: тут календарь</div>
@@ -103,7 +111,7 @@ function createEventArchiveCompoinent() {
 }
 
 //Демонстрационный график
-function createDemoChart(ht) {
+function createDemoChart() {
     // let t1 = [];
     // let t2 = [];
     // let t3 = [];
@@ -190,7 +198,7 @@ function createTab() {
                 aria-controls="nav-profile" aria-selected="false">Влагосодержание</a>
         </div>
     </nav>
-    <div class="chartContent d-flex"></div>
+    <div class="chartContent d-flex" id="testChartContent"></div>
     
     `).appendTo('.tabsContiner');
 }
@@ -300,3 +308,4 @@ function createVertSplitter(){
     <div id="splitterVertical"></div>
     `).appendTo('.chartContent');
 }
+
