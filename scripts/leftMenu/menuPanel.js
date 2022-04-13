@@ -1,3 +1,4 @@
+//#region
 //Создание панели левого меню
 function createLeftMenu(){
     $(`
@@ -7,15 +8,16 @@ function createLeftMenu(){
 
 //Логика обработки движения меню
 let id=0;
-function displayMenu(){
+function managerMenu(){
     $('.btnMenu button').off('click');
+    console.log($('.btnMenu button').off('click'));
     if (parseInt($('.leftMenu').css('margin-left')) == -15){
         id = setInterval(moveToLeftMenu, 10);
     }
     else{
         id = setInterval(moveToRigthMenu, 10);
     }
-        
+
 }
 
 //Движение меню в право
@@ -25,9 +27,7 @@ function moveToRigthMenu(){
     $('.leftMenu').css('margin-left', left);
     if (left == -15) {
         clearInterval(id);
-        $('.btnMenu button').click(() => {
-            displayMenu();
-        })
+        $('.btnMenu button').click(() => managerMenu());
     }
     console.log(left);
 }
@@ -38,9 +38,7 @@ function moveToLeftMenu() {
     $('.leftMenu').css('margin-left', left);
     if (left == -360) {
         clearInterval(id);
-        $('.btnMenu button').click(() => {
-            displayMenu();
-        })
+        $('.btnMenu button').click(() => managerMenu());
     }
     console.log(left);
 }
@@ -80,7 +78,7 @@ function fillListMenu(_disps){
         </div>
         `)
             .appendTo('.listDisps');
-        
+
     }
 }
 
@@ -91,8 +89,7 @@ function addLeftMenu(disps){
     createLeftMenu();
     fillListMenu(disps)
 
-    $('.btnMenu').click(() => {
-        displayMenu();
-    })
+    $('.btnMenu').click(() => managerMenu());
 
 }
+//#endregion

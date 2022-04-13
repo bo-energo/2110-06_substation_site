@@ -31,7 +31,7 @@ $('.disp').click((e) => {
     //console.log(discriptionDisp);
 });
 
+
 window.onresize = function () {
     loadDisp(discriptionDisp[0]);
-    console.log('lol');
 }
