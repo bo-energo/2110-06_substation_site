@@ -56,13 +56,14 @@ for (let i = 0; i < 10; i++) {
 
 function loadDisp(titleDisp) {
 
-    console.log(dataForTable);
+    //console.log(dataForTable);
     $('.innerContiner').empty();
 
     createTab();
     createChart();
 
-    $('<div id="testSplitter"></div>').appendTo('.tabsContiner');
+    // $('<div id="testSplitter"></div>').appendTo('.tabsContiner');
+    createHorSplitter();
 
     createVertSplitter();
     createDataForChart();
@@ -70,10 +71,10 @@ function loadDisp(titleDisp) {
     createEventArchiveCompoinent();
     
 
-    let vS = new VerticalSplitter('splitterVertical', 'leftBlock', 'rightBlock', 58, createDemoChart);
+    let vS = new VerticalSplitter('splitterVertical', 'leftBlock', 'rightBlock', 75, createDemoChart);
     vS.use();
 
-    let hS = new HorizontalSplitter('testSplitter', 'testChartContent', 'testArchiveContent', 100, 'splitterVertical', createDemoChart);
+    let hS = new HorizontalSplitter('horizontalSplitter', 'chartContent', 'archiveContent', 100, 'splitterVertical', createDemoChart);
     hS.use();
     
 }
@@ -82,7 +83,7 @@ function loadDisp(titleDisp) {
 //Создание компонентов архива событий
 function createEventArchiveCompoinent() {
     $(`
-    <div class="archiveContent" id="testArchiveContent">
+    <div class="archiveContent" id="archiveContent">
         <div class="bg-secondary text-white p-3">Дигностика</div>
             <div class="d-flex justify-content-around mt-1">
                 <div class="align-self-center">От: тут календарь</div>
@@ -199,7 +200,7 @@ function createTab() {
                 aria-controls="nav-profile" aria-selected="false">Влагосодержание</a>
         </div>
     </nav>
-    <div class="chartContent d-flex" id="testChartContent"></div>
+    <div class="chartContent d-flex" id="chartContent"></div>
     
     `).appendTo('.tabsContiner');
 }
@@ -308,5 +309,9 @@ function createVertSplitter(){
     $(`
     <div id="splitterVertical"></div>
     `).appendTo('.chartContent');
+}
+//Создание горизонтального сплиттера
+function createHorSplitter(){
+    $('<div id="horizontalSplitter"></div>').appendTo('.tabsContiner');
 }
 
