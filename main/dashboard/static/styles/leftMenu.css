@@ -1,0 +1,85 @@
+.leftMenu{
+    width: 15vw;
+    height: 70%;
+    position: absolute;
+    z-index: 1000;
+    border: 1px solid black;
+    border-radius: 5px;
+    margin-top: 5%;
+    margin-left: -360px;
+    overflow: scroll;
+}
+*::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+
+*::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    border: 3px solid rgb(116, 116, 116);
+}
+
+*::-webkit-scrollbar {
+    height: 3px;
+    width: 3px;
+}
+
+
+.btnMenu {
+    cursor: pointer;
+}
+.b1,
+.b2,
+.b3 {
+    width: 36px;
+    height: 5px;
+    background-color: #000;
+    margin: 5px 0;
+    transition: 0.3s;
+}
+
+#accordionPanelsStayOpenExample{
+    padding: 5px;
+}
+
+.accordion-body>a{
+    margin-top: -10px;
+    text-decoration: none;
+}
+
+
+
+
+@media (max-height: 700px) {
+    .leftMenu {
+        margin-top: 15%;
+    }
+}
+
+@media (max-width: 1200px) {
+    .b1,
+    .b2,
+    .b3 {
+        width: 25px;
+    }
+}
+
+@media (max-width: 800px) {
+
+    .b1,
+    .b2,
+    .b3 {
+        width: 20px;
+    }
+}
+
+@media (max-width: 800px) {
+    .btnMenu {
+        margin-top: 3px;
+    }
+
+    .b1,
+    .b2,
+    .b3 {
+        width: 15px;
+    }
+}

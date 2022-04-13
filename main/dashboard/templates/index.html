@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/static/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" href="/static/styles/mainWindow.css">
+  <link rel="stylesheet" href="/static/styles/tabsStyle.css">
+  <link rel="stylesheet" href="/static/styles/leftMenu.css">
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container-fluid">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+        aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Файл</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Интерфейс</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Настройки</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Справка</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="outterContiner d-flex">
+      <div class="leftPnael"></div>
+      <div class="d-flex innerContiner"></div>
+    </div>
+  </div>
+
+
+  <script src="/static/plotly/plotly-2.9.0.min.js"></script>
+  <script src="/static/bootstrap/js/bootstrap.js"></script>
+  <script src="/static/jquery/jquery-3.6.0.min.js"></script>
+
+  <script src="/static/scripts/mainWindow/mainWindow.js"></script>
+  <script src="/static/scripts/infoDisp/loadDisp.js"></script>
+  <script src="/static/scripts/leftMenu/menuPanel.js"></script>
+  <script src="/static/scripts/splitters/verticalSplitter.js"></script>
+  <script src="/static/scripts/splitters/horizontalSplitter.js"></script>
+
+  <script src="/static/scripts/app.js"></script>
+
+</body>
+
+</html>
