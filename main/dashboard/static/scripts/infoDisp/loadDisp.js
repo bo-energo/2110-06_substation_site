@@ -82,12 +82,23 @@ function loadDisp(titleDisp) {
 
 //Создание компонентов архива событий
 function createEventArchiveCompoinent() {
+    let yy = new Date().getFullYear();
+    let mm = new Date().getMonth() + 1 < 10 ? `0${new Date().getMonth() + 1}` : new Date().getMonth() + 1;
+    let dd = new Date().getDate() - 7 < 10 ? `0${new Date().getDate()-7}` : new Date().getDate()-7;
+    let ddToday = new Date().getDate() < 10 ? `0${new Date().getDate()}` : new Date().getDate();
+    
     $(`
     <div class="archiveContent" id="archiveContent">
         <div class="bg-secondary text-white p-3">Дигностика</div>
             <div class="d-flex justify-content-around mt-1">
-                <div class="align-self-center">От: тут календарь</div>
-                <div class="align-self-center">До: тут календарь</div>
+                <div class="align-self-center">
+                    <span>От:</span>
+                    <input id="dateFrom" type="date">
+                </div>
+                <div class="align-self-center">
+                    <span>До:</span>
+                    <input id="dateTo" type="date">
+                </div>
                 <div class="align-self-center">
                     <button type="button" class="btn btn-primary">Последний день</button>
                 </div>
@@ -110,6 +121,13 @@ function createEventArchiveCompoinent() {
         <div></div>
     </div>
     `).appendTo('.tabsContiner');
+
+    
+    let lastWeek = yy+'-'+mm+'-'+dd;
+    let today = yy+'-'+mm+'-'+ddToday;
+
+    $('#dateFrom').val(lastWeek);
+    $('#dateTo').val(today);
 }
 
 //Демонстрационный график
@@ -267,7 +285,7 @@ function createDataTable(_dataForTable) {
     <div class="container m-0 p-0">
         
         <div class="row bg-secondary text-white p-2 rounded">
-            <div>Данные</div>
+            <div class="rounded">Данные</div>
         </div>
         <div class="row row-cols-5">
             <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark"></div>
