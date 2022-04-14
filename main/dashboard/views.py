@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.http import JsonResponse
 
 
 def index(request):
@@ -16,4 +17,5 @@ def diagnostics(request):
         'coef': '12345'
     }
 
-    return render(request, context=context)
+    return JsonResponse(context)
+
