@@ -33,7 +33,7 @@ class VerticalSplitter {
         $(`#${_idVerSplitter}`).css('height', `${parseInt($(`#${_idLleftBlock}`).css('height'))}`);
         $(`#${_idVerSplitter}`).css('margin-left', `${parseInt($(`#${_idLleftBlock}`).css('width'))+5}px`);
         $(`#${_idVerSplitter}`).css('position', 'absolute');
-        $(`#${_idVerSplitter}`).css('background-color', 'black');
+        $(`#${_idVerSplitter}`).css('background-color', 'gray');
         $(`#${_idVerSplitter}`).css('cursor', 'col-resize');
     }
 
