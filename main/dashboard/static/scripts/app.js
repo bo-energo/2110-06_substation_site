@@ -1,4 +1,4 @@
-let states = ["Normal", "Warning", "Critical", "Empty"];
+let states = ["normal", "warning", "critical", "empty"];
 let disps = [];
 
 function getRandomArbitrary(min, max) {
@@ -15,18 +15,29 @@ for (let i = 0; i < 15; i++) {
 }
 
 let categories = [
-    { title: 'Normal', bg: 'bg-success', colorText: 'text-white' },
-    { title: 'Warning', bg: 'bg-warning', colorText: 'text-white' },
-    { title: 'Critical', bg: 'bg-danger', colorText: 'text-white' },
-    { title: 'Empty', bg: 'bg-white', colorText: 'text-dark' }];
+    { title: 'normal', bg: 'bg-success', colorText: 'text-white' },
+    { title: 'warning', bg: 'bg-warning', colorText: 'text-white' },
+    { title: 'critical', bg: 'bg-danger', colorText: 'text-white' },
+    { title: 'empty', bg: 'bg-white', colorText: 'text-dark' }];
 
 let discriptionDisp;
 
+// let url = "http://10.100.1.2:8000/transofrmList";
+// function getDisps(url){
+//     return fetch(url)
+//         .then(data => data.json())
+//         .then(dispsFromSer => {
+//             console.log(dispsFromSer);
+//             initMainWindow(categories, dispsFromSer)
+//         })
+//         .catch(err => console.log(err));
+// }
+    
+//getDisps(url);
 initMainWindow(categories, disps);
 let lMenu = new LeftMenu(disps);
 lMenu.componentsInit();
 
-console.log("lol");
 
 $('.disp').click((e) => {
     discriptionDisp = e.currentTarget.innerText.split('\n');
