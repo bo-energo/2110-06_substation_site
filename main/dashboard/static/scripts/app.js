@@ -26,6 +26,7 @@ initMainWindow(categories, disps);
 let lMenu = new LeftMenu(disps);
 lMenu.componentsInit();
 
+console.log("lol");
 
 $('.disp').click((e) => {
     discriptionDisp = e.currentTarget.innerText.split('\n');
