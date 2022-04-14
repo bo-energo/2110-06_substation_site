@@ -30,12 +30,12 @@ lMenu.componentsInit();
 $('.disp').click((e) => {
     discriptionDisp = e.currentTarget.innerText.split('\n');
     loadDisp(discriptionDisp[0])
-    //console.log(discriptionDisp);
-    lMenu.checkStateMenu();
+    if(lMenu.checkStateMenu()){
+        lMenu.hide();
+    }
 });
 
 
 window.onresize = function () {
     loadDisp(discriptionDisp[0]);
 }
-

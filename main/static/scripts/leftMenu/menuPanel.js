@@ -1,18 +1,20 @@
 class LeftMenu{
     componentsInit;
-    checkStateMenu;
+    checkStateMenu;    
+    display;
+    hide;
 
 
     constructor(transforms){
         let _transforms = transforms;
-        let _cancelationToke = 0;
+        let _cancelationToke;
         let _isDisplay = false;
         //Создание панели под меню
         function createLeftMenu ()  {
             $(`<div class="leftMenu bg-primary text-white"></div>`).appendTo('.leftPnael');
         }
         //Менеджер меню
-        function managerMenu () {
+        function manageMenu () {
             $('.btnMenu').off('click');
             if (_isDisplay == true) {
                 _cancelationToke = setInterval(moveToLeftMenu, 10);
@@ -22,29 +24,30 @@ class LeftMenu{
             }
 
         }
-        //Показ меню
+
+        //Логика движения меню в право
         function moveToRigthMenu() {
             let left = parseInt($('.leftMenu').css('margin-left'));
             left += 5;
             $('.leftMenu').css('margin-left', left);
             if (left == -15) {
                 clearInterval(_cancelationToke);
-                $('.btnMenu').click(() => managerMenu());
+                $('.btnMenu').click(() => manageMenu());
                 _isDisplay = true;
             }
-            console.log(left);
+            console.log(_isDisplay);
         }
-        //Скрытие меню
+        //Логика движения меню в лево
         function moveToLeftMenu() {
             let left = parseInt($('.leftMenu').css('margin-left'));
             left -= 5;
             $('.leftMenu').css('margin-left', left);
-            if (left == -360) {
+            if (left <= -360) {
                 clearInterval(_cancelationToke);
-                $('.btnMenu').click(() => managerMenu());
+                $('.btnMenu').click(() => manageMenu());
                 _isDisplay = false;
             }
-            console.log(left);
+            console.log(_isDisplay);
         }
         //Создание кнопки бокового меню
         function createBtnMenuLeft () {
@@ -91,13 +94,25 @@ class LeftMenu{
             fillListMenu()
 
             $('.btnMenu').click(() => {
-                managerMenu()
+                //manageMenu()
+                this.display();
             });
 
         }
         //Првоерка состояния меню
         this.checkStateMenu = () => {
-            managerMenu();
+            return _isDisplay;
+        }
+
+        //Показать меню
+        this.display = () => {
+            $('.btnMenu').off('click');
+            _cancelationToke = setInterval(moveToRigthMenu, 10);
+        }
+        //Скрыть меню
+        this.hide = () => {
+            $('.btnMenu').off('click');
+            _cancelationToke = setInterval(moveToLeftMenu, 10);
         }
     }
 }
