@@ -37,7 +37,7 @@ class HorizontalSplitter{
         let t = parseInt($(`#${_idUpperBlock}`).css('width'));
         $(`#${_idHorSplitter}`).css('position', 'absolute');
         $(`#${_idHorSplitter}`).css('cursor', 'row-resize');
-        $(`#${_idHorSplitter}`).css('background-color', 'black');
+        $(`#${_idHorSplitter}`).css('background-color', 'gray');
         $(`#${_idHorSplitter}`).css('width', `${t}`);
         $(`#${_idHorSplitter}`).css('height', '3');
 
