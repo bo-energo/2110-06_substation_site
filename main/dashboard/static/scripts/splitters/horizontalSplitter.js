@@ -89,5 +89,9 @@ class HorizontalSplitter{
     use(){
         $(`#${this.idHorSplitter}`).mousedown(() => this.splitterMoveStart());
     }
+
+    createSplitter(classToAdd){
+        $(`<div id="${this.idHorSplitter}"></div>`).appendTo(`.${classToAdd}`);
+    }
 }
 
