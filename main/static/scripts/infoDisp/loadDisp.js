@@ -51,6 +51,8 @@ for (let i = 0; i < 10; i++) {
     t4.push(getRandomArbitrary(0, 101));
 }
 
+let tabs = ["Газы", "Влагосодержание", "Температура", "Состояние вводов", "Нагрузочная способность", "Мощность"];
+
 
 
 
@@ -58,25 +60,26 @@ function loadDisp(titleDisp) {
 
     //console.log(dataForTable);
     $('.innerContiner').empty();
+    let disp = new DispInfo();
+    disp.createTab(tabs);
+    disp.createChart();
+    //createTab();
+    //createChart();
 
-    createTab();
-    createChart();
-
-    // $('<div id="testSplitter"></div>').appendTo('.tabsContiner');
     createHorSplitter();
-
     createVertSplitter();
+
     createDataForChart();
     createDemoChart($(`.chart`).css("height"));
     createEventArchiveCompoinent();
-    
+
 
     let vS = new VerticalSplitter('splitterVertical', 'leftBlock', 'rightBlock', 75, createDemoChart);
     vS.use();
 
     let hS = new HorizontalSplitter('horizontalSplitter', 'chartContent', 'archiveContent', 100, 'splitterVertical', createDemoChart);
     hS.use();
-    
+
 }
 
 
@@ -84,9 +87,9 @@ function loadDisp(titleDisp) {
 function createEventArchiveCompoinent() {
     let yy = new Date().getFullYear();
     let mm = new Date().getMonth() + 1 < 10 ? `0${new Date().getMonth() + 1}` : new Date().getMonth() + 1;
-    let dd = new Date().getDate() - 7 < 10 ? `0${new Date().getDate()-7}` : new Date().getDate()-7;
+    let dd = new Date().getDate() - 7 < 10 ? `0${new Date().getDate() - 7}` : new Date().getDate() - 7;
     let ddToday = new Date().getDate() < 10 ? `0${new Date().getDate()}` : new Date().getDate();
-    
+
     $(`
     <div class="archiveContent" id="archiveContent">
         <div class="bg-secondary text-white p-3">Дигностика</div>
@@ -122,9 +125,9 @@ function createEventArchiveCompoinent() {
     </div>
     `).appendTo('.tabsContiner');
 
-    
-    let lastWeek = yy+'-'+mm+'-'+dd;
-    let today = yy+'-'+mm+'-'+ddToday;
+
+    let lastWeek = yy + '-' + mm + '-' + dd;
+    let today = yy + '-' + mm + '-' + ddToday;
 
     $('#dateFrom').val(lastWeek);
     $('#dateTo').val(today);
@@ -193,7 +196,6 @@ function createDemoChart() {
 
     Plotly.newPlot($('.chart').get(0), data, layout, config);
 }
-
 function comparer(one, two) {
     if (one < two)
         return -1;
@@ -323,13 +325,132 @@ function createDataTable(_dataForTable) {
     }
 }
 //Создание вертикального сплитера
-function createVertSplitter(){
+function createVertSplitter() {
     $(`
     <div id="splitterVertical"></div>
     `).appendTo('.chartContent');
 }
 //Создание горизонтального сплиттера
-function createHorSplitter(){
+function createHorSplitter() {
     $('<div id="horizontalSplitter"></div>').appendTo('.tabsContiner');
 }
 
+
+class DispInfo {
+    //Создание вкладок, в аргументы принимае список вкладок
+    createTab = (titleTabsArray) => {
+        $(`<div class="tabsContiner"></div>`).appendTo(".innerContiner");
+
+        $(`
+        <nav>
+            <div class="nav nav-tabs" id="nav-tab" role="tablist"></div>
+        </nav>
+        <div class="chartContent d-flex" id="chartContent"></div>    
+        `).appendTo('.tabsContiner');
+
+        for (let i = 0; i < titleTabsArray.length; i++) {
+            if (i == 0) {
+                $(`<a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
+                        aria-controls="nav-home" aria-selected="true">${titleTabsArray[i]}</a>`).appendTo('#nav-tab')
+            }
+            else {
+                $(`
+                <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab"
+                    aria-controls="nav-profile" aria-selected="false">${titleTabsArray[i]}</a>`).appendTo('#nav-tab')
+            }
+
+
+        }
+    }
+    //Создаёт компоненту для отрисовки графика
+    createChart = () => {
+        $(`
+        <div class="outterContainerChart" id='leftBlock'>
+            <div class="bg-secondary text-white p-2 rounded">График</div>
+            <div class="chart"></div>
+        </div>
+        `).appendTo(".chartContent");
+    }
+    //Создание компоненты под легенды и таблицу данных
+    createDataForChart(_legends, dataForTable) {
+        $(`<div class="groupLegends-dataTable" id='rightBlock'></div>`).appendTo(".chartContent");
+
+        createLegends(_legends);
+        createDataTable(dataForTable);
+    }
+    //Создание компонента легенд, заполнение списком легенд и параметрами в легендах(чекбоксами)
+    createLegends(_legends) {
+        $(`<div class="legends">
+            <div class="bg-secondary text-white p-2 rounded">Дегенды</div>
+        </div>
+        `).appendTo(".groupLegends-dataTable");
+
+        for (let i = 0; i < _legends.length; i++) {
+            $(`
+            <div class="accordion-item" id="accItem${i}">
+                <h2 class="accordion-header" id="panelsStayOpen-heading${i}">
+                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse${i}" 
+                    aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
+                        ${_legends[i].title}
+                    </button>
+                </h2>
+            </div>
+            `).appendTo('.legends');
+
+            for (let j = 0; j < _legends[i].values.length; j++) {
+                $(`
+                <div id="panelsStayOpen-collapse${i}" class="accordion-collapse collapse " aria-labelledby="panelsStayOpen-heading${i}">
+                    <div class="accordion-body">
+                        <input type="checkbox" id="happy" value="yes">
+                        <label for="happy">${_legends[i].values[j].title}</label>
+                    </div>
+                </div>
+                `).appendTo(`#accItem${i}`);
+            }
+        }
+    }
+    //Создание компоненты с таблицой данных, заполнение таблици
+    createDataTable(_dataForTable) {
+        $(`<div class="dataTable p-2"></div>`).appendTo(".groupLegends-dataTable");
+
+        $(`
+        <div class="container m-0 p-0">
+            <div class="row bg-secondary text-white p-2 rounded">
+                <div class="rounded">Данные</div>
+            </div>
+            <div class="row row-cols-5">
+                <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark"></div>
+                <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">ppm</div>
+                <div class="col-4 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">Проецнт изм.</div>
+                <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">ДЗ</div>
+                <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">ПДЗ</div>
+            </div>
+        </div>
+        `).appendTo('.dataTable');
+
+        let danger = "bg-danger";
+        let warning = "bg-warning";
+        let normal = "bg-body";
+        let v = "";
+        for (let i = 0; i < _dataForTable.length; i++) {
+            if (_dataForTable[i].ppm >= _dataForTable[i].PDZ) {
+                v = danger;
+            }
+            else if (_dataForTable[i].ppm >= _dataForTable[i].DZ && _dataForTable[i].ppm < _dataForTable[i].PDZ) {
+                v = warning;
+            }
+            else {
+                v = normal;
+            }
+            $(`
+        <div class="row row-cols-5">
+            <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].title}</div>
+            <div class="col-2 p-1 text-center ${v} border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].ppm}</div>
+            <div class="col-4 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].percent}</div>
+            <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].DZ}</div>
+            <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].PDZ}</div>
+        </div>
+        `).appendTo('.dataTable');
+        }
+    }
+}
