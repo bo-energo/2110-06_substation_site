@@ -41,7 +41,7 @@ class Assets(models.Model):
 
 
 class Constants(models.Model):
-    id = models.IntegerField(primary_key=True)
+    #id = models.IntegerField(primary_key=True)
     asset = models.ForeignKey(Assets, models.DO_NOTHING)
     param = models.ForeignKey('Params', models.DO_NOTHING)
     value = models.FloatField(blank=True, null=True)
@@ -54,7 +54,7 @@ class Constants(models.Model):
 
 
 class Inspections(models.Model):
-    id = models.BigAutoField(primary_key=True)
+    #id = models.BigAutoField(primary_key=True)
     date = models.DateTimeField()
     asset = models.ForeignKey(Assets, models.DO_NOTHING)
 
@@ -66,7 +66,7 @@ class Inspections(models.Model):
 
 
 class MeasurmentsBush(models.Model):
-    id = models.BigAutoField(primary_key=True)
+    #id = models.BigAutoField(primary_key=True)
     inspection = models.ForeignKey(Inspections, models.DO_NOTHING)
     c1_a = models.FloatField(blank=True, null=True)
     c1_b = models.FloatField(blank=True, null=True)
@@ -89,7 +89,7 @@ class MeasurmentsBush(models.Model):
 
 
 class MeasurmentsI(models.Model):
-    id = models.BigAutoField(primary_key=True)
+    #id = models.BigAutoField(primary_key=True)
     inspection = models.ForeignKey(Inspections, models.DO_NOTHING)
     u_hv_a = models.FloatField(blank=True, null=True)
     u_hv_b = models.FloatField(blank=True, null=True)
@@ -138,7 +138,7 @@ class MeasurmentsI(models.Model):
 
 
 class MeasurmentsT(models.Model):
-    id = models.BigAutoField(primary_key=True)
+    #id = models.BigAutoField(primary_key=True)
     inspection = models.ForeignKey(Inspections, models.DO_NOTHING)
     t_bl = models.FloatField(blank=True, null=True)
     t_bl_gap = models.FloatField(blank=True, null=True)
@@ -160,7 +160,7 @@ class MeasurmentsT(models.Model):
 
 
 class Params(models.Model):
-    id = models.IntegerField(primary_key=True)
+    #id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=150)
     description = models.CharField(max_length=450, blank=True, null=True)
     type = models.ForeignKey('Types', models.DO_NOTHING)
@@ -173,7 +173,7 @@ class Params(models.Model):
 
 
 class Pdata(models.Model):
-    id = models.IntegerField(primary_key=True)
+    #id = models.IntegerField(primary_key=True)
     asset_id = models.IntegerField()
     param = models.ForeignKey(Params, models.DO_NOTHING)
     value = models.FloatField(blank=True, null=True)
@@ -187,7 +187,7 @@ class Pdata(models.Model):
 
 
 class PdataNorms(models.Model):
-    id = models.IntegerField(primary_key=True)
+    #id = models.IntegerField(primary_key=True)
     type = models.ForeignKey('Types', models.DO_NOTHING)
     name = models.CharField(max_length=150)
 
@@ -197,7 +197,7 @@ class PdataNorms(models.Model):
 
 
 class PdataSpec(models.Model):
-    id = models.IntegerField(primary_key=True)
+   # id = models.IntegerField(primary_key=True)
     pdata = models.ForeignKey(Pdata, models.DO_NOTHING)
     order = models.IntegerField()
     value = models.FloatField(blank=True, null=True)
@@ -208,7 +208,7 @@ class PdataSpec(models.Model):
 
 
 class Types(models.Model):
-    id = models.IntegerField(primary_key=True)
+    #id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=150)
 
     class Meta:
