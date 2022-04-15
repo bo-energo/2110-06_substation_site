@@ -3,3 +3,4 @@ env/
 *.db
 *.pyc
 .env
+main/main/__pycache__/
