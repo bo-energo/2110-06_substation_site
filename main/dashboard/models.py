@@ -49,6 +49,8 @@ class Constants(models.Model):
     class Meta:
         managed = False
         db_table = 'constants'
+        verbose_name_plural = 'Константы'
+        verbose_name = 'Константа'
 
 
 class Inspections(models.Model):
@@ -59,6 +61,8 @@ class Inspections(models.Model):
     class Meta:
         managed = False
         db_table = 'inspections'
+        verbose_name_plural = 'Замеры'
+        verbose_name = 'Замер'
 
 
 class MeasurmentsBush(models.Model):
@@ -80,6 +84,8 @@ class MeasurmentsBush(models.Model):
     class Meta:
         managed = False
         db_table = 'measurments_bush'
+        verbose_name_plural = 'Замеры пузырьков'
+        verbose_name = 'Замер'
 
 
 class MeasurmentsI(models.Model):
@@ -127,6 +133,8 @@ class MeasurmentsI(models.Model):
     class Meta:
         managed = False
         db_table = 'measurments_i'
+        verbose_name_plural = 'Замеры рабочих параметров'
+        verbose_name = 'Замер'
 
 
 class MeasurmentsT(models.Model):
@@ -147,6 +155,8 @@ class MeasurmentsT(models.Model):
     class Meta:
         managed = False
         db_table = 'measurments_t'
+        verbose_name_plural = 'Замеры температур'
+        verbose_name = 'Замер'
 
 
 class Params(models.Model):
@@ -158,6 +168,8 @@ class Params(models.Model):
     class Meta:
         managed = False
         db_table = 'params'
+        verbose_name_plural = 'Параметры'
+        verbose_name = 'Параметр'
 
 
 class Pdata(models.Model):
@@ -170,6 +182,8 @@ class Pdata(models.Model):
     class Meta:
         managed = False
         db_table = 'pdata'
+        verbose_name_plural = 'Паспортные данные'
+        verbose_name = 'Параметр'
 
 
 class PdataNorms(models.Model):
@@ -200,3 +214,5 @@ class Types(models.Model):
     class Meta:
         managed = False
         db_table = 'types'
+        verbose_name = 'Типы данных'
+        verbose_name_plural = 'Тип данных'
