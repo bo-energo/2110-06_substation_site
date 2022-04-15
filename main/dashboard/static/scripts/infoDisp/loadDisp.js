@@ -206,41 +206,6 @@ class DispInfo {
         let dd = new Date().getDate() - 7 < 10 ? `0${new Date().getDate() - 7}` : new Date().getDate() - 7;
         let ddToday = new Date().getDate() < 10 ? `0${new Date().getDate()}` : new Date().getDate();
 
-        // $(`
-        // <div class="archiveContent" id="archiveContent">
-        //     <div class="bg-secondary text-white p-3">Дигностика</div>
-        //         <div class="d-flex justify-content-around mt-1">
-        //             <div class="align-self-center">
-        //                 <span>От:</span>
-        //                 <input id="dateFrom" type="date">
-        //             </div>
-        //             <div class="align-self-center">
-        //                 <span>До:</span>
-        //                 <input id="dateTo" type="date">
-        //             </div>
-        //             <div class="align-self-center">
-        //                 <button type="button" class="btn btn-primary">Последний день</button>
-        //             </div>
-        //             <div class="align-self-center">
-        //                 <button type="button" class="btn btn-primary">Применить</button>
-        //             </div>
-        //             <div class="align-self-center">
-        //                 <input type="checkbox" id="diag" value="yes">
-        //                 <label for="diag">Дигностические</label>
-
-        //                 <input type="checkbox" id="tech" value="yes">
-        //                 <label for="tech">Технические</label>
-
-        //                 <input type="checkbox" id="req" value="yes">
-        //                 <label for="req">Опрос</label>
-        //             </div>
-        //         </div>
-        //     </div>
-
-        //     <div></div>
-        // </div>
-        // `).appendTo('.tabsContiner');
-
         $(`
         <div class="archiveContent" id="archiveContent">
             <div class="bg-secondary text-white p-3">Дигностика</div>
@@ -348,12 +313,3 @@ class DispInfo {
         $('<div id="horizontalSplitter"></div>').appendTo('.tabsContiner');
     }
 }
-
-
-/*
-
-<div class="row bg-secondary text-white p-2 rounded">
-                <div class="rounded">Данные</div>
-            </div>
-
-*/
