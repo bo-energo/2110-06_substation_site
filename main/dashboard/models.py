@@ -51,25 +51,6 @@ class Constants(models.Model):
         db_table = 'constants'
 
 
-class DbColumns(models.Model):
-    id = models.IntegerField(primary_key=True)
-    table = models.ForeignKey('DbTables', models.DO_NOTHING)
-    name = models.CharField(max_length=150)
-
-    class Meta:
-        managed = False
-        db_table = 'db_columns'
-
-
-class DbTables(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=150)
-
-    class Meta:
-        managed = False
-        db_table = 'db_tables'
-
-
 class Inspections(models.Model):
     id = models.BigAutoField(primary_key=True)
     date = models.DateTimeField()
@@ -78,18 +59,6 @@ class Inspections(models.Model):
     class Meta:
         managed = False
         db_table = 'inspections'
-
-
-class Limits(models.Model):
-    id = models.IntegerField(primary_key=True)
-    asset = models.ForeignKey(Assets, models.DO_NOTHING)
-    property = models.ForeignKey('Properties', models.DO_NOTHING)
-    lim0 = models.FloatField(blank=True, null=True)
-    lim1 = models.FloatField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'limits'
 
 
 class MeasurmentsBush(models.Model):
@@ -222,17 +191,6 @@ class PdataSpec(models.Model):
     class Meta:
         managed = False
         db_table = 'pdata_spec'
-
-
-class Properties(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=150)
-    type = models.ForeignKey('Types', models.DO_NOTHING)
-    column = models.ForeignKey(DbColumns, models.DO_NOTHING)
-
-    class Meta:
-        managed = False
-        db_table = 'properties'
 
 
 class Types(models.Model):
