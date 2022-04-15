@@ -11,7 +11,7 @@ for (let i = 0; i < 15; i++) {
     let _state = states[getRandomArbitrary(0, 4)];
     let _discription = _state == "Normal" || _state == "Empty" ? "" : "Описание проблемы.......";
 
-    disps.push({ title: `AT${i}`, state: _state, discriptionProblem: _discription });
+    disps.push({ title: `AT${i}`, status: _state, discriptionProblem: _discription });
 }
 
 let categories = [
@@ -27,13 +27,13 @@ let discriptionDisp;
 //     return fetch(url)
 //         .then(data => data.json())
 //         .then(dispsFromSer => {
-//             console.log(dispsFromSer);
-//             initMainWindow(categories, dispsFromSer)
+//             console.log(dispsFromSer.transformators);
+//             initMainWindow(categories, dispsFromSer.transformators)
 //         })
 //         .catch(err => console.log(err));
 // }
     
-//getDisps(url);
+// getDisps(url);
 initMainWindow(categories, disps);
 let lMenu = new LeftMenu(disps);
 lMenu.componentsInit();
