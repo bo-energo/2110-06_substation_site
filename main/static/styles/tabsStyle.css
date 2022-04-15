@@ -10,6 +10,10 @@
     height: 94vh;
 }
 
+.titleTabs{
+    user-select: none;
+}
+
 .chartContent {
     width: 100%;
     height: 60vh;
@@ -72,7 +76,7 @@
     border: 1px solid transparent;
     border-radius: 5px;
     margin-top: 5px;
-    overflow: scroll;
+    overflow-x: hidden;
 }
 @media (max-height: 700px) {
     body{
@@ -87,7 +91,14 @@
     }
 }
 
-@media (max-width: 1000px) {
+@media (max-width: 1200px) {
+    body {
+        font-size: 0.8em;
+    }
+    button{
+        font-size: 0.5em;
+    }
+    
     .chartContent {
         flex-direction: column;
         width: 100%;
@@ -122,7 +133,17 @@
         margin-top: 0px;
         margin-left: 5px;
     }
-    #splitterVertical {
+    #splitterVertical, #horizontalSplitter {
         display: none;
+    }
+    .archiveControls {
+        flex-direction: column;
+    }
+
+}
+
+@media (max-width: 1000px){
+    .archiveControls {
+        flex-direction: column;
     }
 }
