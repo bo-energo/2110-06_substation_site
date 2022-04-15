@@ -31,5 +31,5 @@
 6. Установить зависимости pip install -r requirements.txt
 7. Запустить веб сервер командой
 
-        python manage.py runserver
+        python manage.py runserver 0.0.0.0:8000
 8. В браузере перейти по http://localhost:8000/docs - страница с автоматической документацией к API

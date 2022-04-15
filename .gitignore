@@ -1,6 +1,9 @@
 env/
+main/main/__pycache__/
+main/dashboard/__pycache__/
+main/static/
+.__pycache__/
 .vscode/
 *.db
 *.pyc
 .env
-main/main/__pycache__/
