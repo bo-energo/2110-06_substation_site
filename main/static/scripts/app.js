@@ -1,4 +1,4 @@
-let states = ["Normal", "Warning", "Critical", "Empty"];
+let states = ["normal", "warning", "critical", "empty"];
 let disps = [];
 
 function getRandomArbitrary(min, max) {
@@ -11,17 +11,29 @@ for (let i = 0; i < 15; i++) {
     let _state = states[getRandomArbitrary(0, 4)];
     let _discription = _state == "Normal" || _state == "Empty" ? "" : "Описание проблемы.......";
 
-    disps.push({ title: `AT${i}`, state: _state, discriptionProblem: _discription });
+    disps.push({ title: `AT${i}`, status: _state, discriptionProblem: _discription });
 }
 
 let categories = [
-    { title: 'Normal', bg: 'bg-success', colorText: 'text-white' },
-    { title: 'Warning', bg: 'bg-warning', colorText: 'text-white' },
-    { title: 'Critical', bg: 'bg-danger', colorText: 'text-white' },
-    { title: 'Empty', bg: 'bg-white', colorText: 'text-dark' }];
+    { title: 'normal', bg: 'bg-success', colorText: 'text-white' },
+    { title: 'warning', bg: 'bg-warning', colorText: 'text-white' },
+    { title: 'critical', bg: 'bg-danger', colorText: 'text-white' },
+    { title: 'empty', bg: 'bg-white', colorText: 'text-dark' }];
 
 let discriptionDisp;
 
+// let url = "http://10.100.1.2:8000/transofrmList";
+// function getDisps(url){
+//     return fetch(url)
+//         .then(data => data.json())
+//         .then(dispsFromSer => {
+//             console.log(dispsFromSer.transformators);
+//             initMainWindow(categories, dispsFromSer.transformators)
+//         })
+//         .catch(err => console.log(err));
+// }
+    
+// getDisps(url);
 initMainWindow(categories, disps);
 let lMenu = new LeftMenu(disps);
 lMenu.componentsInit();

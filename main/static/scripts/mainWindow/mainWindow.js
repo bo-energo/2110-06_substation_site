@@ -1,12 +1,14 @@
 
-function createCategory(categories) {
+function createCategory(categories, dispsFromBD) {
+    let disps = [];
+    disps = dispsFromBD;
     for (let i = 0; i < categories.length; i++) {
         $(`<div class="accordion tr" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button ${categories[i].bg} ${categories[i].colorText}" type="button" data-bs-toggle="collapse"
                         data-bs-target="#${categories[i].title}" aria-expanded="false" aria-controls="${categories[i].title}"> 
-                        ${categories[i].title} (${disps.filter(d => d.state == categories[i].title).length})
+                        ${categories[i].title} (${disps.filter(d => d.status == categories[i].title).length})
                     </button>
                 </h2>
                 <div id="${categories[i].title}" class="accordion-collapse collapse show" aria-labelledby="headingOne" >
@@ -20,7 +22,7 @@ function createCategory(categories) {
 
 function fillDispList(disps) {
     for (let i = 0; i < disps.length; i++) {
-        var categpry = categories.find(q => q.title == disps[i].state);
+        var categpry = categories.find(q => q.title == disps[i].status);
         $(`
         <div class="card ${categpry.bg} ${categpry.colorText} mt-2 mb-2 disp">
                 <div class="card-header d-flex justify-content-between">
@@ -28,17 +30,17 @@ function fillDispList(disps) {
                     <button type="button" class="btn btn-primary">Данные</button>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">${disps[i].state}</h5>
-                    <p class="card-text">${disps[i].discriptionProblem}</p>                    
+                    <h5 class="card-title">${disps[i].status}</h5>
+                    <p class="card-text">{disps[i].discriptionProblem}</p>                    
                 </div>
         </div>`
-        ).appendTo(`#${disps[i].state}`);
+        ).appendTo(`#${disps[i].status}`);
     }
 }
 
 function initMainWindow(_categories, _disps){
     $('.innerContiner').empty();
 
-    createCategory(_categories);
+    createCategory(_categories, _disps);
     fillDispList(_disps)
 }
