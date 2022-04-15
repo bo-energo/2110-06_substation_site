@@ -87,17 +87,21 @@ class DispInfo {
 
         for (let i = 0; i < titleTabsArray.length; i++) {
             if (i == 0) {
-                $(`<a class="nav-link active" id="nav-home-tab" data-bs-toggle="tab" href="#nav-home" role="tab"
-                        aria-controls="nav-home" aria-selected="true">${titleTabsArray[i]}</a>`).appendTo('#nav-tab')
+                $(`<a class="nav-link active titleTabs" data-bs-toggle="tab" role="tab" 
+                aria-selected="true">${titleTabsArray[i]}</a>`).appendTo('#nav-tab')
             }
             else {
                 $(`
-                <a class="nav-link" id="nav-profile-tab" data-bs-toggle="tab" href="#nav-profile" role="tab"
-                    aria-controls="nav-profile" aria-selected="false">${titleTabsArray[i]}</a>`).appendTo('#nav-tab')
+                <a class="nav-link titleTabs"  data-bs-toggle="tab" role="tab"
+                    aria-selected="false">${titleTabsArray[i]}</a>`).appendTo('#nav-tab')
             }
 
 
         }
+
+        $(`.titleTabs`).click((e) => {
+            console.log(e.target.innerText);
+        })
     }
     //Создаёт компоненту для отрисовки графика
     createChart = (_legends, dataForTable) => {
@@ -123,7 +127,7 @@ class DispInfo {
     //Создание компонента легенд, заполнение списком легенд и параметрами в легендах(чекбоксами)
     createLegends(_legends) {
         $(`<div class="legends">
-            <div class="bg-secondary text-white p-2 rounded">Дегенды</div>
+            <div class="bg-secondary text-white p-2 rounded">Легенды</div>
         </div>
         `).appendTo(".groupLegends-dataTable");
 
@@ -153,13 +157,13 @@ class DispInfo {
     }
     //Создание компоненты с таблицой данных, заполнение таблици
     createDataTable(_dataForTable) {
-        $(`<div class="dataTable p-2"></div>`).appendTo(".groupLegends-dataTable");
+        $(`<div class="dataTable">
+            <div class="bg-secondary text-white p-2 rounded">Данные</div>
+        </div>`).appendTo(".groupLegends-dataTable");
 
         $(`
         <div class="container m-0 p-0">
-            <div class="row bg-secondary text-white p-2 rounded">
-                <div class="rounded">Данные</div>
-            </div>
+            
             <div class="row row-cols-5">
                 <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark"></div>
                 <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">ppm</div>
@@ -307,3 +311,12 @@ class DispInfo {
         $('<div id="horizontalSplitter"></div>').appendTo('.tabsContiner');
     }
 }
+
+
+/*
+
+<div class="row bg-secondary text-white p-2 rounded">
+                <div class="rounded">Данные</div>
+            </div>
+
+*/

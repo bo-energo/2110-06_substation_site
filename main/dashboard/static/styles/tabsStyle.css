@@ -10,6 +10,10 @@
     height: 94vh;
 }
 
+.titleTabs{
+    user-select: none;
+}
+
 .chartContent {
     width: 100%;
     height: 60vh;

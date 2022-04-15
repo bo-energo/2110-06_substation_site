@@ -1,18 +1,18 @@
-//let states = ["normal", "warning", "critical", "empty"];
-//let disps = [];
+let states = ["normal", "warning", "critical", "empty"];
+let disps = [];
 
-// function getRandomArbitrary(min, max) {
-//     min = Math.ceil(min);
-//     max = Math.floor(max);
-//     return Math.floor(Math.random() * (max - min)) + min;
-// }
+function getRandomArbitrary(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
+}
 
-// for (let i = 0; i < 15; i++) {
-//     let _state = states[getRandomArbitrary(0, 4)];
-//     let _discription = _state == "Normal" || _state == "Empty" ? "" : "Описание проблемы.......";
+for (let i = 0; i < 15; i++) {
+    let _state = states[getRandomArbitrary(0, 4)];
+    let _discription = _state == "Normal" || _state == "Empty" ? "" : "Описание проблемы.......";
 
-//     disps.push({ title: `AT${i}`, state: _state, discriptionProblem: _discription });
-// }
+    disps.push({ title: `AT${i}`, status: _state, discriptionProblem: _discription });
+}
 
 let categories = [
     { title: 'normal', bg: 'bg-success', colorText: 'text-white' },
@@ -22,21 +22,21 @@ let categories = [
 
 let discriptionDisp;
 
-let url = "http://10.100.1.2:8000/transofrmList";
-function getDisps(url){
-    return fetch(url)
-        .then(data => data.json())
-        .then(dispsFromSer => {
-            console.log(dispsFromSer.transformators);
-            initMainWindow(categories, dispsFromSer.transformators)
-        })
-        .catch(err => console.log(err));
-}
+// let url = "http://10.100.1.2:8000/transofrmList";
+// function getDisps(url){
+//     return fetch(url)
+//         .then(data => data.json())
+//         .then(dispsFromSer => {
+//             console.log(dispsFromSer.transformators);
+//             initMainWindow(categories, dispsFromSer.transformators)
+//         })
+//         .catch(err => console.log(err));
+// }
     
-getDisps(url);
-//initMainWindow(categories, disps);
-// let lMenu = new LeftMenu(disps);
-// lMenu.componentsInit();
+// getDisps(url);
+initMainWindow(categories, disps);
+let lMenu = new LeftMenu(disps);
+lMenu.componentsInit();
 
 
 $('.disp').click((e) => {
