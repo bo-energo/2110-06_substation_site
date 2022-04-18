@@ -49,6 +49,16 @@ class MeasurmentsTAdmin(admin.ModelAdmin):
     search_fields = ('inspection',)
 
 
+class MeasurmentsCAdmin(admin.ModelAdmin):
+    list_display = ('id', 'inspection', 'c_h2', 'c_co', 'c_co2', 'c_c2h2', 'c_c2h4', 'c_c2h6', 'c_ch4', 
+                    'c_h2_roc_7', 'c_co_roc_7', 'c_co2_roc_7', 'c_c2h2_roc_7', 'c_c2h4_roc_7', 'c_c2h6_roc_7', 'c_ch4_roc_7', 
+                    'c_h2_roc_30', 'c_co_roc_30', 'c_co2_roc_30', 'c_c2h2_roc_30', 'c_c2h4_roc_30', 'c_c2h6_roc_30', 'c_ch4_roc_30', 'c_tg',)
+    list_display_links = ('id', 'inspection', 'c_h2', 'c_co', 'c_co2', 'c_c2h2', 'c_c2h4', 'c_c2h6', 'c_ch4', 
+                        'c_h2_roc_7', 'c_co_roc_7', 'c_co2_roc_7', 'c_c2h2_roc_7', 'c_c2h4_roc_7', 'c_c2h6_roc_7', 'c_ch4_roc_7', 
+                        'c_h2_roc_30', 'c_co_roc_30', 'c_co2_roc_30', 'c_c2h2_roc_30', 'c_c2h4_roc_30', 'c_c2h6_roc_30', 'c_ch4_roc_30', 'c_tg',)
+    search_fields = ('inspection',)
+
+
 class ParamsAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'type')
     list_display_links = ('id', 'name', 'description', 'type')

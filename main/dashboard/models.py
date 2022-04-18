@@ -1,3 +1,4 @@
+from dis import pretty_flags
 from django.db import models
 
 # Create your models here.
@@ -26,12 +27,11 @@ class AssetType(models.Model):
 
 
 class Assets(models.Model):
-    # id = models.IntegerField(primary_key=True)
+    id = models.IntegerField(primary_key=True)
     guid = models.CharField(max_length=150, blank=True, null=True, verbose_name='GUID')
     type = models.ForeignKey(AssetType, models.DO_NOTHING, verbose_name='Тип оборудования')
+    name = models.CharField(max_length=150, blank=True, null=True, verbose_name='Название')
 
-    def __str__(self):
-        return self.guid
 
     class Meta:
         managed = False
@@ -156,6 +156,39 @@ class MeasurmentsT(models.Model):
         managed = False
         db_table = 'measurments_t'
         verbose_name_plural = 'Замеры температур'
+        verbose_name = 'Замер'
+
+
+class MeasurmentsC(models.Model):
+    #id = models.BigAutoField(primary_key=True)
+    inspection = models.ForeignKey('Inspections', models.DO_NOTHING)
+    c_h2 = models.FloatField(blank=True, null=True)
+    c_co = models.FloatField(blank=True, null=True)
+    c_co2 = models.FloatField(blank=True, null=True)
+    c_c2h2 = models.FloatField(blank=True, null=True)
+    c_c2h4 = models.FloatField(blank=True, null=True)
+    c_c2h6 = models.FloatField(blank=True, null=True)
+    c_ch4 = models.FloatField(blank=True, null=True)
+    c_h2_roc_7 = models.FloatField(blank=True, null=True)
+    c_co_roc_7 = models.FloatField(blank=True, null=True)
+    c_co2_roc_7 = models.FloatField(blank=True, null=True)
+    c_c2h2_roc_7 = models.FloatField(blank=True, null=True)
+    c_c2h4_roc_7 = models.FloatField(blank=True, null=True)
+    c_c2h6_roc_7 = models.FloatField(blank=True, null=True)
+    c_ch4_roc_7 = models.FloatField(blank=True, null=True)
+    c_h2_roc_30 = models.FloatField(blank=True, null=True)
+    c_co_roc_30 = models.FloatField(blank=True, null=True)
+    c_co2_roc_30 = models.FloatField(blank=True, null=True)
+    c_c2h2_roc_30 = models.FloatField(blank=True, null=True)
+    c_c2h4_roc_30 = models.FloatField(blank=True, null=True)
+    c_c2h6_roc_30 = models.FloatField(blank=True, null=True)
+    c_ch4_roc_30 = models.FloatField(blank=True, null=True)
+    c_tg = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'measurments_c'
+        verbose_name_plural = 'Замеры концентраций'
         verbose_name = 'Замер'
 
 
