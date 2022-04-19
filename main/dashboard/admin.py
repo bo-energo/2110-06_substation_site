@@ -4,6 +4,10 @@ from django.utils.safestring import mark_safe
 
 from .models import *
 
+class AssetStatusAdmin(admin.ModelAdmin):
+    list_display = ('inspection', 'level')
+    list_display_links = ('inspection', 'level')
+    search_fields = ('inspection',)
 
 class AssetsTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
@@ -90,6 +94,7 @@ class TypesAdmin(admin.ModelAdmin):
 
 
 
+admin.site.register(AssetStatus, AssetStatusAdmin)
 admin.site.register(AssetType, AssetsTypeAdmin)
 admin.site.register(Assets, AssetsAdmin)
 admin.site.register(Constants, ConstantsAdmin)
@@ -97,6 +102,7 @@ admin.site.register(Inspections, InspectionsAdmin)
 admin.site.register(MeasurmentsBush, MeasurmentsBushAdmin)
 admin.site.register(MeasurmentsI, MeasurmentsIAdmin)
 admin.site.register(MeasurmentsT, MeasurmentsTAdmin)
+admin.site.register(MeasurmentsC, MeasurmentsCAdmin)
 admin.site.register(Params, ParamsAdmin)
 admin.site.register(Pdata, PdataAdmin)
 admin.site.register(PdataNorms, PdataNormsAdmin)

@@ -12,6 +12,18 @@ from django.db import models
 from django.db import models
 
 
+class AssetStatus(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    inspection = models.ForeignKey('Inspections', models.DO_NOTHING, db_column='inspection')
+    level = models.ForeignKey('Levels', models.DO_NOTHING, db_column='level')
+
+    class Meta:
+        managed = False
+        db_table = 'asset_status'
+        verbose_name_plural = 'Статус объектов'
+        verbose_name = 'Статус объекта'
+
+
 class AssetType(models.Model):
     # id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=150, verbose_name='Наименование')
@@ -58,11 +70,25 @@ class Inspections(models.Model):
     date = models.DateTimeField()
     asset = models.ForeignKey(Assets, models.DO_NOTHING)
 
+    def __str__(self):
+        return str(self.id)  + ': ' + str(self.date)
+
     class Meta:
         managed = False
         db_table = 'inspections'
         verbose_name_plural = 'Замеры'
         verbose_name = 'Замер'
+
+
+class Levels(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=150)
+
+    class Meta:
+        managed = False
+        db_table = 'levels'
+        verbose_name_plural = 'Уровни критичности'
+        verbose_name = 'Уровень критичности'
 
 
 class MeasurmentsBush(models.Model):
