@@ -249,3 +249,26 @@ class Types(models.Model):
         db_table = 'types'
         verbose_name = 'Типы данных'
         verbose_name_plural = 'Тип данных'
+
+
+class CalcResultsGisDiag(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    inspection = models.ForeignKey('Inspections', models.DO_NOTHING, blank=True, null=True)
+    code = models.CharField(max_length=1000, blank=True, null=True)
+    value = models.CharField(max_length=1000, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'calc_results_gis_diag'
+
+
+class CalcResultsTransfDiag(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    inspection = models.ForeignKey('Inspections', models.DO_NOTHING, blank=True, null=True)
+    code = models.CharField(max_length=1000, blank=True, null=True)
+    value = models.CharField(max_length=1000, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'calc_results_transf_diag'
+
