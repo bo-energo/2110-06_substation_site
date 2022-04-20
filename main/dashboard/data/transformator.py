@@ -31,7 +31,7 @@ class transformator(ATabsAsset):
         """Формирование данных диагностики"""
         return { "eventsArchive": self.diagnostics() }
 
-    def diagnostics(self) -> array:
+    def diagnostics(self):
         """Массив диагностик"""
         
         values = []
@@ -40,6 +40,7 @@ class transformator(ATabsAsset):
                                                             .filter(date__lte = self._dateEnd)\
                                                             .filter(date__gte = self._dateStart)\
                                                             .filter(asset = self._asset.pk)\
+                                                            .order_by('-date')\
                                                             .values_list('id', flat=True)
                                                             )
 
@@ -53,11 +54,11 @@ class transformator(ATabsAsset):
 
         return values
 
-    def tabWorkParams(self) -> array:
+    def tabWorkParams(self):
         """Данные по вкладке 'Рабочие параметры'"""
         pass
 
-    def tabGases(self) -> array:
+    def tabGases(self):
         """Данные по вкладке 'Газы'"""
         values = []
 

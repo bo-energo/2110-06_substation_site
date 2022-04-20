@@ -18,6 +18,9 @@ def index(request):
     assets_array = []
 
     for asset in Assets.objects.all():
+
+        operation = DetectionAsset(asset.name).Distribution()
+
         count_inspections = Inspections.objects.filter(asset = asset.pk).count()
         if count_inspections != 0:
             assets_array.append({
@@ -26,55 +29,20 @@ def index(request):
                                                     .filter(asset = asset.pk)\
                                                     .latest('date').id)\
                                                 .first().level.name,
+                "diagnotics" : operation.GetDiagnostics()[:5]
             })
         else:
             assets_array.append({
                 "title" : asset.name, 
                 "status" : 'Empty',
+                "diagnotics" : ""
             })
 
     context = { 
         "assets" : assets_array
     }
 
-    # x = [ [  { 
-    #             "title" : i.inspection.asset.name, 
-    #             "status" : i.level.name,
-    #      } for i in AssetStatus.objects.filter(inspection = Inspections.objects\
-    #                                                         .filter(asset = asset.pk)\
-    #                                                         .latest('date').id)] for asset in Assets.objects.all()
-    #     ]
-
-    # context = {
-    #     "assets": [
-    #         {
-    #             "title" : "AT-1",
-    #             "status" : "critical",
-    #             "diagnotics" : [
-    #                 "critical string diagnostic 1",
-    #                 "critical string diagnostic 2"
-    #             ]
-    #         },
-    #         {
-    #             "title" : "AT-2",
-    #             "status" : "normal",
-    #             "diagnotics" : [
-    #                 "critical string diagnostic 1",
-    #                 "critical string diagnostic 2",
-    #                 "critical string diagnostic 3"
-    #             ]
-    #         },
-    #         {
-    #             "title" : "AT-3",
-    #             "status" : "normal",
-    #             "diagnotics" : [
-    #             ]
-    #         }
-    #     ],
-    # }
-
     return render(context, 'index.html')
-    return JsonResponse(context, json_dumps_params={'indent': 2})
 
 @csrf_exempt
 def selectTransform(request, name):
@@ -82,7 +50,7 @@ def selectTransform(request, name):
 
     context = {}
 
-    dates = GetDates(request=request)
+    dates = GetDates(request)
 
     operation = DetectionAsset(name, dates[0], dates[1]).Distribution()
     context = operation.GetData()
@@ -95,12 +63,13 @@ def updateArchive(request, name):
     """Обновление архива диагностики"""
     context = { }
 
-    dates = GetDates(request=request)
+    dates = GetDates(request)
         
     operation = DetectionAsset(name, dates[0], dates[1]).Distribution()
     context = operation.GetDiagnostics()
     
     return JsonResponse(context, json_dumps_params={'indent': 2})
+
 
 def GetDates(request):
     

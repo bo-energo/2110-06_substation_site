@@ -23,7 +23,7 @@ class DetectionAsset:
 
         return self._asset.type.name
 
-    def Distribution(self) -> ATabsAsset:
+    def Distribution(self):
         """Определение класса по типу объекта"""
         
         type = self.TypeAsset()
