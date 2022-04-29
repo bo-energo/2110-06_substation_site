@@ -4,7 +4,6 @@ from django.shortcuts import render
 from django.http import JsonResponse
 from datetime import datetime, timedelta
 
-from dashboard.data.measurments import measurments
 from dashboard.data.DetectionAsset import DetectionAsset
 from dashboard.models import AssetStatus, Inspections, Assets, Levels
 
