@@ -8,10 +8,6 @@ from dashboard.data.measurments import measurments
 from dashboard.data.DetectionAsset import DetectionAsset
 from dashboard.models import AssetStatus, Inspections, Assets, Levels
 
-# def index(request):
-#     """Главная страница"""
-#     return render(request, 'index.html')
-
 def index(request):
     """Список объектов мониторинга"""
 
@@ -29,7 +25,7 @@ def index(request):
                                                     .filter(asset = asset.pk)\
                                                     .latest('date').id)\
                                                 .first().level.name,
-                "diagnotics" : operation.GetDiagnostics()[:5]
+                "diagnotics" : operation.GetDiagnostics()
             })
         else:
             assets_array.append({
@@ -42,7 +38,8 @@ def index(request):
         "assets" : assets_array
     }
 
-    return render(context, 'index.html')
+    return render(request, 'index.html')
+    return JsonResponse(context, json_dumps_params={'indent': 2})
 
 @csrf_exempt
 def selectTransform(request, name):

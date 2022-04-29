@@ -1,8 +1,4 @@
 
-from datetime import datetime
-from numpy import array
-from pytest import param
-
 from dashboard.models import *
 from dashboard.data.Abstract.ATabsAsset import ATabsAsset
 
@@ -19,9 +15,45 @@ class transformator(ATabsAsset):
                     'values' : self.tabGases()
                 },
                 {
-                    'title' : 'WorkParams',
-                    'values' : self.tabWorkParams()
-                },                
+                    'title' : 'Overvoltage',
+                    'values' : self.tabOvervoltage()
+                },    
+                {
+                    'title' : 'Power',
+                    'values' : self.tabPower()
+                },   
+                {
+                    'title' : 'Temps',
+                    'values' : self.tabTemps()
+                },   
+                {
+                    'title' : 'Moisture',
+                    'values' : self.tabMoisture()
+                },   
+                {
+                    'title' : 'CoolingStatus',
+                    'values' : self.tabCoolingStatus()
+                },    
+                {
+                    'title' : 'StateRPN',
+                    'values' : self.tabStateRPN()
+                }, 
+                {
+                    'title' : 'StateInputs',
+                    'values' : self.tabStateInputs()
+                }, 
+                {
+                    'title' : 'InternalLosses',
+                    'values' : self.tabInternalLosses()
+                }, 
+                {
+                    'title' : 'Chr',
+                    'values' : self.tabChr()
+                },    
+                {
+                    'title' : 'Chr',
+                    'values' : self.tabState()
+                },           
             ]            
         }
 
@@ -54,12 +86,48 @@ class transformator(ATabsAsset):
 
         return values
 
-    def tabWorkParams(self):
-        """Данные по вкладке 'Рабочие параметры'"""
+    def tabOvervoltage(self):
+        """Данные по вкладке 'Перенапряжения'"""
+        pass
+
+    def tabPower(self):
+        """Данные по вкладке 'Мощность'"""
+        pass
+
+    def tabTemps(self):
+        """Данные по вкладке 'Температуры'"""
+        pass
+
+    def tabMoisture(self):
+        """Данные по вкладке 'Влагосодержание'"""
+        pass
+
+    def tabCoolingStatus(self):
+        """Данные по вкладке 'Состояние охлаждения'"""
+        pass
+
+    def tabStateRPN(self):
+        """Данные по вкладке 'Состояние РПН'"""
+        pass
+
+    def tabStateInputs(self):
+        """Данные по вкладке 'Состояние вводов'"""
+        pass
+
+    def tabInternalLosses(self):
+        """Данные по вкладке 'Внутренние потери'"""
+        pass
+
+    def tabChr(self):
+        """Данные по вкладке 'Активность ЧР'"""
+        pass
+
+    def tabState(self):
+        """Данные по вкладке 'Оценка состояния'"""
         pass
 
     def tabGases(self):
-        """Данные по вкладке 'Газы'"""
+        """Данные по вкладке 'Анализ газов'"""
         values = []
 
         data = MeasurmentsC.objects.filter(inspection__in = Inspections.objects\
