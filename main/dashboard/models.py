@@ -14,14 +14,17 @@ from django.db import models
 
 class AssetStatus(models.Model):
     id = models.BigAutoField(primary_key=True)
-    inspection = models.ForeignKey('Inspections', models.DO_NOTHING, db_column='inspection')
-    level = models.ForeignKey('Levels', models.DO_NOTHING, db_column='level')
+    inspection = models.ForeignKey('Inspections', models.DO_NOTHING, db_column='inspection', verbose_name='Осмотр')
+    level = models.ForeignKey('Levels', models.DO_NOTHING, db_column='level', verbose_name='Критичность')
 
     class Meta:
         managed = False
         db_table = 'asset_status'
         verbose_name_plural = 'Статус объектов'
         verbose_name = 'Статус объекта'
+        
+    def __str__(self):
+        return str(self.id)
 
 
 class AssetType(models.Model):
@@ -37,6 +40,9 @@ class AssetType(models.Model):
         verbose_name = 'Тип оборудования'
         verbose_name_plural = 'Тип оборудований'
 
+    def __str__(self):
+        return str(self.name)
+
 
 class Assets(models.Model):
     id = models.IntegerField(primary_key=True)
@@ -51,12 +57,15 @@ class Assets(models.Model):
         verbose_name = 'Оборудования'
         verbose_name_plural = 'Оборудование'
 
+    def __str__(self):
+        return str(self.name)
+
 
 class Constants(models.Model):
     #id = models.IntegerField(primary_key=True)
-    asset = models.ForeignKey(Assets, models.DO_NOTHING)
-    param = models.ForeignKey('Params', models.DO_NOTHING)
-    value = models.FloatField(blank=True, null=True)
+    asset = models.ForeignKey(Assets, models.DO_NOTHING, verbose_name='Объект')
+    param = models.ForeignKey('Params', models.DO_NOTHING, verbose_name='Параметр')
+    value = models.FloatField(blank=True, null=True, verbose_name='Значение')
 
     class Meta:
         managed = False
@@ -64,11 +73,14 @@ class Constants(models.Model):
         verbose_name_plural = 'Константы'
         verbose_name = 'Константа'
 
+    def __str__(self):
+        return str(self.param)
+
 
 class Inspections(models.Model):
     #id = models.BigAutoField(primary_key=True)
-    date = models.DateTimeField()
-    asset = models.ForeignKey(Assets, models.DO_NOTHING)
+    date = models.DateTimeField(verbose_name='Дата')
+    asset = models.ForeignKey(Assets, models.DO_NOTHING, verbose_name='Объект')
 
     def __str__(self):
         return str(self.id)  + ': ' + str(self.date)
@@ -81,14 +93,17 @@ class Inspections(models.Model):
 
 
 class Levels(models.Model):
-    id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=150)
+    id = models.IntegerField(primary_key=True, verbose_name='Id')
+    name = models.CharField(max_length=150, verbose_name='Наименование')
 
     class Meta:
         managed = False
         db_table = 'levels'
         verbose_name_plural = 'Уровни критичности'
         verbose_name = 'Уровень критичности'
+
+    def __str__(self):
+        return str(self.name)
 
 
 class MeasurmentsBush(models.Model):
@@ -220,9 +235,9 @@ class MeasurmentsC(models.Model):
 
 class Params(models.Model):
     #id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=150)
-    description = models.CharField(max_length=450, blank=True, null=True)
-    type = models.ForeignKey('Types', models.DO_NOTHING)
+    name = models.CharField(max_length=150, verbose_name='Наименование')
+    description = models.CharField(max_length=450, blank=True, null=True, verbose_name='Комментарий')
+    type = models.ForeignKey('Types', models.DO_NOTHING, verbose_name='Тип')
 
     class Meta:
         managed = False
@@ -230,13 +245,16 @@ class Params(models.Model):
         verbose_name_plural = 'Параметры'
         verbose_name = 'Параметр'
 
+    def __str__(self):
+        return str(self.name)
+
 
 class Pdata(models.Model):
     #id = models.IntegerField(primary_key=True)
-    asset_id = models.IntegerField()
-    param = models.ForeignKey(Params, models.DO_NOTHING)
-    value = models.FloatField(blank=True, null=True)
-    norm_ref = models.ForeignKey('PdataNorms', models.DO_NOTHING, db_column='norm_ref', blank=True, null=True)
+    asset_id = models.IntegerField(verbose_name='Объект')
+    param = models.ForeignKey(Params, models.DO_NOTHING, verbose_name='Параметр')
+    value = models.FloatField(blank=True, null=True, verbose_name='Значение')
+    norm_ref = models.ForeignKey('PdataNorms', models.DO_NOTHING, db_column='norm_ref', blank=True, null=True, verbose_name='Значение из списка')
 
     class Meta:
         managed = False
@@ -244,31 +262,42 @@ class Pdata(models.Model):
         verbose_name_plural = 'Паспортные данные'
         verbose_name = 'Параметр'
 
+    def __str__(self):
+        return str(self.param)
+
 
 class PdataNorms(models.Model):
     #id = models.IntegerField(primary_key=True)
-    type = models.ForeignKey('Types', models.DO_NOTHING)
-    name = models.CharField(max_length=150)
+    type = models.ForeignKey('Types', models.DO_NOTHING, verbose_name='Тип')
+    name = models.CharField(max_length=150, verbose_name='Наименование')
 
     class Meta:
         managed = False
         db_table = 'pdata_norms'
+        verbose_name_plural = 'Перечисления значений паспортных данных'
+        verbose_name = 'Перечисления значений паспортных данных'
+
+    def __str__(self):
+        return str(self.name)
 
 
 class PdataSpec(models.Model):
    # id = models.IntegerField(primary_key=True)
-    pdata = models.ForeignKey(Pdata, models.DO_NOTHING)
-    order = models.IntegerField()
-    value = models.FloatField(blank=True, null=True)
+    pdata = models.ForeignKey(Pdata, models.DO_NOTHING, verbose_name='Данные из паспорта')
+    order = models.IntegerField(verbose_name='Order')
+    value = models.FloatField(blank=True, null=True, verbose_name='Значение')
 
     class Meta:
         managed = False
         db_table = 'pdata_spec'
 
+    def __str__(self):
+        return str(self.pdata)
+
 
 class Types(models.Model):
     #id = models.IntegerField(primary_key=True)
-    name = models.CharField(max_length=150)
+    name = models.CharField(max_length=150, verbose_name='Наименование')
 
     class Meta:
         managed = False
@@ -276,16 +305,74 @@ class Types(models.Model):
         verbose_name = 'Типы данных'
         verbose_name_plural = 'Тип данных'
 
+    def __str__(self):
+        return str(self.name)
+
+
+class CalcResultsGis(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    inspection = models.ForeignKey('Inspections', models.DO_NOTHING, blank=True, null=True)
+    p_diff = models.FloatField(blank=True, null=True)
+    breaker_mechanical_wear = models.FloatField(blank=True, null=True)
+    breaker_electrical_wear = models.FloatField(blank=True, null=True)
+    booster_pump_rul = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'calc_results_gis'
+        verbose_name_plural = 'Результат диагностики по Gis'
+        verbose_name = 'Результат диагностики по Gis'
+
 
 class CalcResultsGisDiag(models.Model):
     id = models.BigAutoField(primary_key=True)
     inspection = models.ForeignKey('Inspections', models.DO_NOTHING, blank=True, null=True)
+    asset = models.ForeignKey('Assets', models.DO_NOTHING, blank=True, null=True)
     code = models.CharField(max_length=1000, blank=True, null=True)
     value = models.CharField(max_length=1000, blank=True, null=True)
 
     class Meta:
         managed = False
         db_table = 'calc_results_gis_diag'
+        verbose_name_plural = 'Результат диагностики по Gis (диагн. заключения)'
+        verbose_name = 'Диагностическое заключение'
+
+
+class CalcResultsGisSpec(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    calc_results = models.ForeignKey(CalcResultsGis, models.DO_NOTHING, blank=True, null=True)
+    code = models.CharField(max_length=1000, blank=True, null=True)
+    value = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'calc_results_gis_spec'
+        verbose_name_plural = 'Результат диагностики по Gis (спец параметры)'
+        verbose_name = 'Специальный параметр'
+
+
+class CalcResultsTransf(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    inspection = models.ForeignKey('Inspections', models.DO_NOTHING, blank=True, null=True)
+    coeff_load = models.FloatField(blank=True, null=True)
+    t_hst_ttr = models.FloatField(blank=True, null=True)
+    rs = models.FloatField(blank=True, null=True)
+    wcp = models.FloatField(blank=True, null=True)
+    ltc_mechanical_wear = models.FloatField(blank=True, null=True)
+    ltc_electrical_wear = models.FloatField(blank=True, null=True)
+    t_ltc_diff = models.FloatField(blank=True, null=True)
+    s_loss_noload = models.CharField(max_length=1000, blank=True, null=True)
+    s_loss_shortcircuit = models.CharField(max_length=1000, blank=True, null=True)
+    k_overload_coeff_alarm = models.CharField(max_length=1000, blank=True, null=True)
+    k_overload_coeff_long = models.CharField(max_length=1000, blank=True, null=True)
+    duration_coeff_long = models.CharField(max_length=1000, blank=True, null=True)
+    duration_overload = models.CharField(max_length=1000, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'calc_results_transf'
+        verbose_name_plural = 'Результат диагностики по трансформаторам'
+        verbose_name = 'Результат диагностики по трансформаторам'
 
 
 class CalcResultsTransfDiag(models.Model):
@@ -297,4 +384,20 @@ class CalcResultsTransfDiag(models.Model):
     class Meta:
         managed = False
         db_table = 'calc_results_transf_diag'
+        verbose_name_plural = 'Результат диагностики по трансфторматорам (диагн. заключения)'
+        verbose_name = 'Диагностическое заключение'
+
+
+class CalcResultsTransfSpec(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    calc_results = models.ForeignKey(CalcResultsTransf, models.DO_NOTHING, blank=True, null=True)
+    code = models.CharField(max_length=1000, blank=True, null=True)
+    value = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'calc_results_transf_spec'
+        verbose_name_plural = 'Результат диагностики по трансфторам (спец параметры)'
+        verbose_name = 'Специальный параметр'
+
 

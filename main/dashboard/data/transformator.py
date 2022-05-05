@@ -11,10 +11,6 @@ class transformator(ATabsAsset):
         result = {
             'tabsData':[
                 {
-                    'title' : 'Gases',
-                    'values' : self.tabGases()
-                },
-                {
                     'title' : 'Overvoltage',
                     'values' : self.tabOvervoltage()
                 },    
@@ -29,7 +25,11 @@ class transformator(ATabsAsset):
                 {
                     'title' : 'Moisture',
                     'values' : self.tabMoisture()
-                },   
+                },     
+                {
+                    'title' : 'InsulationWear',
+                    'values' : self.tabInsulationWear()
+                }, 
                 {
                     'title' : 'CoolingStatus',
                     'values' : self.tabCoolingStatus()
@@ -51,9 +51,17 @@ class transformator(ATabsAsset):
                     'values' : self.tabChr()
                 },    
                 {
-                    'title' : 'Chr',
+                    'title' : 'Нагруженная способность',
+                    'values' : self.tabLoadedСapacity()
+                },   
+                {
+                    'title' : 'State',
                     'values' : self.tabState()
-                },           
+                }, 
+                {
+                    'title' : 'Gases',
+                    'values' : self.tabGases()
+                },          
             ]            
         }
 
@@ -102,6 +110,10 @@ class transformator(ATabsAsset):
         """Данные по вкладке 'Влагосодержание'"""
         pass
 
+    def tabInsulationWear(self):
+        """Данные по вкладке 'Износ изоляции'"""
+        pass
+
     def tabCoolingStatus(self):
         """Данные по вкладке 'Состояние охлаждения'"""
         pass
@@ -120,6 +132,10 @@ class transformator(ATabsAsset):
 
     def tabChr(self):
         """Данные по вкладке 'Активность ЧР'"""
+        pass
+
+    def tabLoadedСapacity(self):
+        """Данные по вкладке 'Нагруженная способность'"""
         pass
 
     def tabState(self):

@@ -7,18 +7,57 @@ from .models import *
 class AssetStatusAdmin(admin.ModelAdmin):
     list_display = ('inspection', 'level')
     list_display_links = ('inspection', 'level')
-    search_fields = ('inspection',)
+    search_fields = ('inspection', 'level')
+
 
 class AssetsTypeAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     list_display_links = ('id', 'name')
-    search_fields = ('name',)
+    search_fields = ('id', 'name')
 
 
 class AssetsAdmin(admin.ModelAdmin):
     list_display = ('id', 'guid', 'type')
     list_display_links = ('id', 'guid', 'type')
-    search_fields = ('name',)
+    search_fields = ('id', 'guid', 'type')
+
+
+class CalcResultsGisAdmin(admin.ModelAdmin):
+    list_display = ('id', 'inspection', 'p_diff', 'breaker_mechanical_wear', 'breaker_electrical_wear', 'booster_pump_rul')
+    list_display_links =  ('id', 'inspection', 'p_diff', 'breaker_mechanical_wear', 'breaker_electrical_wear', 'booster_pump_rul')
+    search_fields = ('id','inspection',)
+
+
+class CalcResultsGisDiagAdmin(admin.ModelAdmin):
+    list_display = ('id', 'inspection', 'asset', 'code', 'value')
+    list_display_links =  ('id', 'inspection', 'asset', 'code', 'value')
+    search_fields = ('id','inspection', 'asset')
+
+
+class CalcResultsGisSpecAdmin(admin.ModelAdmin):
+    list_display = ('id', 'calc_results', 'code', 'value')
+    list_display_links =  ('id', 'calc_results', 'code', 'value')
+    search_fields = ('id', 'code')
+
+
+class CalcResultsTransfAdmin(admin.ModelAdmin):
+    list_display = ('id', 'inspection', 'coeff_load', 't_hst_ttr', 'rs', 'wcp', 'ltc_mechanical_wear', 'ltc_electrical_wear', 't_ltc_diff', 's_loss_noload', 's_loss_shortcircuit',
+                    'k_overload_coeff_alarm', 'k_overload_coeff_long', 'duration_coeff_long', 'duration_overload')
+    list_display_links =  ('id', 'inspection', 'coeff_load', 't_hst_ttr', 'rs', 'wcp', 'ltc_mechanical_wear', 'ltc_electrical_wear', 't_ltc_diff', 's_loss_noload', 's_loss_shortcircuit',
+                    'k_overload_coeff_alarm', 'k_overload_coeff_long', 'duration_coeff_long', 'duration_overload')
+    search_fields = ('id', 'inspection')
+
+
+class CalcResultsTransfDiagAdmin(admin.ModelAdmin):
+    list_display = ('id', 'inspection', 'code', 'value')
+    list_display_links =  ('id', 'inspection', 'code', 'value')
+    search_fields = ('id', 'inspection')
+
+
+class CalcResultsTransfSpecAdmin(admin.ModelAdmin):
+    list_display = ('id', 'calc_results', 'code', 'value')
+    list_display_links =  ('id', 'calc_results', 'code', 'value')
+    search_fields = ('id', 'code')
 
 
 class ConstantsAdmin(admin.ModelAdmin):
@@ -31,6 +70,12 @@ class InspectionsAdmin(admin.ModelAdmin):
     list_display = ('id', 'date', 'asset')
     list_display_links = ('id', 'date', 'asset')
     search_fields = ('date',)
+
+
+class LevelsAdmin(admin.ModelAdmin):
+    list_display = ('id', 'name')
+    list_display_links = ('id', 'name')
+    search_fields = ('name',)
 
 
 class MeasurmentsBushAdmin(admin.ModelAdmin):
@@ -66,39 +111,47 @@ class MeasurmentsCAdmin(admin.ModelAdmin):
 class ParamsAdmin(admin.ModelAdmin):
     list_display = ('id', 'name', 'description', 'type')
     list_display_links = ('id', 'name', 'description', 'type')
-    search_fields = ('name',)
+    search_fields = ('id', 'name',)
 
 
 class PdataAdmin(admin.ModelAdmin):
     list_display = ('id', 'asset_id', 'value', 'norm_ref')
     list_display_links = ('id', 'asset_id', 'value', 'norm_ref')
-    search_fields = ('asset_id',)
+    search_fields = ('id', 'asset_id',)
 
 
 class PdataNormsAdmin(admin.ModelAdmin):
     list_display = ('id', 'type', 'name')
     list_display_links =  ('id', 'type', 'name')
-    search_fields = ('type',)
+    search_fields = ('id', 'type',)
 
 
 class PdataSpecAdmin(admin.ModelAdmin):
     list_display = ('id', 'pdata', 'order', 'value')
     list_display_links =  ('id', 'pdata', 'order', 'value')
-    search_fields = ('pdata',)
+    search_fields = ('id', 'pdata',)
 
 
 class TypesAdmin(admin.ModelAdmin):
     list_display = ('id', 'name')
     list_display_links =  ('id', 'name')
-    search_fields = ('name',)
+    search_fields = ('id', 'name',)
+
 
 
 
 admin.site.register(AssetStatus, AssetStatusAdmin)
 admin.site.register(AssetType, AssetsTypeAdmin)
 admin.site.register(Assets, AssetsAdmin)
+admin.site.register(CalcResultsGis, CalcResultsGisAdmin)
+admin.site.register(CalcResultsGisDiag, CalcResultsGisDiagAdmin)
+admin.site.register(CalcResultsGisSpec, CalcResultsGisSpecAdmin)
+admin.site.register(CalcResultsTransf, CalcResultsTransfAdmin)
+admin.site.register(CalcResultsTransfDiag, CalcResultsTransfDiagAdmin)
+admin.site.register(CalcResultsTransfSpec, CalcResultsTransfSpecAdmin)
 admin.site.register(Constants, ConstantsAdmin)
 admin.site.register(Inspections, InspectionsAdmin)
+admin.site.register(Levels, LevelsAdmin)
 admin.site.register(MeasurmentsBush, MeasurmentsBushAdmin)
 admin.site.register(MeasurmentsI, MeasurmentsIAdmin)
 admin.site.register(MeasurmentsT, MeasurmentsTAdmin)
