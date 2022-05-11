@@ -7,9 +7,8 @@ from datetime import datetime, timedelta
 from dashboard.data.DetectionAsset import DetectionAsset
 from dashboard.models import AssetStatus, Inspections, Assets, Levels
 
-def index(request):
+def allAssets(request):
     """Список объектов мониторинга"""
-
     assets_array = []
 
     for asset in Assets.objects.all():
@@ -20,6 +19,7 @@ def index(request):
         if count_inspections != 0:
             assets_array.append({
                 "title" : asset.name, 
+                "type" : asset.type.name,
                 "status" : AssetStatus.objects.filter(inspection = Inspections.objects\
                                                     .filter(asset = asset.pk)\
                                                     .latest('date').id)\
@@ -29,7 +29,8 @@ def index(request):
         else:
             assets_array.append({
                 "title" : asset.name, 
-                "status" : 'Empty',
+                "type" : asset.type.name,
+                "status" : 'Нет данных',
                 "diagnotics" : ""
             })
 
@@ -37,8 +38,27 @@ def index(request):
         "assets" : assets_array
     }
 
+    return JsonResponse(context, json_dumps_params={'indent': 2, 'ensure_ascii': False})
+
+def allLevel(request):
+    
+    levels = Levels.objects.all()
+    dict = []
+
+    for item in levels:
+        dict.append({
+            'id' : item.id,
+            'title' : item.name,
+        })
+    
+    context = { 
+        'levels' : dict
+    }
+
+    return JsonResponse(context, json_dumps_params={'indent': 2, 'ensure_ascii': False})
+
+def index(request):
     return render(request, 'index.html')
-    return JsonResponse(context, json_dumps_params={'indent': 2})
 
 @csrf_exempt
 def selectTransform(request, name):
