@@ -51,8 +51,8 @@ class transformator(ATabsAsset):
                     'values' : self.tabChr()
                 },    
                 {
-                    'title' : 'Нагруженная способность',
-                    'values' : self.tabLoadedСapacity()
+                    'title' : 'LoadedCapacity',
+                    'values' : self.tabLoadedCapacity()
                 },   
                 {
                     'title' : 'State',
@@ -100,11 +100,53 @@ class transformator(ATabsAsset):
 
     def tabPower(self):
         """Данные по вкладке 'Мощность'"""
-        pass
+        values = []
+
+        data = MeasurmentsI.objects.filter(inspection__in = Inspections.objects\
+                                                            .filter(date__lte = self._dateEnd)\
+                                                            .filter(date__gte = self._dateStart)\
+                                                            .filter(asset = self._asset.pk)\
+                                                            .values_list('id', flat=True)
+                                                            )
+
+        properies = ['p_hv', 'p_mv','p_lv', 'q_hv','q_mv','q_lv', 's_hv','s_mv','s_lv']
+
+        for property in properies:                
+            
+            values.append({
+                'legendName' : property,
+                'unit':'',
+                'dz' : self.getLimit(property[2:] + '_lim0'),
+                'pdz' : self.getLimit(property[2:] + '_lim1'),
+                'values' : [self.unionDict(i.inspection.date, i, property) for i in data],
+                })
+
+        return values
 
     def tabTemps(self):
         """Данные по вкладке 'Температуры'"""
-        pass
+        values = []
+
+        data = MeasurmentsT.objects.filter(inspection__in = Inspections.objects\
+                                                            .filter(date__lte = self._dateEnd)\
+                                                            .filter(date__gte = self._dateStart)\
+                                                            .filter(asset = self._asset.pk)\
+                                                            .values_list('id', flat=True)
+                                                            )
+
+        properies = [f.name for f in MeasurmentsT._meta.get_fields()][2:]
+
+        for property in properies:                
+            
+            values.append({
+                'legendName' : property.upper()[2:],
+                'unit':'C',
+                'dz' : self.getLimit(property[2:] + '_lim0'),
+                'pdz' : self.getLimit(property[2:] + '_lim1'),
+                'values' : [self.unionDict(i.inspection.date, i, gas) for i in data],
+                })
+
+        return values
 
     def tabMoisture(self):
         """Данные по вкладке 'Влагосодержание'"""
@@ -134,7 +176,7 @@ class transformator(ATabsAsset):
         """Данные по вкладке 'Активность ЧР'"""
         pass
 
-    def tabLoadedСapacity(self):
+    def tabLoadedCapacity(self):
         """Данные по вкладке 'Нагруженная способность'"""
         pass
 
