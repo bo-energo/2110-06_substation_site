@@ -56,10 +56,10 @@ let tabs = ["Газы", "Влагосодержание", "Температур�
 
 
 
-function loadDisp(titleDisp) {
+function loadAsset(titleDisp) {
 
     $('.innerContiner').empty();
-    let disp = new DispInfo();
+    let disp = new AssetInfo();
     disp.createTab(tabs);
     disp.createChart(_legends, dataForTable);
     disp.createEventArchiveCompoinent();
@@ -73,7 +73,7 @@ function loadDisp(titleDisp) {
 }
 
 //Класс в процессе разработки и модернизации.
-class DispInfo {
+class AssetInfo {
     //Создание вкладок, в аргументы принимае список вкладок
     createTab = (titleTabsArray) => {
         $(`<div class="tabsContiner"></div>`).appendTo(".innerContiner");
