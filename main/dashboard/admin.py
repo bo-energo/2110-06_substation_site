@@ -79,8 +79,8 @@ class LevelsAdmin(admin.ModelAdmin):
 
 
 class MeasurmentsBushAdmin(admin.ModelAdmin):
-    list_display = ('id', 'inspection', 'c1_a', 'c1_b', 'c1_c', 'd_c1_a', 'd_c1_b', 'd_c1_c', 'tgd_1', 'tgd_2', 'tgd_3', 'd_tgd_1', 'd_tgd_2', 'd_tgd_3')
-    list_display_links = ('id', 'inspection', 'c1_a', 'c1_b', 'c1_c', 'd_c1_a', 'd_c1_b', 'd_c1_c', 'tgd_1', 'tgd_2', 'tgd_3', 'd_tgd_1', 'd_tgd_2', 'd_tgd_3')
+    list_display = ('id', 'inspection', 'c1_a', 'c1_b', 'c1_c', 'd_c1_a', 'd_c1_b', 'd_c1_c', 'tgd_a', 'tgd_b', 'tgd_c', 'd_tgd_a', 'd_tgd_b', 'd_tgd_c')
+    list_display_links = ('id', 'inspection', 'c1_a', 'c1_b', 'c1_c', 'd_c1_a', 'd_c1_b', 'd_c1_c', 'tgd_a', 'tgd_b', 'tgd_c', 'd_tgd_a', 'd_tgd_b', 'd_tgd_c')
     search_fields = ('inspection',)
 
 

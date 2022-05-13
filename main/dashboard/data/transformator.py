@@ -1,66 +1,102 @@
-
+import asyncio
 from dashboard.models import *
 from dashboard.data.Abstract.ATabsAsset import ATabsAsset
+from asgiref.sync import sync_to_async
+
+from threading import Thread
 
 
 class transformator(ATabsAsset):    
+          
+
+    def Multiprocessing(self):
+        
+        funcs = [
+            self.tabOvervoltage,
+            self.tabPower,
+            self.tabTemps,
+            self.tabMoisture,
+            self.tabInsulationWear,
+            self.tabCoolingStatus,
+            self.tabStateRPN,
+            self.tabStateInputs,
+            self.tabInternalLosses,
+            self.tabChr,
+            self.tabLoadedCapacity,
+            self.tabState,
+            self.tabGases,
+        ]
+
+        results = dict()
+        threads = [None] * len(funcs)
+
+        for i in range(len(funcs)):
+            threads[i] = Thread(target=funcs[i], args=(results,))
+            threads[i].start()
+
+        for i in range(len(threads)):
+            threads[i].join()
+
+        return results
 
     def GetData(self):
         """Формирование данных для вкладок"""
+
+        values = self.Multiprocessing()
         
         result = {
             'tabsData':[
                 {
-                    'title' : 'Overvoltage',
-                    'values' : self.tabOvervoltage()
+                    'title' : 'Перенапряжения',
+                    'values' : values['Overvoltage']
                 },    
                 {
                     'title' : 'Power',
-                    'values' : self.tabPower()
+                    'values' : values['Power']
                 },   
                 {
                     'title' : 'Temps',
-                    'values' : self.tabTemps()
+                    'values' : values['Temps']
                 },   
                 {
                     'title' : 'Moisture',
-                    'values' : self.tabMoisture()
+                    'values' : values['Moisture']
                 },     
                 {
                     'title' : 'InsulationWear',
-                    'values' : self.tabInsulationWear()
+                    'values' : values['InsulationWear']
                 }, 
                 {
                     'title' : 'CoolingStatus',
-                    'values' : self.tabCoolingStatus()
+                    'values' : values['CoolingStatus']
                 },    
                 {
                     'title' : 'StateRPN',
-                    'values' : self.tabStateRPN()
+                    'values' : values['StateRPN']
                 }, 
                 {
                     'title' : 'StateInputs',
-                    'values' : self.tabStateInputs()
+                    'values' : values['StateInputs']
                 }, 
                 {
                     'title' : 'InternalLosses',
-                    'values' : self.tabInternalLosses()
+                    'values' : values['InternalLosses']
                 }, 
                 {
                     'title' : 'Chr',
-                    'values' : self.tabChr()
+                    'values' : values['Chr']
                 },    
                 {
                     'title' : 'LoadedCapacity',
-                    'values' : self.tabLoadedCapacity()
+                    'values' : values['LoadedCapacity']
                 },   
                 {
                     'title' : 'State',
-                    'values' : self.tabState()
+                    'values' : values['State']
                 }, 
                 {
                     'title' : 'Gases',
-                    'values' : self.tabGases()
+                    'values' : values['Gases']
                 },          
             ]            
         }
@@ -94,11 +130,14 @@ class transformator(ATabsAsset):
 
         return values
 
-    def tabOvervoltage(self):
-        """Данные по вкладке 'Перенапряжения'"""
-        pass
+    
+###############################
 
-    def tabPower(self):
+    def tabOvervoltage(self, result = {}):
+        """Данные по вкладке 'Перенапряжения'"""
+        result['Overvoltage'] = []
+
+    def tabPower(self, result = {}):
         """Данные по вкладке 'Мощность'"""
         values = []
 
@@ -121,9 +160,10 @@ class transformator(ATabsAsset):
                 'values' : [self.unionDict(i.inspection.date, i, property) for i in data],
                 })
 
+        result['Power'] = values
         return values
 
-    def tabTemps(self):
+    def tabTemps(self, result = {}):
         """Данные по вкладке 'Температуры'"""
         values = []
 
@@ -146,45 +186,46 @@ class transformator(ATabsAsset):
                 'values' : [self.unionDict(i.inspection.date, i, gas) for i in data],
                 })
 
+        result['Temps'] = values
         return values
 
-    def tabMoisture(self):
+    def tabMoisture(self, result = {}):
         """Данные по вкладке 'Влагосодержание'"""
-        pass
+        result['Moisture'] = []
 
-    def tabInsulationWear(self):
+    def tabInsulationWear(self, result = {}):
         """Данные по вкладке 'Износ изоляции'"""
-        pass
+        result['InsulationWear'] = []
 
-    def tabCoolingStatus(self):
+    def tabCoolingStatus(self, result = {}):
         """Данные по вкладке 'Состояние охлаждения'"""
-        pass
+        result['CoolingStatus'] = []
 
-    def tabStateRPN(self):
+    def tabStateRPN(self, result = {}):
         """Данные по вкладке 'Состояние РПН'"""
-        pass
+        result['StateRPN'] = []
 
-    def tabStateInputs(self):
+    def tabStateInputs(self, result = {}):
         """Данные по вкладке 'Состояние вводов'"""
-        pass
+        result['StateInputs'] = []
 
-    def tabInternalLosses(self):
+    def tabInternalLosses(self, result = {}):
         """Данные по вкладке 'Внутренние потери'"""
-        pass
+        result['InternalLosses'] = []
 
-    def tabChr(self):
+    def tabChr(self, result = {}):
         """Данные по вкладке 'Активность ЧР'"""
-        pass
+        result['Chr'] = []
 
-    def tabLoadedCapacity(self):
+    def tabLoadedCapacity(self, result = {}):
         """Данные по вкладке 'Нагруженная способность'"""
-        pass
+        result['LoadedCapacity'] = []
 
-    def tabState(self):
+    def tabState(self, result = {}):
         """Данные по вкладке 'Оценка состояния'"""
-        pass
+        result['State'] = []
 
-    def tabGases(self):
+    def tabGases(self, result = {}):
         """Данные по вкладке 'Анализ газов'"""
         values = []
 
@@ -207,4 +248,5 @@ class transformator(ATabsAsset):
                 'values' : [self.unionDict(i.inspection.date, i, gas) for i in data],
                 })
 
+        result['Gases'] = values
         return values

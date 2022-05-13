@@ -1,4 +1,7 @@
+from asyncio.windows_events import NULL
+from asgiref.sync import sync_to_async
 from datetime import datetime
+
 from dashboard.models import Params, Pdata
 from abc import ABC, abstractmethod
 
@@ -34,6 +37,14 @@ class ATabsAsset(ABC):
         }
         return dict
 
+    def getValue(self, obj: object, atr: str):
+        value = 0.0
+        try:
+            value = getattr(obj, atr)
+        except: 
+            value = None
+        
+        return value
 
     def getLimit(self, atr: str):
         """Получение уставок"""
