@@ -1,7 +1,7 @@
 
-let urlGetAssets = "http://10.100.1.2:8000/assets/"; //url получения списка трансформаторов
+let urlGetAssets = "http://10.0.1.9:8000/assets/"; //url получения списка трансформаторов
 let assets = []; // Список оборудования
-let urlGetListStatesAssets = "http://10.100.1.2:8000/levels/"; //url получения списка состоний оборудования (критический, номинальный  и т.д.)
+let urlGetListStatesAssets = "http://10.0.1.9:8000/levels/"; //url получения списка состоний оборудования (критический, номинальный  и т.д.)
 let colorsLevel = [
     { bg: "bg-success", colorText: 'text-white', id: 'normal' },
     { bg: "bg-warning", colorText: 'text-white', id: 'warning' },
@@ -38,14 +38,14 @@ function init(_urlGetListStatesAssets, _urlAssets) {
         lMenu = new LeftMenu(assets);
         lMenu.componentsInit();
         SubscrubeToEventClick();
-        //CheckResize();
+        CheckResize();
     }).catch(err => console.log(err));
 }
 
 //Подписка оборудования на событие клика(По клику на оборудование загружаются данные выбраного оборудования)
 function SubscrubeToEventClick(){
     $('.disp').click((e) => {
-        let targetAsset = {
+        targetAsset = {
             title: e.currentTarget.innerText.split('\n')[0].split('-')[0],
             type: e.currentTarget.innerText.split('\n')[0].split('-')[1].trim()
         }
@@ -58,11 +58,12 @@ function SubscrubeToEventClick(){
 }
 
 //Отслеживание изменения размера окна
-// function CheckResize(){
-//     window.onresize = function () {
-//         loadAsset(targetAsset, targetTypeAsset);
-//     }
-// }
+function CheckResize(){
+    window.onresize = function () {
+        //loadAsset(targetAsset);
+        //console.log("Измениялся размер экрана");
+    }
+}
 
 init(urlGetListStatesAssets, urlGetAssets);
 

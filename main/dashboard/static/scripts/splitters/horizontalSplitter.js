@@ -22,9 +22,10 @@ class HorizontalSplitter{
     offsetY;
     idVerticalSplitter;
     callBack;
+    dataForCallBack;
 
 
-    constructor(_idHorSplitter, _idUpperBlock, _idBottomBlock, _offsetY, _idVerticalSplitter="", _callBack=null){
+    constructor(_idHorSplitter, _idUpperBlock, _idBottomBlock, _offsetY, _idVerticalSplitter = "", _callBack = null, _dataForCallBack = null){
         this.idHorSplitter = _idHorSplitter;
         this.idUpperBlock = _idUpperBlock;
         this.idBottomBlock = _idBottomBlock;
@@ -34,6 +35,7 @@ class HorizontalSplitter{
         this.endHorPos = 0;
         this.idVerticalSplitter=_idVerticalSplitter;
         this.callBack = _callBack;
+        this.dataForCallBack = _dataForCallBack;
         let t = parseInt($(`#${_idUpperBlock}`).css('width'));
         $(`#${_idHorSplitter}`).css('position', 'absolute');
         $(`#${_idHorSplitter}`).css('cursor', 'row-resize');
@@ -71,7 +73,7 @@ class HorizontalSplitter{
             return;
 
         if(this.callBack != null)
-            this.callBack();
+            this.callBack(this.dataForCallBack);
     }
 
     splitterMove = (e) => {

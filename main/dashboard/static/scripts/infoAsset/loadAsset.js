@@ -1,111 +1,39 @@
-//данные для демо
-function getRandomArbitrary(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
-}
-
-let gases = {
-    title: "Концентрации",
-    values: [
-        { isSelect: true, title: "CO" },
-        { isSelect: true, title: "CO2" },
-        { isSelect: true, title: "C2H2" },
-        { isSelect: true, title: "C2H4" },
-        { isSelect: true, title: "C2H6" },
-        { isSelect: true, title: "H" },
-        { isSelect: true, title: "CH4" }
-    ]
-}
-
-let workParams = {
-    title: "Рабочие параметры",
-    values: [
-        { title: "Т ВСМ" },
-        { title: "Температура наружняя" },
-        { title: "Т НСМ" },
-    ]
-}
-
-let _legends = [gases, workParams];
-
-let dataForTable = [
-    { title: "CO", ppm: getRandomArbitrary(0, 300), percent: getRandomArbitrary(0, 300), DZ: 100, PDZ: 150 },
-    { title: "CO2", ppm: getRandomArbitrary(0, 300), percent: getRandomArbitrary(0, 300), DZ: 3000, PDZ: 7000 },
-    { title: "C2H2", ppm: getRandomArbitrary(0, 300), percent: getRandomArbitrary(0, 300), DZ: 8, PDZ: 20 },
-    { title: "C2H4", ppm: getRandomArbitrary(0, 300), percent: getRandomArbitrary(0, 300), DZ: 20, PDZ: 50 },
-    { title: "C2H6", ppm: getRandomArbitrary(0, 300), percent: getRandomArbitrary(0, 300), DZ: 35, PDZ: 80 },
-    { title: "H", ppm: getRandomArbitrary(0, 300), percent: getRandomArbitrary(0, 300), DZ: 80, PDZ: 100 },
-    { title: "CH4", ppm: getRandomArbitrary(0, 300), percent: getRandomArbitrary(0, 300), DZ: 40, PDZ: 70 }
-]
-
-let t1 = [];
-let t2 = [];
-let t3 = [];
-let t4 = [];
-
-for (let i = 0; i < 10; i++) {
-    t1.push(getRandomArbitrary(0, 101));
-    t2.push(getRandomArbitrary(0, 101));
-    t3.push(getRandomArbitrary(0, 101));
-    t4.push(getRandomArbitrary(0, 101));
-}
-
-/*
-//Вкладки оборудования трансформатор
-let transforsTabs = ["Перенапряжения", "Влагосодержание", "Температура", "Износ изоляции", "Состояние охлаждения", "Мощность", "Состояние РПН",
-"Состояние вводов", "Внутрение потери", "Активность ЧР", "Нагрузочная способность", "Оценка состояния", "Анализ газов"];
-//Вкладки оборудования КРУЭ
-let crueTabs = ["Перенапряжения", "Состояние вводов", "Сотсояние элегаза", "Активность ЧР", "Рабочие параметры"];
-//Вкладки оборудования выключатели
-let switchesTabs = ["Перенарпряжения", "Состояние вводов", "Состояние элегаза", "Активность ЧР", "Ресурс дугогасительного устройства",
-"Рабочие параметры", "Ресурс гидропривода", "Параметры коммутации", "Вибродиагностика"];
-//Вкладки оборудования кабельная линия
-let cableLine = ["Термоконтроль", "Виброконтроль", "Токи в экранах", "Активность ЧР"];
-//Вкладки оборудования трансформаторы тока
-let currentTransforms = ["Изоляция", "Влажность масла", "Состояние элегаза"];
-//Вкладки оборудования трансформаторы напряжения
-let voltageTransforms = ["Влажность масла", "Межвитковые замыкания", "Ток утечки", "Состояние элегаза"];
-//Вкладки оборудования ограничители перенапряжения
-let limiterOvervoltage = ["Токи"];
-//Вкладки оборудования конденсаторы связи
-let communicationCondensers = ["Состояние"];
-//Вкладки оборудования разъеденители
-let disconnectors = ["Состояние"];
-//Вкладки оборудования батареи статических конденсаторов
-let batteryStaticCondensers = ["Состояние"];
-*/
-
-
+//Отображение выюраного оборудования
+//Аргументы: targetAsset-выбранное оборудование
 function loadAsset(targetAsset) {
 
-    $('.innerContiner').empty();
+    //$('.innerContiner').empty();
     let disp = new AssetInfo();
     //console.log(targetAsset);
 
-    GetData(`http://10.100.1.2:8000/asset/${targetAsset.title}`)
+    GetData(`http://10.0.1.9:8000/asset/${targetAsset.title}`)
     .then(data => {
-        console.log(data);
+        $('.innerContiner').empty();
+        //console.log(data);
 
         let listTabs = data.tabsData.map(item => item.title);
-        disp.createTab(listTabs, data.tabsData);
-        disp.createChart(_legends, dataForTable);
+        let dataForChart = charDataGeneration(listTabs, data);
+        //let dataForTable = data.tabsData.find(item => item.title == listTabs[0]).values.slice(0, 7);
+        let dataForTable = data.tabsData.find(item => item.title == listTabs[0]).values;
+        //console.log(dataForChart);
+
+        console.log(dataForTable);
+
+        disp.createTab(listTabs, data, dataForChart);
+        disp.createChart(dataForChart);
+
+        
+
 
         if ($('.groupLegends-dataTable').length == 0)
-        {
-            let dataCurrent = data.tabsData.find(item => item.title == listTabs[0]);
-            let leg = dataCurrent.values.map(item => item.legendName);
-            let _dataForTable = dataCurrent.values.slice(0, 7);
-            console.log(_dataForTable);
-            disp.createDataForChart(leg, _dataForTable);
-        }
+            disp.createDataForChart(dataForTable);
 
         disp.createEventArchiveCompoinent();
 
-        let vS = new VerticalSplitter('splitterVertical', 'leftBlock', 'rightBlock', 75, disp.paintCharts);
+        let vS = new VerticalSplitter('splitterVertical', 'leftBlock', 'rightBlock', 75, disp.paintCharts, dataForChart);
         vS.use();
 
-        let hS = new HorizontalSplitter('horizontalSplitter', 'chartContent', 'archiveContent', 100, 'splitterVertical', disp.paintCharts);
+        let hS = new HorizontalSplitter('horizontalSplitter', 'chartContent', 'archiveContent', 100, 'splitterVertical', disp.paintCharts, dataForChart);
         hS.use();
     })
     .catch(err => console.log(err));
@@ -114,7 +42,7 @@ function loadAsset(targetAsset) {
 //Класс в процессе разработки и модернизации.
 class AssetInfo {
     //Создание вкладок, в аргументы принимае список вкладок
-    createTab = (titleTabsArray, tabsData) => {
+    createTab = (_titleTabsArray, data, _totalDataForChart) => {
         $(`<div class="tabsContiner"></div>`).appendTo(".innerContiner");
 
         $(`
@@ -124,27 +52,27 @@ class AssetInfo {
         <div class="chartContent d-flex" id="chartContent"></div>    
         `).appendTo('.tabsContiner');
 
-        for (let i = 0; i < titleTabsArray.length; i++) {
+        for (let i = 0; i < _titleTabsArray.length; i++) {
             if (i == 0) {
                 $(`<a class="nav-link active titleTabs" data-bs-toggle="tab" role="tab" 
-                aria-selected="true">${titleTabsArray[i]}</a>`).appendTo('#nav-tab');
+                aria-selected="true">${_titleTabsArray[i]}</a>`).appendTo('#nav-tab');
             }
             else {
                 $(`
                 <a class="nav-link titleTabs"  data-bs-toggle="tab" role="tab"
-                    aria-selected="false">${titleTabsArray[i]}</a>`).appendTo('#nav-tab');
+                    aria-selected="false">${_titleTabsArray[i]}</a>`).appendTo('#nav-tab');
             }
         }
 
         $(`.titleTabs`).click((e) => {
-            let dataCurrent = tabsData.find(item => item.title == e.target.innerText);
-            let leg = dataCurrent.values.map(item => item.legendName);
-            let _dataForTable = dataCurrent.values.slice(0, 7);
-            this.createDataForChart(leg, _dataForTable);
+            //let dataForTable = data.tabsData.find(item => item.title == e.target.innerText).values.slice(0, 7);
+            let dataForTable = data.tabsData.find(item => item.title == e.target.innerText).values;
+            this.createDataForChart(dataForTable);
+            this.paintCharts(_totalDataForChart);
         });
     }
     //Создаёт компоненту для отрисовки графика
-    createChart = (_legends, dataForTable) => {
+    createChart = (dataForCahrt) => {
         $(`
         <div class="outterContainerChart" id='leftBlock'>
             <div class="bg-secondary text-white p-2 rounded">График</div>
@@ -152,13 +80,12 @@ class AssetInfo {
         </div>
         `).appendTo(".chartContent");
 
-        //this.createDataForChart(_legends, dataForTable);
-        this.paintCharts();
+        this.paintCharts(dataForCahrt);
         this.createVertSplitter();
         this.createHorSplitter();
     }
     //Создание компоненты под легенды и таблицу данных
-    createDataForChart(_legends, dataForTable) {
+    createDataForChart(_dataForTable) {
         if ($('.groupLegends-dataTable').length == 0){
             $(`<div class="groupLegends-dataTable" id='rightBlock'></div>`).appendTo(".chartContent");
         }
@@ -167,8 +94,7 @@ class AssetInfo {
 
         
 
-        this.createLegends(_legends);
-        this.createDataTable(dataForTable);
+        this.createDataTable(_dataForTable);
     }
     //Создание компонента легенд, заполнение списком легенд и параметрами в легендах(чекбоксами)
     createLegends(_legends) {
@@ -189,13 +115,13 @@ class AssetInfo {
     }
     //Создание компоненты с таблицой данных, заполнение таблици
     createDataTable(_dataForTable) {
+        console.log(_dataForTable);
         $(`<div class="dataTable">
             <div class="bg-secondary text-white p-2 rounded">Данные</div>
         </div>`).appendTo(".groupLegends-dataTable");
 
         $(`
         <div class="container m-0 p-0">
-            
             <div class="row row-cols-5">
                 <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark"></div>
                 <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">Значение</div>
@@ -222,7 +148,7 @@ class AssetInfo {
             }
             $(`
         <div class="row row-cols-5">
-            <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].legendName}</div>
+            <div class="col-2 px-3 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].legendName}</div>
             <div class="col-2 p-1 text-center ${v} border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].lastValue}</div>
             <div class="col-4 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark"> </div>
             <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].dz}</div>
@@ -283,24 +209,64 @@ class AssetInfo {
         $('#dateTo').val(today);
     }
     //Отрисовка графика
-    paintCharts = () => {
+    paintCharts = (_dataForChart) => {
 
-        var traceA = {
+        /*var traceA = {
+
             x: t1.sort(this.comparer),
             y: t2.sort(),
             type: 'scatter',
-            showlegend: false
+            name: 'Lol',
+            showlegend: true
         };
 
         var traceB = {
             x: t3.sort(this.comparer),
             y: t4.sort(),
             type: 'scatter',
-            showlegend: false
+            name: 'Kek',
+            showlegend: true
         };
 
-        var data = [traceA, traceB];
+        var data = [traceA, traceB];*/
 
+        var data = [];
+        let tab = $(`.active.titleTabs`)[0];
+        console.log(_dataForChart);
+        let dataForSelectedTabs = _dataForChart.find(item => item.titleTab == tab.innerText);
+
+        let test = dataForSelectedTabs.values.map(item => item);
+        for (let j = 0; j < test.length; j++) {
+            data.push({
+                x: test[j].x,
+                y: test[j].y,
+                name: test[j].name,
+                type: 'scatter',
+                showlegend: true
+            })
+        }
+
+
+        
+        // for (let i = 0; i < _dataForChart.length; i++) {
+        //     let test = _dataForChart[i].values.map(item => item);
+            
+        //     for (let j = 0; j < test.length; j++) {
+        //         data.push({
+        //             x: test[j].x,
+        //             y: test[j].y,
+        //             name: test[j].name,
+        //             type: 'scatter',
+        //             showlegend: true
+        //         })
+                
+        //     }
+        // }
+
+        // console.log(_dataForChart);
+        // console.log(dataForSelectedTabs.titleTab);
+        // console.log(data);
+        
         var layout = {
             autosize: true,
             margin: {
@@ -344,4 +310,32 @@ class AssetInfo {
     createHorSplitter=()=> {
         $('<div id="horizontalSplitter"></div>').appendTo('.tabsContiner');
     }
+}
+
+//формирование данных для графика
+//Возвращает массив данных сформированых для библиотеки plotly
+function charDataGeneration(listTabs, data){
+    let total = [];
+
+    for (let i = 0; i < listTabs.length; i++) {
+        let tabElement = data.tabsData.find(item => item.title == listTabs[i]);
+
+        let objTab = {
+            titleTab: tabElement.title,
+            values: []
+        };
+
+        for (let j = 0; j < tabElement.values.length; j++) {
+
+            let obj = {
+                name: tabElement.values[j].legendName,
+                x: tabElement.values[j].values.map(item => item.dateTime),
+                y: tabElement.values[j].values.map(item => item.value)
+            };
+            objTab.values.push(obj);
+        }
+        total.push(objTab);
+    }
+
+    return total;
 }

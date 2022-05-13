@@ -19,8 +19,9 @@ class VerticalSplitter {
     idRightBlock;
     offsetX;
     callBack;
+    dataForCallBack;
 
-    constructor(_idVerSplitter, _idLleftBlock, _idRightBlock, _offsetX, _callBack = null) {
+    constructor(_idVerSplitter, _idLleftBlock, _idRightBlock, _offsetX, _callBack = null, _dataForCallBack = null) {
         this.idVerSplitter = _idVerSplitter;
         this.idLeftBlock = _idLleftBlock;
         this.idRightBlock = _idRightBlock;
@@ -29,6 +30,7 @@ class VerticalSplitter {
         this.endPos = 0;
         this.offsetX = _offsetX;
         this.callBack = _callBack;
+        this.dataForCallBack = _dataForCallBack;
         $(`#${_idVerSplitter}`).css('width', '3');
         $(`#${_idVerSplitter}`).css('height', `${parseInt($(`#${_idLleftBlock}`).css('height'))}`);
         $(`#${_idVerSplitter}`).css('margin-left', `${parseInt($(`#${_idLleftBlock}`).css('width'))+5}px`);
@@ -67,8 +69,10 @@ class VerticalSplitter {
         else
             return;
         
-        if(this.callBack != null)
-            this.callBack();
+        if(this.callBack != null){
+            this.callBack(this.dataForCallBack);
+        }
+            
     }
 
     splitterMove = (e) => {
