@@ -115,12 +115,12 @@ class MeasurmentsBush(models.Model):
     d_c1_a = models.FloatField(blank=True, null=True)
     d_c1_b = models.FloatField(blank=True, null=True)
     d_c1_c = models.FloatField(blank=True, null=True)
-    tgd_1 = models.FloatField(blank=True, null=True)
-    tgd_2 = models.FloatField(blank=True, null=True)
-    tgd_3 = models.FloatField(blank=True, null=True)
-    d_tgd_1 = models.FloatField(blank=True, null=True)
-    d_tgd_2 = models.FloatField(blank=True, null=True)
-    d_tgd_3 = models.FloatField(blank=True, null=True)
+    tgd_a = models.FloatField(blank=True, null=True)
+    tgd_b = models.FloatField(blank=True, null=True)
+    tgd_c = models.FloatField(blank=True, null=True)
+    d_tgd_a = models.FloatField(blank=True, null=True)
+    d_tgd_b = models.FloatField(blank=True, null=True)
+    d_tgd_c = models.FloatField(blank=True, null=True)
 
     class Meta:
         managed = False

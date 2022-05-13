@@ -96,22 +96,22 @@ def GetDates(request):
         try:
             dateStart = request.POST['dateStart']
         except:
-            dateStart = datetime.today() - timedelta(days=1000)
+            dateStart = datetime.utcnow().today() - timedelta(days=1000)
 
         try:
             dateEnd = request.POST['dateEnd']
         except:
-            dateEnd = datetime.today()
+            dateEnd = datetime.utcnow().today()
             
     if request.method == 'GET':
         try:
             dateStart = request.GET['dateStart']
         except:
-            dateStart = datetime.today() - timedelta(days=1000)
+            dateStart = datetime.utcnow().today() - timedelta(days=1000)
 
         try:
             dateEnd = request.GET['dateEnd']
         except:
-            dateEnd = datetime.today()
+            dateEnd = datetime.utcnow().today()
     
     return dateStart, dateEnd
