@@ -51,6 +51,7 @@ for (let i = 0; i < 10; i++) {
     t4.push(getRandomArbitrary(0, 101));
 }
 
+/*
 //Вкладки оборудования трансформатор
 let transforsTabs = ["Перенапряжения", "Влагосодержание", "Температура", "Износ изоляции", "Состояние охлаждения", "Мощность", "Состояние РПН",
 "Состояние вводов", "Внутрение потери", "Активность ЧР", "Нагрузочная способность", "Оценка состояния", "Анализ газов"];
@@ -73,7 +74,7 @@ let communicationCondensers = ["Состояние"];
 let disconnectors = ["Состояние"];
 //Вкладки оборудования батареи статических конденсаторов
 let batteryStaticCondensers = ["Состояние"];
-
+*/
 
 
 function loadAsset(targetAsset) {
@@ -89,6 +90,16 @@ function loadAsset(targetAsset) {
         let listTabs = data.tabsData.map(item => item.title);
         disp.createTab(listTabs, data.tabsData);
         disp.createChart(_legends, dataForTable);
+
+        if ($('.groupLegends-dataTable').length == 0)
+        {
+            let dataCurrent = data.tabsData.find(item => item.title == listTabs[0]);
+            let leg = dataCurrent.values.map(item => item.legendName);
+            let _dataForTable = dataCurrent.values.slice(0, 7);
+            console.log(_dataForTable);
+            disp.createDataForChart(leg, _dataForTable);
+        }
+
         disp.createEventArchiveCompoinent();
 
         let vS = new VerticalSplitter('splitterVertical', 'leftBlock', 'rightBlock', 75, disp.paintCharts);
@@ -124,7 +135,6 @@ class AssetInfo {
                     aria-selected="false">${titleTabsArray[i]}</a>`).appendTo('#nav-tab');
             }
         }
-
 
         $(`.titleTabs`).click((e) => {
             let dataCurrent = tabsData.find(item => item.title == e.target.innerText);
@@ -188,7 +198,7 @@ class AssetInfo {
             
             <div class="row row-cols-5">
                 <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark"></div>
-                <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">ppm</div>
+                <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">Значение</div>
                 <div class="col-4 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">Проецнт изм.</div>
                 <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">ДЗ</div>
                 <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">ПДЗ</div>
