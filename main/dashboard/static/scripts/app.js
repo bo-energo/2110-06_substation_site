@@ -1,53 +1,68 @@
-let states = ["normal", "warning", "critical", "empty"];
-let disps = [];
 
-function getRandomArbitrary(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
-    return Math.floor(Math.random() * (max - min)) + min;
+let urlGetAssets = "http://10.100.1.2:8000/assets/"; //url получения списка трансформаторов
+let assets = []; // Список оборудования
+let urlGetListStatesAssets = "http://10.100.1.2:8000/levels/"; //url получения списка состоний оборудования (критический, номинальный  и т.д.)
+let colorsLevel = [
+    { bg: "bg-success", colorText: 'text-white', id: 'normal' },
+    { bg: "bg-warning", colorText: 'text-white', id: 'warning' },
+    { bg: "bg-danger", colorText: 'text-white', id: 'critical' },
+    { bg: "bg-white", colorText: 'text-dark', id: 'empty' }
+]; // Список цветов для категорий
+let categories = []; //Список категорий
+let targetAsset; //Выбраное оборудование
+let targetTypeAsset; //Тип выбраного оборудования
+let lMenu; //Боковое меню
+
+//Получение данных с сервера
+//Аргументы: URL адресс на какой api делать запрос
+async function GetData(url) {
+    let response = await fetch(url).then(response => response.json());
+    return response;
 }
 
-for (let i = 0; i < 15; i++) {
-    let _state = states[getRandomArbitrary(0, 4)];
-    let _discription = _state == "Normal" || _state == "Empty" ? "" : "Описание проблемы.......";
+//Инициализация главного экрана
+//Аргументы: URL(_urlGetListStatesAssets) - api получения списка состояний оборудования
+//Аргументы: URL(_urlAssets) - api получения списка оборудования
+function init(_urlGetListStatesAssets, _urlAssets) {
 
-    disps.push({ title: `AT${i}`, status: _state, discriptionProblem: _discription });
-}
-
-let categories = [
-    { title: 'normal', bg: 'bg-success', colorText: 'text-white' },
-    { title: 'warning', bg: 'bg-warning', colorText: 'text-white' },
-    { title: 'critical', bg: 'bg-danger', colorText: 'text-white' },
-    { title: 'empty', bg: 'bg-white', colorText: 'text-dark' }];
-
-let discriptionDisp;
-
-// let url = "http://10.100.1.2:8000/transofrmList";
-// function getDisps(url){
-//     return fetch(url)
-//         .then(data => data.json())
-//         .then(dispsFromSer => {
-//             console.log(dispsFromSer.transformators);
-//             initMainWindow(categories, dispsFromSer.transformators)
-//         })
-//         .catch(err => console.log(err));
-// }
+    GetData(_urlGetListStatesAssets).then(data => {
+            for (let i = 0; i < data.levels.length; i++) {
+                categories.push({ title: data.levels[i].title, bg: colorsLevel[i].bg, colorText: colorsLevel[i].colorText, id: colorsLevel[i].id});
+            }
+    }).catch(err => console.log(err));
     
-// getDisps(url);
-initMainWindow(categories, disps);
-let lMenu = new LeftMenu(disps);
-lMenu.componentsInit();
-
-
-$('.disp').click((e) => {
-    discriptionDisp = e.currentTarget.innerText.split('\n');
-    loadDisp(discriptionDisp[0])
-    if(lMenu.checkStateMenu()){
-        lMenu.hide();
-    }
-});
-
-
-window.onresize = function () {
-    loadDisp(discriptionDisp[0]);
+    GetData(_urlAssets).then(data => {
+        assets = data.assets;
+        //console.log(assets);
+        initMainWindow(categories, assets);
+        lMenu = new LeftMenu(assets);
+        lMenu.componentsInit();
+        SubscrubeToEventClick();
+        //CheckResize();
+    }).catch(err => console.log(err));
 }
+
+//Подписка оборудования на событие клика(По клику на оборудование загружаются данные выбраного оборудования)
+function SubscrubeToEventClick(){
+    $('.disp').click((e) => {
+        let targetAsset = {
+            title: e.currentTarget.innerText.split('\n')[0].split('-')[0],
+            type: e.currentTarget.innerText.split('\n')[0].split('-')[1].trim()
+        }
+
+        loadAsset(targetAsset)
+        if (lMenu.checkStateMenu()) {
+            lMenu.hide();
+        }
+    });
+}
+
+//Отслеживание изменения размера окна
+// function CheckResize(){
+//     window.onresize = function () {
+//         loadAsset(targetAsset, targetTypeAsset);
+//     }
+// }
+
+init(urlGetListStatesAssets, urlGetAssets);
+

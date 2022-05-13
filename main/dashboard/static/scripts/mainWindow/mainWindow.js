@@ -1,17 +1,24 @@
+let ass = [
+    { title: 'Номинальный', idAss: 'normal' },
+    { title: 'Допустимый', idAss: 'warning' },
+    { title: 'Критический', idAss: 'critical' },
+    { title: 'Нет данных', idAss: 'empty' },
+];
 
-function createCategory(categories, dispsFromBD) {
-    let disps = [];
-    disps = dispsFromBD;
+//Создание категорий аккардеона.
+function createCategory(categories, assetsFromBD) {
+    let assets = [];
+    assets = assetsFromBD;
     for (let i = 0; i < categories.length; i++) {
         $(`<div class="accordion tr" id="accordionExample">
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button ${categories[i].bg} ${categories[i].colorText}" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#${categories[i].title}" aria-expanded="false" aria-controls="${categories[i].title}"> 
-                        ${categories[i].title} (${disps.filter(d => d.status == categories[i].title).length})
+                        data-bs-target="#${categories[i].id}" aria-expanded="false" aria-controls="${categories[i].title}"> 
+                        ${categories[i].title} (${assets.filter(d => d.status == categories[i].title).length})
                     </button>
                 </h2>
-                <div id="${categories[i].title}" class="accordion-collapse collapse show" aria-labelledby="headingOne" >
+                <div id="${categories[i].id}" class="accordion-collapse collapse show" aria-labelledby="headingOne" >
                     
                 </div>
             </div>
@@ -19,28 +26,46 @@ function createCategory(categories, dispsFromBD) {
 
     }
 }
-
-function fillDispList(disps) {
-    for (let i = 0; i < disps.length; i++) {
-        var categpry = categories.find(q => q.title == disps[i].status);
+//Заполнение аккардеона элементами (оборудованием) по категориям.
+function fillDispList(_categories, assets) {
+    for (let i = 0; i < assets.length; i++) {
+        var category = _categories.find(q => q.title == assets[i].status);
+        let idForInsert = ass.find(p => p.title == assets[i].status);
         $(`
-        <div class="card ${categpry.bg} ${categpry.colorText} mt-2 mb-2 disp">
-                <div class="card-header d-flex justify-content-between">
-                    ${disps[i].title}
+        <div class="card ${category.bg} ${category.colorText} mt-2 mb-2 disp">
+                <div class="card-header d-flex justify-content-between fw-bold">
+                    <span>${assets[i].title} - ${assets[i].type}</span>
                     <button type="button" class="btn btn-primary">Данные</button>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title">${disps[i].status}</h5>
-                    <p class="card-text">{disps[i].discriptionProblem}</p>                    
+                    <h5 class="card-title">${assets[i].status}</h5>
+                    <hr>
+                    <p class="card-text lh-1" id="${assets[i].title}"></p>                    
                 </div>
         </div>`
-        ).appendTo(`#${disps[i].status}`);
+        ).appendTo(`#${idForInsert.idAss}`);
+    }
+}
+//Заполнение диагностики у каждого оборудования.
+function fillDiagnosticCode(assets) {
+    for (let i = 0; i < assets.length; i++) {
+        let code = assets[i].diagnotics;
+        if (code == "")
+            return;
+        let diagnostics = code.eventsArchive;
+
+        for (let j = 0; j < diagnostics.length; j++) {
+            $(`
+            <p>Код диагностики: ${diagnostics[j].diagnosticCode}</p>
+            `).appendTo(`#${assets[i].title}`);
+        }
     }
 }
 
-function initMainWindow(_categories, _disps){
+function initMainWindow(_categories, assets) {
     $('.innerContiner').empty();
 
-    createCategory(_categories, _disps);
-    fillDispList(_disps)
+    createCategory(_categories, assets);
+    fillDispList(_categories, assets);
+    fillDiagnosticCode(assets);
 }

@@ -51,31 +51,59 @@ for (let i = 0; i < 10; i++) {
     t4.push(getRandomArbitrary(0, 101));
 }
 
-let tabs = ["Газы", "Влагосодержание", "Температура", "Состояние вводов", "Нагрузочная способность", "Мощность"];
+//Вкладки оборудования трансформатор
+let transforsTabs = ["Перенапряжения", "Влагосодержание", "Температура", "Износ изоляции", "Состояние охлаждения", "Мощность", "Состояние РПН",
+"Состояние вводов", "Внутрение потери", "Активность ЧР", "Нагрузочная способность", "Оценка состояния", "Анализ газов"];
+//Вкладки оборудования КРУЭ
+let crueTabs = ["Перенапряжения", "Состояние вводов", "Сотсояние элегаза", "Активность ЧР", "Рабочие параметры"];
+//Вкладки оборудования выключатели
+let switchesTabs = ["Перенарпряжения", "Состояние вводов", "Состояние элегаза", "Активность ЧР", "Ресурс дугогасительного устройства",
+"Рабочие параметры", "Ресурс гидропривода", "Параметры коммутации", "Вибродиагностика"];
+//Вкладки оборудования кабельная линия
+let cableLine = ["Термоконтроль", "Виброконтроль", "Токи в экранах", "Активность ЧР"];
+//Вкладки оборудования трансформаторы тока
+let currentTransforms = ["Изоляция", "Влажность масла", "Состояние элегаза"];
+//Вкладки оборудования трансформаторы напряжения
+let voltageTransforms = ["Влажность масла", "Межвитковые замыкания", "Ток утечки", "Состояние элегаза"];
+//Вкладки оборудования ограничители перенапряжения
+let limiterOvervoltage = ["Токи"];
+//Вкладки оборудования конденсаторы связи
+let communicationCondensers = ["Состояние"];
+//Вкладки оборудования разъеденители
+let disconnectors = ["Состояние"];
+//Вкладки оборудования батареи статических конденсаторов
+let batteryStaticCondensers = ["Состояние"];
 
 
 
-
-function loadDisp(titleDisp) {
+function loadAsset(targetAsset) {
 
     $('.innerContiner').empty();
-    let disp = new DispInfo();
-    disp.createTab(tabs);
-    disp.createChart(_legends, dataForTable);
-    disp.createEventArchiveCompoinent();
+    let disp = new AssetInfo();
+    //console.log(targetAsset);
 
-    let vS = new VerticalSplitter('splitterVertical', 'leftBlock', 'rightBlock', 75, disp.paintCharts);
-    vS.use();
+    GetData(`http://10.100.1.2:8000/asset/${targetAsset.title}`)
+    .then(data => {
+        console.log(data);
 
-    let hS = new HorizontalSplitter('horizontalSplitter', 'chartContent', 'archiveContent', 100, 'splitterVertical', disp.paintCharts);
-    hS.use();
+        let listTabs = data.tabsData.map(item => item.title);
+        disp.createTab(listTabs, data.tabsData);
+        disp.createChart(_legends, dataForTable);
+        disp.createEventArchiveCompoinent();
 
+        let vS = new VerticalSplitter('splitterVertical', 'leftBlock', 'rightBlock', 75, disp.paintCharts);
+        vS.use();
+
+        let hS = new HorizontalSplitter('horizontalSplitter', 'chartContent', 'archiveContent', 100, 'splitterVertical', disp.paintCharts);
+        hS.use();
+    })
+    .catch(err => console.log(err));
 }
 
 //Класс в процессе разработки и модернизации.
-class DispInfo {
+class AssetInfo {
     //Создание вкладок, в аргументы принимае список вкладок
-    createTab = (titleTabsArray) => {
+    createTab = (titleTabsArray, tabsData) => {
         $(`<div class="tabsContiner"></div>`).appendTo(".innerContiner");
 
         $(`
@@ -88,20 +116,22 @@ class DispInfo {
         for (let i = 0; i < titleTabsArray.length; i++) {
             if (i == 0) {
                 $(`<a class="nav-link active titleTabs" data-bs-toggle="tab" role="tab" 
-                aria-selected="true">${titleTabsArray[i]}</a>`).appendTo('#nav-tab')
+                aria-selected="true">${titleTabsArray[i]}</a>`).appendTo('#nav-tab');
             }
             else {
                 $(`
                 <a class="nav-link titleTabs"  data-bs-toggle="tab" role="tab"
-                    aria-selected="false">${titleTabsArray[i]}</a>`).appendTo('#nav-tab')
+                    aria-selected="false">${titleTabsArray[i]}</a>`).appendTo('#nav-tab');
             }
-
-
         }
 
+
         $(`.titleTabs`).click((e) => {
-            console.log(e.target.innerText);
-        })
+            let dataCurrent = tabsData.find(item => item.title == e.target.innerText);
+            let leg = dataCurrent.values.map(item => item.legendName);
+            let _dataForTable = dataCurrent.values.slice(0, 7);
+            this.createDataForChart(leg, _dataForTable);
+        });
     }
     //Создаёт компоненту для отрисовки графика
     createChart = (_legends, dataForTable) => {
@@ -112,14 +142,20 @@ class DispInfo {
         </div>
         `).appendTo(".chartContent");
 
-        this.createDataForChart(_legends, dataForTable);
+        //this.createDataForChart(_legends, dataForTable);
         this.paintCharts();
         this.createVertSplitter();
         this.createHorSplitter();
     }
     //Создание компоненты под легенды и таблицу данных
     createDataForChart(_legends, dataForTable) {
-        $(`<div class="groupLegends-dataTable" id='rightBlock'></div>`).appendTo(".chartContent");
+        if ($('.groupLegends-dataTable').length == 0){
+            $(`<div class="groupLegends-dataTable" id='rightBlock'></div>`).appendTo(".chartContent");
+        }
+        else
+            $('.groupLegends-dataTable').empty();
+
+        
 
         this.createLegends(_legends);
         this.createDataTable(dataForTable);
@@ -133,27 +169,13 @@ class DispInfo {
 
         for (let i = 0; i < _legends.length; i++) {
             $(`
-            <div class="accordion-item" id="accItem${i}">
-                <h2 class="accordion-header" id="panelsStayOpen-heading${i}">
-                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapse${i}" 
-                    aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
-                        ${_legends[i].title}
-                    </button>
-                </h2>
-            </div>
+            <p>                
+                <input type="checkbox" id="${_legends[i]}">
+                <label for="${_legends[i]}">${_legends[i]}</label>
+            </p>
             `).appendTo('.legends');
-
-            for (let j = 0; j < _legends[i].values.length; j++) {
-                $(`
-                <div id="panelsStayOpen-collapse${i}" class="accordion-collapse collapse " aria-labelledby="panelsStayOpen-heading${i}">
-                    <div class="accordion-body">
-                        <input type="checkbox" id="happy" value="yes">
-                        <label for="happy">${_legends[i].values[j].title}</label>
-                    </div>
-                </div>
-                `).appendTo(`#accItem${i}`);
-            }
         }
+
     }
     //Создание компоненты с таблицой данных, заполнение таблици
     createDataTable(_dataForTable) {
@@ -179,10 +201,10 @@ class DispInfo {
         let normal = "bg-body";
         let v = "";
         for (let i = 0; i < _dataForTable.length; i++) {
-            if (_dataForTable[i].ppm >= _dataForTable[i].PDZ) {
+            if (_dataForTable[i].ppm >= _dataForTable[i].pdz) {
                 v = danger;
             }
-            else if (_dataForTable[i].ppm >= _dataForTable[i].DZ && _dataForTable[i].ppm < _dataForTable[i].PDZ) {
+            else if (_dataForTable[i].ppm >= _dataForTable[i].dz && _dataForTable[i].ppm < _dataForTable[i].pdz) {
                 v = warning;
             }
             else {
@@ -190,11 +212,11 @@ class DispInfo {
             }
             $(`
         <div class="row row-cols-5">
-            <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].title}</div>
-            <div class="col-2 p-1 text-center ${v} border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].ppm}</div>
-            <div class="col-4 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].percent}</div>
-            <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].DZ}</div>
-            <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].PDZ}</div>
+            <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].legendName}</div>
+            <div class="col-2 p-1 text-center ${v} border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].lastValue}</div>
+            <div class="col-4 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark"> </div>
+            <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].dz}</div>
+            <div class="col-2 p-1 text-center border border-top-0 border-end-0 border-start-0 border-dark">${_dataForTable[i].pdz}</div>
         </div>
         `).appendTo('.dataTable');
         }
