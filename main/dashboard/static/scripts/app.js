@@ -32,13 +32,12 @@ function init(_urlGetListStatesAssets, _urlAssets) {
     }).catch(err => console.log(err));
     
     GetData(_urlAssets).then(data => {
+        
         assets = data.assets;
-        //console.log(assets);
         initMainWindow(categories, assets);
         lMenu = new LeftMenu(assets);
         lMenu.componentsInit();
         SubscrubeToEventClick();
-        CheckResize();
     }).catch(err => console.log(err));
 }
 
@@ -57,13 +56,6 @@ function SubscrubeToEventClick(){
     });
 }
 
-//Отслеживание изменения размера окна
-function CheckResize(){
-    window.onresize = function () {
-        //loadAsset(targetAsset);
-        //console.log("Измениялся размер экрана");
-    }
-}
 
 init(urlGetListStatesAssets, urlGetAssets);
 

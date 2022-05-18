@@ -33,7 +33,7 @@ class VerticalSplitter {
         this.dataForCallBack = _dataForCallBack;
         $(`#${_idVerSplitter}`).css('width', '3');
         $(`#${_idVerSplitter}`).css('height', `${parseInt($(`#${_idLleftBlock}`).css('height'))}`);
-        $(`#${_idVerSplitter}`).css('margin-left', `${parseInt($(`#${_idLleftBlock}`).css('width'))+5}px`);
+        $(`#${_idVerSplitter}`).css('margin-left', `${parseInt($(`#${_idLleftBlock}`).css('width'))+10}px`);
         $(`#${_idVerSplitter}`).css('position', 'absolute');
         $(`#${_idVerSplitter}`).css('background-color', 'gray');
         $(`#${_idVerSplitter}`).css('cursor', 'col-resize');
@@ -59,15 +59,16 @@ class VerticalSplitter {
         if (dif < 0) {
             $(`#${this.idLeftBlock}`).css("width", lb + Math.abs(dif));
             $(`#${this.idRightBlock}`).css("width", rb - Math.abs(dif));
-            this.verSplitter.style.marginLeft = `${parseInt($(`#${this.idLeftBlock}`).css("width")) + 2}px`;
+            this.verSplitter.style.marginLeft = `${parseInt($(`#${this.idLeftBlock}`).css("width")) + 7}px`;
         }
         else if (dif > 0) {
             $(`#${this.idLeftBlock}`).css("width", lb - Math.abs(dif));
             $(`#${this.idRightBlock}`).css("width", rb + Math.abs(dif));
-            this.verSplitter.style.marginLeft = `${parseInt($(`#${this.idLeftBlock}`).css("width")) + 2}px`;
+            this.verSplitter.style.marginLeft = `${parseInt($(`#${this.idLeftBlock}`).css("width")) + 7}px`;
         }
         else
             return;
+
         
         if(this.callBack != null){
             this.callBack(this.dataForCallBack);
@@ -78,6 +79,10 @@ class VerticalSplitter {
     splitterMove = (e) => {
         this.verSplitter.style.marginLeft = `${e.clientX - this.offsetX}px`;
         this.endPos = e.clientX;
+    }
+
+    rePaint = () => {
+        $(`#${this.idVerSplitter}`).css('margin-left', `${parseInt($(`#${this.idLeftBlock}`).css('width')) + 10}px`);
     }
 
     use(){
