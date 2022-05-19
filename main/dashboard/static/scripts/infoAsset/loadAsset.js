@@ -31,3 +31,9 @@ function loadAsset(targetAsset) {
     })
     .catch(err => console.log(err));
 }
+
+//Запрос на сервер
+async function GetData(url){
+    let response = await fetch(url).then(response => response.json());
+    return response;
+}

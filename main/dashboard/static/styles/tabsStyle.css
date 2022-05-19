@@ -44,7 +44,7 @@
 }
 .chart {
     width: 100%;
-    height: 85%;
+    height: 90%;
     overflow: hidden;
 }
 
@@ -68,6 +68,13 @@
 
 td{
     border: 1px solid black;
+}
+
+th{
+    text-align: center;
+}
+td{
+    text-align: center;
 }
 
 

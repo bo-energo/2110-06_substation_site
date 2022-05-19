@@ -1,11 +1,11 @@
-class Asset{
+class Asset {
 
     data; //Данные с сервера
     listTabs; //Список вкладок
     dataForChart; //Данные для отрисовки графика
     dataForTable; //Данные для инициализации таблиц данных
 
-    constructor(_data){
+    constructor(_data) {
         this.data = _data;
         this.listTabs = _data.tabsData.map(item => item.title);
         this.dataForChart = charDataGeneration(this.listTabs, _data);
@@ -13,7 +13,7 @@ class Asset{
     }
 
     //Создание компоненты вкладок
-    createTabsComponent = () =>{
+    createTabsComponent = () => {
         $(`<div class="tabsContiner"></div>`).appendTo(".innerContiner");
         $(`<nav>
                 <div class="nav nav-tabs" id="nav-tab" role="tablist"></div>
@@ -24,7 +24,7 @@ class Asset{
     }
 
     //Инициализация списка вкладок
-    initialListTabs = () =>{
+    initialListTabs = () => {
         for (let i = 0; i < this.listTabs.length; i++) {
             if (i == 0) {
                 $(`<a class="nav-link active titleTabs" data-bs-toggle="tab" role="tab" 
@@ -48,7 +48,7 @@ class Asset{
     }
 
     //Создание компоненты для графика и таблицы данных
-    createComponentForChartAndDataTable = () =>{
+    createComponentForChartAndDataTable = () => {
         $(`
             <div class="outterContainerChart" id='leftBlock'>
                 <div class="bg-secondary text-white p-2 rounded">График</div>
@@ -67,10 +67,9 @@ class Asset{
 
         //Из данных выбраной вкладки, делаем массив, для перебора и добавления данных в массив для отображения
         let selectedTabsData = dataForSelectedTabs.values.map(item => item);
-        for (let i = 0; i < selectedTabsData.length; i++) {
-            let options = { year: 'numeric', month: 'long', day: 'numeric' };
-            let obj = selectedTabsData[i].x.map(item => (new Date(`${item}`)).toLocaleDateString("ru-RU", options));
 
+        for (let i = 0; i < selectedTabsData.length; i++) {
+            let obj = selectedTabsData[i].x.map(item => (new Date(`${item}`)));
             data.push({
                 x: obj,
                 y: selectedTabsData[i].y,
@@ -78,6 +77,14 @@ class Asset{
                 type: 'scatter',
                 showlegend: true
             })
+
+        }
+
+        //Временное решение нахождения в чём измеряются выбранные показатели
+        let titleValues = [];
+        let set = new Set(this.dataForTable.map(item => item.unit));
+        for(let elem of set){
+            titleValues.push(elem);
         }
 
 
@@ -86,22 +93,29 @@ class Asset{
             margin: {
                 pad: 2,
                 l: 80,
-                t: 50,
+                t: 10,
                 r: 10,
-                b: 50,
+                b: 10,
             },
             title: '',
             xaxis: {
+                rangeslider: {},
+                autorange: false,
+                type: 'time',
+                range: [getLastWeek().lastWeek, getLastWeek().today],
+                //tickformat: '%d.%m.%yy'
+                tickformat: '%d.%m.%Y\n%H:%M'
             },
             yaxis: {
-                title: 'PPM',
-                //rangemode: 'tozero' выставляет начало осей ровно в 0. если убрать то будут небольшие полоски от 0
+                title: titleValues[0],
+                autorange: true
             }
         };
         var config = {
             responsive: true,
             displayModeBar: false,
-            scrollZoom: true
+            scrollZoom: true,
+            scale: 1
         }
 
 
@@ -118,8 +132,8 @@ class Asset{
     }
 
     //Создание компоненты таблиц данных
-    createDataTableComponent = () =>{
-        if ($('.dataTable').length == 0) {                
+    createDataTableComponent = () => {
+        if ($('.dataTable').length == 0) {
             $(`<div class="dataTable" id='rightBlock'>
                 <div class="bg-secondary text-white p-2 rounded">Данные</div>
             </div>`).appendTo(".chartContent");
@@ -167,15 +181,25 @@ class Asset{
         // </div>
         // `).appendTo('.table');
         // }
+
+        let titleValues = this.dataForTable.map(item => item.unit);
+        //console.log(titleValues);
+
+        //console.log(valuesTab);
+        // let tab = $(`.active.titleTabs`)[0];
+        // let dataForSelectedTabs = this.dataForChart.find(item => item.titleTab == tab.innerText).titleTab;
+        // let values = this.data.tabsData.values; 
+        // console.log(values);
+
         $(`
         <div class="bg-secondary text-white p-2 rounded">Данные</div>`).appendTo('.dataTable');
-        console.log(this.dataForTable);
+        //console.log(this.dataForTable);
         $(`<div class="example">
             <table id="tableF" style="width: 100%;">
                 <tr>
                     <th></th>
-                    <th id="valueTable">Значение</th>
-                    <th id="percent">Процент</th>
+                    <th id="valueTable">${titleValues[0]}</th>
+                    <th>% изм.</th>
                     <th id="dz">ДЗ</th>
                     <th id="pdz">ПДЗ</th>
                 </tr>
@@ -188,32 +212,26 @@ class Asset{
         let v = "";
 
         for (let i = 0; i < this.dataForTable.length; i++) {
-            if (this.dataForTable[i].ppm >= this.dataForTable[i].pdz) 
+            if (this.dataForTable[i].lastValue >= this.dataForTable[i].pdz)
                 v = danger;
-            else if (this.dataForTable[i].ppm >= this.dataForTable[i].dz && this.dataForTable[i].ppm < this.dataForTable[i].pdz) 
+            else if (this.dataForTable[i].lastValue >= this.dataForTable[i].dz && this.dataForTable[i].lastValue < this.dataForTable[i].pdz)
                 v = warning;
-            else 
+            else
                 v = normal;
 
             $(`<tr>
                 <td>${this.dataForTable[i].legendName}</td>
                 <td class="${v}">${this.dataForTable[i].lastValue}</td>
-                <td> </td>
+                <td>-</td>
                 <td>${this.dataForTable[i].dz}</td>
                 <td>${this.dataForTable[i].pdz}</td>
             </tr>`).appendTo('#tableF');
         }
-
-        
     }
 
-    
+    //Создание компоненты архива событий
     createEventArchiveCompoinent() {
-        let yy = new Date().getFullYear();
-        let mm = new Date().getMonth() + 1 < 10 ? `0${new Date().getMonth() + 1}` : new Date().getMonth() + 1;
-        let dd = new Date().getDate() - 7 < 10 ? `0${new Date().getDate() - 7}` : new Date().getDate() - 7;
-        let ddToday = new Date().getDate() < 10 ? `0${new Date().getDate()}` : new Date().getDate();
-
+        
         $(`
         <div class="archiveContent" id="archiveContent">
             <div class="bg-secondary text-white p-3">Дигностика</div>
@@ -252,11 +270,8 @@ class Asset{
         </div>
         `).appendTo('.tabsContiner');
 
-        let lastWeek = yy + '-' + mm + '-' + dd;
-        let today = yy + '-' + mm + '-' + ddToday;
-
-        $('#dateFrom').val(lastWeek);
-        $('#dateTo').val(today);
+        $('#dateFrom').val(getLastWeek().lastWeek);
+        $('#dateTo').val(getLastWeek().today);
     }
 
 }
@@ -276,7 +291,8 @@ function charDataGeneration(listTabs, data) {
 
         for (let j = 0; j < tabElement.values.length; j++) {
 
-            let obj = {
+            let obj = {                
+                unit: tabElement.values[j].unit,
                 name: tabElement.values[j].legendName,
                 x: tabElement.values[j].values.map(item => item.dateTime),
                 y: tabElement.values[j].values.map(item => item.value)
@@ -287,4 +303,17 @@ function charDataGeneration(listTabs, data) {
     }
 
     return total;
+}
+
+//Формирует дату на сегодня и дату -7 дней от сегодня 
+function getLastWeek(){
+    let yy = new Date().getFullYear();
+    let mm = new Date().getMonth() + 1 < 10 ? `0${new Date().getMonth() + 1}` : new Date().getMonth() + 1;
+    let dd = new Date().getDate() - 7 < 10 ? `0${new Date().getDate() - 7}` : new Date().getDate() - 7;
+    let ddToday = new Date().getDate() < 10 ? `0${new Date().getDate()}` : new Date().getDate();
+
+    let lastWeek = yy + '-' + mm + '-' + dd;
+    let today = yy + '-' + mm + '-' + ddToday;
+
+    return {lastWeek, today};
 }
