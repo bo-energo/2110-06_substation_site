@@ -16,7 +16,7 @@
   <link rel="shortcut icon" href="../static/img/favicon.png" type="image/png">
 </head>
 
-<body>
+<!-- <body>
   <nav class="navbar navbar-expand-lg navbar-light bg-light">
     <div class="container-fluid">
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
@@ -40,7 +40,58 @@
         </ul>
       </div>
     </div>
-  </nav>
+  </nav> -->
+
+  <!-- Переделать создание через JQuery -->
+  <div class="d-flex">
+    <div class="dropdown m-1">
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        Файл
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <li><a class="dropdown-item" href="#">Настройки подключения</a></li>
+        <li><a class="dropdown-item" href="#">Архивные данные</a></li>
+        <li><a class="dropdown-item" href="#">Обновить данные</a></li>
+        <li><a class="dropdown-item" href="http://10.0.1.9:8000/admin/login/?next=/admin/">Войти в систему</a></li>
+      </ul>
+    </div>
+
+    <div class="dropdown m-1">
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        Интерфейс
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <li><a class="dropdown-item" href="#">Сбрость по умолчанию</a></li>
+        <li><a class="dropdown-item" href="#">Архивные данные</a></li>
+        <li><a class="dropdown-item" href="#">Отображение</a></li>
+        <li><a class="dropdown-item" href="#">Начальная дата</a></li>
+      </ul>
+    </div>
+
+    <div class="dropdown m-1">
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        Настройки
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <li><a class="dropdown-item" href="#">Анализ прогноза</a></li>
+        <li><a class="dropdown-item" href="#">Гистерезис влажности</a></li>
+        <li><a class="dropdown-item" href="#">Время ремонтов</a></li>
+      </ul>
+    </div>
+
+    <div class="dropdown m-1">
+      <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown"
+        aria-expanded="false">
+        Спарвка
+      </a>
+      <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+        <li><a class="dropdown-item" href="#">О программе</a></li>
+      </ul>
+    </div>
+  </div>
 
   
 
@@ -53,6 +104,8 @@
   </div>
   <!-- ================================================= -->
 
+  
+  <script src="../static/popper/popper.min.js"></script>
   <script src="../static/bootstrap/js/bootstrap.js"></script>
   <script src="../static/plotly/plotly-2.9.0.min.js"></script>
   <script src="../static/jquery/jquery-3.6.0.min.js"></script>

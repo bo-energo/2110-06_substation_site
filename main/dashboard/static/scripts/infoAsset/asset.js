@@ -86,6 +86,7 @@ class Asset {
         for(let elem of set){
             titleValues.push(elem);
         }
+        console.log(this.dataForTable);
 
 
         var layout = {
