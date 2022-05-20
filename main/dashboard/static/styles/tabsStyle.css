@@ -77,6 +77,15 @@ td{
     text-align: center;
 }
 
+.btnReturn{
+    background-color: transparent;
+    border: 1px solid transparent;
+    margin-bottom: 4%;
+}
+.btnReturn > img{
+    width: 30px;
+}
+
 
 @media (max-height: 700px) {
     body{
@@ -137,6 +146,10 @@ td{
 
     .table {
         width: 100%;
+    }
+
+    .btnReturn{
+        margin-left: -10px;
     }
 
 }

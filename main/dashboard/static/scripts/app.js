@@ -28,11 +28,13 @@ async function initMainDisplay(_urlGetListStatesAssets, _urlAssets) {
     initMainWindow(categories, assets);
     lMenu = new LeftMenu(assets);
     lMenu.componentsInit();
-    SubscrubeToEventClick();
+    loadTargetAsset();
+
+    $('.btnReturn').click(() => refresh());
 }
 
 //Подписка оборудования на событие клика(По клику на оборудование загружаются данные выбраного оборудования)
-function SubscrubeToEventClick(){
+function loadTargetAsset(){
     $('.disp').click((e) => {
         targetAsset = {
             title: e.currentTarget.innerText.split('\n')[0].split('-')[0],
@@ -46,6 +48,19 @@ function SubscrubeToEventClick(){
     });
 }
 
+//Перезапуск приложения. Служит как кнопка выхода на главный экран.
+//Попутно перезапрашивает данные т.к. могли измениться.
+function refresh(){
+    $('.leftPnael').empty();
+    $('.innerContiner').empty();
+    initMainWindow(categories, assets);
+    lMenu = new LeftMenu(assets);
+    lMenu.componentsInit();
+    loadTargetAsset();
+    $('.btnReturn').click(() => refresh());
+}
 
 initMainDisplay(urlGetListStatesAssets, urlGetAssets);
+
+
 

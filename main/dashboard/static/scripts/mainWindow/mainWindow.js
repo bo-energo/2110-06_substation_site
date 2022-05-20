@@ -61,9 +61,16 @@ function fillDiagnosticCode(assets) {
         }
     }
 }
+//Создание кнопки возврата на главный экран
+function createBtnReturnToMain(){
+    $(`<button class="btnReturn">
+        <img src="../static/img/back.png">
+    </button>`).appendTo('.leftPnael');
+}
 
 function initMainWindow(_categories, assets) {
     $('.innerContiner').empty();
+    createBtnReturnToMain();
 
     createCategory(_categories, assets);
     fillDispList(_categories, assets);
