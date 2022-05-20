@@ -88,6 +88,10 @@ class HorizontalSplitter{
         $(document).mouseup((e) => this.splitterMoveStop(e));
     }
 
+    rePaint = () => {
+        $(`#${this.idHorSplitter}`).css('width', `${parseInt($(`#${this.idUpperBlock}`).css('width'))}`);
+    }
+
     use(){
         $(`#${this.idHorSplitter}`).mousedown(() => this.splitterMoveStart());
     }

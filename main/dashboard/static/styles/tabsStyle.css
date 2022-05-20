@@ -31,7 +31,7 @@
 
 .chartContent {
     width: 100%;
-    height: 60vh;
+    height: 55vh;
     padding: 0.5px;
     border-radius: 5px;
     margin-bottom: 5px;
@@ -39,13 +39,12 @@
 
 .outterContainerChart{
     width: 69.6%;
-    /* height: 60vh; */
     border: 1px solid black;
     border-radius: 5px;
 }
 .chart {
     width: 100%;
-    height: 85%;
+    height: 90%;
     overflow: hidden;
 }
 
@@ -57,21 +56,37 @@
     user-select: none;
 }
 
-/* .legends{
-    height: 50%;
-    width: 100%;
-    border: 1px solid transparent;
-    border-radius: 5px;
-    overflow: scroll;
-} */
-
 .dataTable{
     height: 100%;
-    width: 100%;
-    border: 1px solid transparent;
+    width: 29.5%;
+    border: 1px solid black;
     border-radius: 5px;
     overflow-x: hidden;
+    margin-left: 1%;
+    user-select: none;
 }
+
+td{
+    border: 1px solid black;
+}
+
+th{
+    text-align: center;
+}
+td{
+    text-align: center;
+}
+
+.btnReturn{
+    background-color: transparent;
+    border: 1px solid transparent;
+    margin-bottom: 4%;
+}
+.btnReturn > img{
+    width: 30px;
+}
+
+
 @media (max-height: 700px) {
     body{
         overflow: scroll;
@@ -114,24 +129,27 @@
         margin-left: 0;
         display: flex;
     }
-    .legends {
-        height: 100%;
-        width: 50%;
-        border-radius: 5px;
-    }
     
     .dataTable {
-        height: 100%;
-        width: 50%;
+        height: 40vh;
+        width: 100%;
         border-radius: 5px;
-        margin-top: 0px;
-        margin-left: 5px;
+        margin-top: 1%;
+        margin-left: 0px;
     }
     #splitterVertical, #horizontalSplitter {
         display: none;
     }
     .archiveControls {
         flex-direction: column;
+    }
+
+    .table {
+        width: 100%;
+    }
+
+    .btnReturn{
+        margin-left: -10px;
     }
 
 }

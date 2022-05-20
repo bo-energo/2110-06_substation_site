@@ -15,35 +15,26 @@ let lMenu; //Боковое меню
 
 //Получение данных с сервера
 //Аргументы: URL адресс на какой api делать запрос
-async function GetData(url) {
-    let response = await fetch(url).then(response => response.json());
-    return response;
-}
-
-//Инициализация главного экрана
-//Аргументы: URL(_urlGetListStatesAssets) - api получения списка состояний оборудования
-//Аргументы: URL(_urlAssets) - api получения списка оборудования
-function init(_urlGetListStatesAssets, _urlAssets) {
-
-    GetData(_urlGetListStatesAssets).then(data => {
-            for (let i = 0; i < data.levels.length; i++) {
-                categories.push({ title: data.levels[i].title, bg: colorsLevel[i].bg, colorText: colorsLevel[i].colorText, id: colorsLevel[i].id});
-            }
-    }).catch(err => console.log(err));
+async function initMainDisplay(_urlGetListStatesAssets, _urlAssets) {
+    let response = await fetch(_urlGetListStatesAssets).then(response => response.json());
     
-    GetData(_urlAssets).then(data => {
-        assets = data.assets;
-        //console.log(assets);
-        initMainWindow(categories, assets);
-        lMenu = new LeftMenu(assets);
-        lMenu.componentsInit();
-        SubscrubeToEventClick();
-        CheckResize();
-    }).catch(err => console.log(err));
+    for (let i = 0; i < response.levels.length; i++) {
+        categories.push({ title: response.levels[i].title, bg: colorsLevel[i].bg, colorText: colorsLevel[i].colorText, id: colorsLevel[i].id });
+    }
+
+    response = await fetch(_urlAssets).then(response => response.json());
+
+    assets = response.assets;
+    initMainWindow(categories, assets);
+    lMenu = new LeftMenu(assets);
+    lMenu.componentsInit();
+    loadTargetAsset();
+
+    $('.btnReturn').click(() => refresh());
 }
 
 //Подписка оборудования на событие клика(По клику на оборудование загружаются данные выбраного оборудования)
-function SubscrubeToEventClick(){
+function loadTargetAsset(){
     $('.disp').click((e) => {
         targetAsset = {
             title: e.currentTarget.innerText.split('\n')[0].split('-')[0],
@@ -57,13 +48,19 @@ function SubscrubeToEventClick(){
     });
 }
 
-//Отслеживание изменения размера окна
-function CheckResize(){
-    window.onresize = function () {
-        //loadAsset(targetAsset);
-        //console.log("Измениялся размер экрана");
-    }
+//Перезапуск приложения. Служит как кнопка выхода на главный экран.
+//Попутно перезапрашивает данные т.к. могли измениться.
+function refresh(){
+    $('.leftPnael').empty();
+    $('.innerContiner').empty();
+    initMainWindow(categories, assets);
+    lMenu = new LeftMenu(assets);
+    lMenu.componentsInit();
+    loadTargetAsset();
+    $('.btnReturn').click(() => refresh());
 }
 
-init(urlGetListStatesAssets, urlGetAssets);
+initMainDisplay(urlGetListStatesAssets, urlGetAssets);
+
+
 
