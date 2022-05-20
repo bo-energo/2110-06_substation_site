@@ -60,6 +60,8 @@ function refresh(){
     $('.btnReturn').click(() => refresh());
 }
 
+$(`#dropdownMenuButton1`).click(() => console.log("lol"));
+
 initMainDisplay(urlGetListStatesAssets, urlGetAssets);
 
 

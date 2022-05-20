@@ -14,7 +14,7 @@ function createCategory(categories, assetsFromBD) {
             <div class="accordion-item">
                 <h2 class="accordion-header" id="headingOne">
                     <button class="accordion-button ${categories[i].bg} ${categories[i].colorText}" type="button" data-bs-toggle="collapse"
-                        data-bs-target="#${categories[i].id}" aria-expanded="false" aria-controls="${categories[i].title}"> 
+                        data-bs-target="#${categories[i].id}" aria-expanded="false" aria-controls="${categories[i].id}"> 
                         ${categories[i].title} (${assets.filter(d => d.status == categories[i].title).length})
                     </button>
                 </h2>
@@ -26,6 +26,8 @@ function createCategory(categories, assetsFromBD) {
 
     }
 }
+
+
 //Заполнение аккардеона элементами (оборудованием) по категориям.
 function fillDispList(_categories, assets) {
     for (let i = 0; i < assets.length; i++) {

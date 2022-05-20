@@ -13,6 +13,7 @@ function loadAsset(targetAsset) {
         selectedAsset.createVertSplitterComponent();
         selectedAsset.createHorSplitterComponent();
         selectedAsset.createDataTableComponent();
+        selectedAsset.initialDataTable();
         selectedAsset.paintChart();
         selectedAsset.createEventArchiveCompoinent();
 
