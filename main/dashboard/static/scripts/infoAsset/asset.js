@@ -104,7 +104,7 @@ class Asset {
                 type: 'time',
                 range: [getLastWeek().lastWeek, getLastWeek().today],
                 //tickformat: '%d.%m.%yy'
-                tickformat: '%d.%m.%Y\n%H:%M'
+                tickformat: '%d.%m.%y\n%H:%M'
             },
             yaxis: {
                 title: titleValues[0],
@@ -135,7 +135,7 @@ class Asset {
     createDataTableComponent = () => {
         if ($('.dataTable').length == 0) {
             $(`<div class="dataTable" id='rightBlock'>
-                <div class="bg-secondary text-white p-2 rounded">Данные</div>
+                <div class="bg-secondary text-white p-2 rounded" id="labelDataTable">Данные</div>
             </div>`).appendTo(".chartContent");
         }
         else
@@ -191,9 +191,14 @@ class Asset {
         // let values = this.data.tabsData.values; 
         // console.log(values);
 
-        $(`
-        <div class="bg-secondary text-white p-2 rounded">Данные</div>`).appendTo('.dataTable');
+        // $(`<div class="bg-secondary text-white p-2 rounded">Данные</div>`).appendTo('.dataTable');
         //console.log(this.dataForTable);
+        //id="labelDataTable"
+
+        if ($('#labelDataTable').length == 0){
+            $(`<div class="bg-secondary text-white p-2 rounded" id="labelDataTable">Данные</div>`).appendTo('.dataTable');
+        }
+
         $(`<div class="example">
             <table id="tableF" style="width: 100%;">
                 <tr>
