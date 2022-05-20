@@ -16,23 +16,32 @@ def allAssets(request):
         operation = DetectionAsset(asset.name).Distribution()
 
         count_inspections = Inspections.objects.filter(asset = asset.pk).count()
-        if count_inspections != 0:
+
+        try:
+            if count_inspections != 0:
+                assets_array.append({
+                    "title" : asset.name, 
+                    "type" : asset.type.name,
+                    "status" : AssetStatus.objects.filter(inspection = Inspections.objects\
+                                                        .filter(asset = asset.pk)\
+                                                        .latest('date').id)\
+                                                    .first().level.name,
+                    "diagnotics" : operation.GetDiagnostics()
+                })
+            else:
+                assets_array.append({
+                    "title" : asset.name, 
+                    "type" : asset.type.name,
+                    "status" : 'Нет данных',
+                    "diagnotics" : ""
+                })
+        except:
             assets_array.append({
-                "title" : asset.name, 
-                "type" : asset.type.name,
-                "status" : AssetStatus.objects.filter(inspection = Inspections.objects\
-                                                    .filter(asset = asset.pk)\
-                                                    .latest('date').id)\
-                                                .first().level.name,
-                "diagnotics" : operation.GetDiagnostics()
-            })
-        else:
-            assets_array.append({
-                "title" : asset.name, 
-                "type" : asset.type.name,
-                "status" : 'Нет данных',
-                "diagnotics" : ""
-            })
+                    "title" : asset.name, 
+                    "type" : asset.type.name,
+                    "status" : 'Ошибка загрузки',
+                    "diagnotics" : ""
+                })
 
     context = { 
         "assets" : assets_array

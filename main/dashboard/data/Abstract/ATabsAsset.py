@@ -5,7 +5,7 @@ from datetime import datetime
 from dashboard.models import Params, Pdata
 from abc import ABC, abstractmethod
 
-from dashboard.models import Assets
+from dashboard.models import *
 
 class ATabsAsset(ABC):
     
@@ -55,3 +55,28 @@ class ATabsAsset(ABC):
             return Pdata.objects.all().filter(asset_id = self._asset.pk).filter(param = lim.id).first().value
         else:
             return 0 
+
+    def fill_tab(self, measurment: list, properies: list):
+
+        values = []
+        data = measurment.objects.filter(inspection__in = Inspections.objects\
+                                                            .filter(date__lte = self._dateEnd)\
+                                                            .filter(date__gte = self._dateStart)\
+                                                            .filter(asset = self._asset.pk)\
+                                                            .order_by('date')\
+                                                            .values_list('id', flat=True)
+                                                            )
+
+        data = data.order_by('inspection__date')
+        for property in properies:                
+            
+            values.append({
+                'legendName' : property,
+                'unit':'',
+                'dz' : self.getLimit(property[2:] + '_lim0'),
+                'pdz' : self.getLimit(property[2:] + '_lim1'),
+                'lastValue' : self.getValue(data.last(), property),
+                'values' : [self.unionDict(i.inspection.date, i, property) for i in data],
+                })
+
+        return values
