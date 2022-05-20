@@ -295,6 +295,17 @@ class PdataSpec(models.Model):
         return str(self.pdata)
 
 
+class Properties(models.Model):
+    id = models.IntegerField(primary_key=True)
+    property = models.CharField(max_length=150)
+    name = models.CharField(max_length=150, blank=True, null=True)
+    unit = models.ForeignKey('Units', models.DO_NOTHING, db_column='unit', blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'properties'
+
+
 class Types(models.Model):
     #id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=150, verbose_name='Наименование')
@@ -400,4 +411,12 @@ class CalcResultsTransfSpec(models.Model):
         verbose_name_plural = 'Результат диагностики по трансфторам (спец параметры)'
         verbose_name = 'Специальный параметр'
 
+
+class Units(models.Model):
+    id = models.IntegerField(primary_key=True)
+    name = models.CharField(max_length=150, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'units'
 

@@ -47,6 +47,10 @@ class transformator(ATabsAsset):
         result = {
             'tabsData':[
                 {
+                    'title' : 'Анализ газов',
+                    'values' : values['Gases']
+                }, 
+                {
                     'title' : 'Перенапряжения',
                     'values' : values['Overvoltage']
                 },    
@@ -93,10 +97,6 @@ class transformator(ATabsAsset):
                 {
                     'title' : 'Оценка состояния',
                     'values' : values['State']
-                }, 
-                {
-                    'title' : 'Анализ газов',
-                    'values' : values['Gases']
                 },          
             ]            
         }
