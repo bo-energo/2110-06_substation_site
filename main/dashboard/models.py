@@ -233,6 +233,147 @@ class MeasurmentsC(models.Model):
         verbose_name = 'Замер'
 
 
+class MeasurmentsBush(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    inspection = models.ForeignKey(Inspections, models.DO_NOTHING)
+    c1_a = models.FloatField(blank=True, null=True)
+    c1_b = models.FloatField(blank=True, null=True)
+    c1_c = models.FloatField(blank=True, null=True)
+    d_c1_a = models.FloatField(blank=True, null=True)
+    d_c1_b = models.FloatField(blank=True, null=True)
+    d_c1_c = models.FloatField(blank=True, null=True)
+    tgd_a = models.FloatField(blank=True, null=True)
+    tgd_b = models.FloatField(blank=True, null=True)
+    tgd_c = models.FloatField(blank=True, null=True)
+    d_tgd_a = models.FloatField(blank=True, null=True)
+    d_tgd_b = models.FloatField(blank=True, null=True)
+    d_tgd_c = models.FloatField(blank=True, null=True)
+    t_a = models.FloatField(blank=True, null=True)
+    t_b = models.FloatField(blank=True, null=True)
+    t_c = models.FloatField(blank=True, null=True)
+    pd_bush_level = models.FloatField(blank=True, null=True)
+    pd_bush_intensity = models.FloatField(blank=True, null=True)
+    bush_i_creepage = models.FloatField(blank=True, null=True)
+    bush_pres = models.FloatField(blank=True, null=True)
+    bush_overvoltage_duration = models.FloatField(blank=True, null=True)
+    bush_overvoltage_amplitude = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'measurments_bush'
+
+
+class MeasurmentsBushO(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    measurment_bush = models.ForeignKey(MeasurmentsBush, models.DO_NOTHING, blank=True, null=True)
+    order = models.IntegerField(blank=True, null=True)
+    measure = models.IntegerField(blank=True, null=True)
+    value = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'measurments_bush_o'
+
+
+class MeasurmentsCooling(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    inspection = models.ForeignKey(Inspections, models.DO_NOTHING, blank=True, null=True)
+    order = models.IntegerField(blank=True, null=True)
+    cooling_t_in = models.FloatField(blank=True, null=True)
+    cooling_t_out = models.FloatField(blank=True, null=True)
+    cooling_pump_on = models.FloatField(blank=True, null=True)
+    cooling_fan_on = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'measurments_cooling'
+
+
+class MeasurmentsD(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    inspection = models.ForeignKey(Inspections, models.DO_NOTHING, blank=True, null=True)
+    order = models.IntegerField(blank=True, null=True)
+    pd_level = models.FloatField(blank=True, null=True)
+    pd_intensity = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'measurments_d'
+
+
+class MeasurmentsLtc(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    inspection = models.ForeignKey(Inspections, models.DO_NOTHING, blank=True, null=True)
+    ltc_pos = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'measurments_ltc'
+
+
+class MeasurmentsMoisture(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    inspection = models.ForeignKey(Inspections, models.DO_NOTHING)
+    rs = models.FloatField(blank=True, null=True)
+    wcl = models.FloatField(blank=True, null=True)
+    wcl_roc_day = models.FloatField(blank=True, null=True)
+    wcl_roc_month = models.FloatField(blank=True, null=True)
+    wcl_tp = models.FloatField(blank=True, null=True)
+    wcp = models.FloatField(blank=True, null=True)
+    wcp_roc_dayf = models.FloatField(blank=True, null=True)
+    wcp_roc_month = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'measurments_moisture'
+
+
+class MeasurmentsO(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    inspection = models.ForeignKey(Inspections, models.DO_NOTHING, blank=True, null=True)
+    code = models.CharField(max_length=-1, blank=True, null=True)
+    overvoltage_duration = models.IntegerField(blank=True, null=True)
+    overvoltage_ratio = models.FloatField(blank=True, null=True)
+    overvoltage_counter_01 = models.BooleanField(blank=True, null=True)
+    overvoltage_counter_02 = models.BooleanField(blank=True, null=True)
+    overvoltage_counter_03 = models.BooleanField(blank=True, null=True)
+    overvoltage_counter_04 = models.BooleanField(blank=True, null=True)
+    overvoltage_counter_05 = models.BooleanField(blank=True, null=True)
+    overvoltage_counter_06 = models.BooleanField(blank=True, null=True)
+    overvoltage_counter_07 = models.BooleanField(blank=True, null=True)
+    overvoltage_counter_08 = models.BooleanField(blank=True, null=True)
+    overvoltage_counter_09 = models.BooleanField(blank=True, null=True)
+    overvoltage_counter_flag = models.BooleanField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'measurments_o'
+
+
+class MeasurmentsOil(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    inspection = models.ForeignKey(Inspections, models.DO_NOTHING, blank=True, null=True)
+    rs = models.FloatField(blank=True, null=True)
+    data_oil_drying = models.FloatField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'measurments_oil'
+
+
+class MeasurmentsPattern(models.Model):
+    id = models.BigAutoField(primary_key=True)
+    measurment_d = models.ForeignKey(MeasurmentsD, models.DO_NOTHING, blank=True, null=True)
+    measurment_bush = models.ForeignKey(MeasurmentsBush, models.DO_NOTHING, blank=True, null=True)
+    phaze = models.IntegerField(blank=True, null=True)
+    amplitude = models.IntegerField(blank=True, null=True)
+    frequency = models.IntegerField(blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'measurments_pattern'
+
+
 class Params(models.Model):
     #id = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=150, verbose_name='Наименование')
