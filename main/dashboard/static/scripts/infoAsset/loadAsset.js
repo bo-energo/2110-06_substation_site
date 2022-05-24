@@ -6,6 +6,8 @@ function loadAsset(targetAsset) {
     .then(data => {
         $('.innerContiner').empty();
 
+        console.log(data);
+
         let selectedAsset = new Asset(data);
         selectedAsset.createTabsComponent();
         selectedAsset.initialListTabs();

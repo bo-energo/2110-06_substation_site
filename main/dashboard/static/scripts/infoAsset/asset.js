@@ -67,51 +67,47 @@ class Asset {
 
         //Из данных выбраной вкладки, делаем массив, для перебора и добавления данных в массив для отображения
         let selectedTabsData = dataForSelectedTabs.values.map(item => item);
-
-        for (let i = 0; i < selectedTabsData.length; i++) {
-            let obj = selectedTabsData[i].x.map(item => (new Date(`${item}`)));
-            data.push({
-                x: obj,
-                y: selectedTabsData[i].y,
-                name: selectedTabsData[i].name,
-                type: 'scatter',
-                showlegend: true
-            })
-
-        }
-
+        
         //Временное решение нахождения в чём измеряются выбранные показатели
         let titleValues = [];
         let set = new Set(this.dataForTable.map(item => item.unit));
         for(let elem of set){
             titleValues.push(elem);
         }
-        console.log(this.dataForTable);
 
+        //Создаём объект с настройками графиков и осей
+        let layout = factoryLayout(factoryYAxis(titleValues));
 
-        var layout = {
-            autosize: true,
-            margin: {
-                pad: 2,
-                l: 80,
-                t: 10,
-                r: 10,
-                b: 10,
-            },
-            title: '',
-            xaxis: {
-                rangeslider: {},
-                autorange: false,
-                type: 'time',
-                range: [getLastWeek().lastWeek, getLastWeek().today],
-                //tickformat: '%d.%m.%yy'
-                tickformat: '%d.%m.%y\n%H:%M'
-            },
-            yaxis: {
-                title: titleValues[0],
-                autorange: true
+        //Создание объектов с данными и определение на какой оси отображать
+        for (let i = 0; i < selectedTabsData.length; i++) {
+            let obj = selectedTabsData[i].x.map(item => (new Date(`${item}`)));
+            let unit = selectedTabsData[i].unit;
+
+            const foundElement = Object.keys(layout).filter((el) => layout[el].title === unit);
+            let axis = foundElement[0].substring(foundElement[0].length - foundElement[0].length, 1) + foundElement[0].substring(foundElement[0].length - 1);          
+            
+            if (!Number.isInteger(parseInt(axis.substring(axis.length - 1)))){
+                data.push({
+                    x: obj,
+                    y: selectedTabsData[i].y,
+                    name: selectedTabsData[i].name,
+                    type: 'scatter',
+                    showlegend: true
+                })
+                continue;
             }
-        };
+
+            data.push({
+                x: obj,
+                y: selectedTabsData[i].y,
+                name: selectedTabsData[i].name,
+                type: 'scatter',
+                showlegend: true,
+                yaxis: `${axis}`
+            })
+
+        }
+
         var config = {
             responsive: true,
             displayModeBar: false,
@@ -279,7 +275,6 @@ class Asset {
         $('#dateFrom').val(getLastWeek().lastWeek);
         $('#dateTo').val(getLastWeek().today);
     }
-
 }
 
 //формирование данных для графика
@@ -322,4 +317,119 @@ function getLastWeek(){
     let today = yy + '-' + mm + '-' + ddToday;
 
     return {lastWeek, today};
+}
+
+//Фабрика осей Y.
+//На вход массив уникальных значений измерений. (ppm, ppm/сутки)
+//Возвращает массив объектов с настройками осей.
+function factoryYAxis(_inputValues){
+    let inputValues = _inputValues;
+    let axisObjects = [];
+
+
+    if(inputValues.length == 1){
+        axisObjects.push(
+            {
+                title: inputValues[0],
+                autorange: true
+            }
+        );
+    }
+    else{
+        for (let i = 0; i < inputValues.length; i++) {
+            if(i == 0){
+                axisObjects.push(
+                    {
+                        title: inputValues[i],
+                        autorange: true
+                    }
+                );
+                continue;
+            }
+            axisObjects.push(
+                {
+                    title: inputValues[i],
+                    overlaying: 'y',
+                    autorange: true
+                }
+            );
+            
+        }
+    }
+
+    return axisObjects;
+}
+
+//Фабрика объекта настройки осей и легенд
+//На вход поступают массив объектов настроект осей Y
+//Возвращает объект с настройками
+function factoryLayout(_settingsArrAxis){
+    let settingsArrAxis = _settingsArrAxis;
+
+    let settingLayout = {
+        autosize: true,
+        margin: {
+            pad: 2,
+            l: 80,
+            t: 10,
+            r: 10,
+            b: 50,
+        },
+        title: '',
+        xaxis: {
+            autorange: false,
+            type: 'time',
+            range: [getLastWeek().lastWeek, getLastWeek().today],
+            tickformat: '%d.%m.%y\n%H:%M'
+        }
+    };
+
+    if (settingsArrAxis.length == 1){
+        settingLayout.yaxis = settingsArrAxis[0];
+    }
+    else{
+        for (let i = 0; i < settingsArrAxis.length; i++) {
+            if(i == 0){
+                settingLayout.yaxis = settingsArrAxis[i];
+            }
+            else{
+                settingLayout[`yaxis${i+1}`] = settingsArrAxis[i];
+            }
+
+        }
+    }
+
+    positionYAxisSetting(settingsArrAxis);
+
+    if (settingsArrAxis.length > 2)
+        settingLayout.xaxis.domain = [0.06 * settingsArrAxis.length, 1];
+    else
+        settingLayout.xaxis.domain = [0.12 , 1];
+
+    console.log(settingLayout);
+    return settingLayout;
+}
+
+//Настрокй позиционирования осей на графике
+function positionYAxisSetting(_settingsArrAxis){
+    let settingsArrAxis = _settingsArrAxis;
+
+    if (settingsArrAxis.length < 3)
+    {
+        settingsArrAxis[0].position = 0;
+        settingsArrAxis[1].position = 0.06;
+        return;
+    }
+
+    let pos = 0.06;
+
+    for (let i = 0, j = 0; i < settingsArrAxis.length; i++, j++) {
+
+        if(i == 0){
+            settingsArrAxis[0].position = j * pos;
+            continue;
+        }
+
+        settingsArrAxis[i].position = pos * j;
+    }
 }
