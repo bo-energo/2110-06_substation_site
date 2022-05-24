@@ -56,7 +56,7 @@ class ATabsAsset(ABC):
         else:
             return 0 
 
-    def fill_tab(self, measurment: list, properies: list):
+    def fill_tab(self, measurment: list, _properties: list):
 
         values = []
         data = measurment.objects.filter(inspection__in = Inspections.objects\
@@ -68,15 +68,27 @@ class ATabsAsset(ABC):
                                                             )
 
         data = data.order_by('inspection__date')
-        for property in properies:                
+
+        for _property in _properties:                
             
+            name = ""
+            unit = ""
+
+            try:
+                settings = Properties.objects.filter(property = _property).first()
+                name = settings.name
+                unit = settings.unit.name
+            except:
+                pass
+
             values.append({
-                'legendName' : property,
-                'unit':'',
-                'dz' : self.getLimit(property[2:] + '_lim0'),
-                'pdz' : self.getLimit(property[2:] + '_lim1'),
-                'lastValue' : self.getValue(data.last(), property),
-                'values' : [self.unionDict(i.inspection.date, i, property) for i in data],
+                'legendName' : _property if name == "" else name ,
+                'unit': '' if unit == "" else unit,
+                'dz' : self.getLimit(_property[2:] + '_lim0'),
+                'pdz' : self.getLimit(_property[2:] + '_lim1'),
+                'lastValue' : self.getValue(data.last(), _property),
+                'values' : [self.unionDict(i.inspection.date, i, _property) for i in data],
                 })
+            
 
         return values

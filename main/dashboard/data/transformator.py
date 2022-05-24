@@ -47,6 +47,10 @@ class transformator(ATabsAsset):
         result = {
             'tabsData':[
                 {
+                    'title' : 'Анализ газов',
+                    'values' : values['Gases']
+                }, 
+                {
                     'title' : 'Перенапряжения',
                     'values' : values['Overvoltage']
                 },    
@@ -93,10 +97,6 @@ class transformator(ATabsAsset):
                 {
                     'title' : 'Оценка состояния',
                     'values' : values['State']
-                }, 
-                {
-                    'title' : 'Анализ газов',
-                    'values' : values['Gases']
                 },          
             ]            
         }
@@ -157,11 +157,19 @@ class transformator(ATabsAsset):
 
     def tabOvervoltage(self, result = {}):
         """Данные по вкладке 'Перенапряжения'"""
-        result['Overvoltage'] = []
+
+        properies = [f.name for f in MeasurmentsO._meta.get_fields()][2:]
+        values = self.fill_tab(MeasurmentsO, properies)
+        result['Overvoltage'] = values
+        return values
 
     def tabMoisture(self, result = {}):
         """Данные по вкладке 'Влагосодержание'"""
-        result['Moisture'] = []
+        
+        properies = [f.name for f in MeasurmentsMoisture._meta.get_fields()][2:]
+        values = self.fill_tab(MeasurmentsMoisture, properies)
+        result['Moisture'] = values
+        return values
 
     def tabInsulationWear(self, result = {}):
         """Данные по вкладке 'Износ изоляции'"""
@@ -169,7 +177,11 @@ class transformator(ATabsAsset):
 
     def tabCoolingStatus(self, result = {}):
         """Данные по вкладке 'Состояние охлаждения'"""
-        result['CoolingStatus'] = []
+        
+        properies = [f.name for f in MeasurmentsCooling._meta.get_fields()][2:]
+        values = self.fill_tab(MeasurmentsCooling, properies)
+        result['CoolingStatus'] = values
+        return values
 
     def tabStateRPN(self, result = {}):
         """Данные по вкладке 'Состояние РПН'"""
