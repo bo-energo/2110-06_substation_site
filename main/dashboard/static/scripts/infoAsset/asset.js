@@ -526,6 +526,10 @@ function controlVisibleYAxis(data, titleValues, dataForSelectedTabs, dataForDisp
         }
     }
     positionYAxisSetting(axises);
+    if (axises.length > 2)
+        data.layout.xaxis.domain = [0.06 * axises.length, 1];
+    else
+        data.layout.xaxis.domain = [0.12, 1];
     //data.layout.margin.l = axises.length*20;
     Plotly.redraw('id_Chart', dataForDisplay, layout, config);
     console.log(data.layout);
