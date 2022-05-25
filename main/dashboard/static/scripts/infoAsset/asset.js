@@ -52,14 +52,14 @@ class Asset {
         $(`
             <div class="outterContainerChart" id='leftBlock'>
                 <div class="bg-secondary text-white p-2 rounded">График</div>
-                <div class="chart"></div>
+                <div class="chart" id="id_Chart"></div>
             </div>
         `).appendTo(".chartContent");
     }
 
     //Отрисовка графика
     paintChart = () => {
-        var data = [];//Данные которые будут отображаться
+        var dataForDisplay = [];//Данные которые будут отображаться
         let tab = $(`.active.titleTabs`)[0];//Поиск активной вкладки
 
         //Из набора данных для графика, выбираем данные по названию активной вкладки
@@ -87,17 +87,18 @@ class Asset {
             let axis = foundElement[0].substring(foundElement[0].length - foundElement[0].length, 1) + foundElement[0].substring(foundElement[0].length - 1);          
             
             if (!Number.isInteger(parseInt(axis.substring(axis.length - 1)))){
-                data.push({
+                dataForDisplay.push({
                     x: obj,
                     y: selectedTabsData[i].y,
                     name: selectedTabsData[i].name,
                     type: 'scatter',
-                    showlegend: true
+                    showlegend: true,
+                    yaxis: `y`
                 })
                 continue;
             }
 
-            data.push({
+            dataForDisplay.push({
                 x: obj,
                 y: selectedTabsData[i].y,
                 name: selectedTabsData[i].name,
@@ -116,7 +117,11 @@ class Asset {
         }
 
 
-        Plotly.newPlot($('.chart').get(0), data, layout, config);
+        Plotly.newPlot($('.chart').get(0), dataForDisplay, layout, config);
+
+        let myPlot = $('.chart')[0].on('plotly_legendclick', (data) => {
+            setTimeout(() => controlVisibleYAxis(data, titleValues, dataForSelectedTabs, dataForDisplay, layout, config), 500);
+        });
     }
 
     //Создание вертикального сплиттера
@@ -275,6 +280,7 @@ class Asset {
         $('#dateFrom').val(getLastWeek().lastWeek);
         $('#dateTo').val(getLastWeek().today);
     }
+
 }
 
 //формирование данных для графика
@@ -331,7 +337,10 @@ function factoryYAxis(_inputValues){
         axisObjects.push(
             {
                 title: inputValues[0],
-                autorange: true
+                autorange: true,
+                tickfont: {
+                    size: 10
+                }
             }
         );
     }
@@ -341,7 +350,10 @@ function factoryYAxis(_inputValues){
                 axisObjects.push(
                     {
                         title: inputValues[i],
-                        autorange: true
+                        autorange: true,
+                        tickfont: {
+                            size: 10
+                        }
                     }
                 );
                 continue;
@@ -350,7 +362,10 @@ function factoryYAxis(_inputValues){
                 {
                     title: inputValues[i],
                     overlaying: 'y',
-                    autorange: true
+                    autorange: true,
+                    tickfont: {
+                        size: 10
+                    }
                 }
             );
             
@@ -368,6 +383,9 @@ function factoryLayout(_settingsArrAxis){
 
     let settingLayout = {
         autosize: true,
+        font:{
+            size: 10
+        },
         margin: {
             pad: 2,
             l: 80,
@@ -414,7 +432,7 @@ function factoryLayout(_settingsArrAxis){
 function positionYAxisSetting(_settingsArrAxis){
     let settingsArrAxis = _settingsArrAxis;
 
-    if (settingsArrAxis.length < 3)
+    if (settingsArrAxis.length == 2)
     {
         settingsArrAxis[0].position = 0;
         settingsArrAxis[1].position = 0.06;
@@ -432,4 +450,83 @@ function positionYAxisSetting(_settingsArrAxis){
 
         settingsArrAxis[i].position = pos * j;
     }
+}
+
+//Управление отрисовкой осей Y
+function controlVisibleYAxis(data, titleValues, dataForSelectedTabs, dataForDisplay, layout, config){
+    let objectsFromDom = $('.traces'); //Элементы из DOM дерева, для взятия стился opacity
+    let groupingArr = []; //Массив сгруппированых элементов
+
+    //Группировка по еденицам измерения
+    titleValues.forEach(item => groupingArr.push(
+        Object.keys(dataForSelectedTabs.values)
+            .map(index => dataForSelectedTabs.values[index])
+            .filter(arrItem => arrItem.unit == item)
+    ));
+
+    //Формирование объектов из сгруппированого массива и эелементов в ДОМ дереве
+    for (let i = 0; i < groupingArr.length; i++) {
+        for (let j = 0; j < groupingArr[i].length; j++) {
+            for (let k = 0; k < objectsFromDom.length; k++) {
+                if (groupingArr[i][j].name == objectsFromDom[k].textContent) {
+                    groupingArr[i][j].visible = objectsFromDom[k].style.opacity;
+                }
+            }
+        }
+    }
+
+    //Проверка видимости осей
+    for (let i = 0; i < groupingArr.length; i++) {
+        let titleGroup = groupingArr[i][0].unit;
+        let visibleItemGroup = 0;
+        for (let j = 0; j < groupingArr[i].length; j++) {
+            if (groupingArr[i][j].visible == '1')
+                visibleItemGroup++;
+        }
+
+        if (visibleItemGroup > 0) {
+            let propsLayout = Object.keys(data.layout).map(item => data.layout[item]);
+            for (let i = 0; i < propsLayout.length; i++) {
+                if (propsLayout[i].hasOwnProperty('title'))
+                    if (propsLayout[i].title.text == titleGroup) {
+                        propsLayout[i].visible = true;
+                        $('.chart').empty();
+                        Plotly.newPlot($('.chart').get(0), dataForDisplay, layout, config);
+                        let myPlot = $('.chart')[0].on('plotly_legendclick', (data) => {
+                            setTimeout(() => controlVisibleYAxis(data, titleValues, dataForSelectedTabs, dataForDisplay, layout, config), 500);
+                        });
+                    }
+            }
+        }
+        else {
+
+            let propsLayout = Object.keys(data.layout).map(item => data.layout[item]);
+            for (let i = 0; i < propsLayout.length; i++) {
+                if (propsLayout[i].hasOwnProperty('title'))
+                    if (propsLayout[i].title.text == titleGroup) {
+                        propsLayout[i].visible = false;
+                        $('.chart').empty();
+                        Plotly.newPlot($('.chart').get(0), dataForDisplay, layout, config);
+                        let myPlot = $('.chart')[0].on('plotly_legendclick', (data) => {
+                            setTimeout(() => controlVisibleYAxis(data, titleValues, dataForSelectedTabs, dataForDisplay, layout, config), 500);
+                        });
+                    }
+            }
+        }
+    }
+
+    
+
+    let props = Object.keys(data.layout).map(item => data.layout[item]);
+    let axises = [];
+    for (let i = 0; i < props.length; i++) {
+        if (props[i].hasOwnProperty('title')){
+            if (props[i].visible)
+                axises.push(props[i]);
+        }
+    }
+    positionYAxisSetting(axises);
+    //data.layout.margin.l = axises.length*20;
+    Plotly.redraw('id_Chart', dataForDisplay, layout, config);
+    console.log(data.layout);
 }

@@ -28,6 +28,7 @@ function loadAsset(targetAsset) {
         hS.use();
 
         window.onresize = function () {
+            //selectedAsset.paintChart();
             vS.rePaint();
             hS.rePaint();
         }
