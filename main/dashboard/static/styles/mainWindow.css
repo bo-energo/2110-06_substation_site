@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  transition: 1.5s;
+  transition: 1s;
 }
 
 .barMneu {
@@ -14,13 +14,13 @@ body {
 .leftPnael{
   width: 3%;
   min-width: 3%;
-  transition: 1.5s;
+  transition: 1s;
 }
 
 .innerContiner{
   width: 100%;
   margin-left: 5px;
-  transition: 1.5s;
+  transition: 1s;
 }
 
 
@@ -43,7 +43,7 @@ body {
   right: 0;
   top: 0;
   bottom: 0;
-  transition: 1.5s;
+  transition: 1s;
 }
 
 .btnCloseModalWin{
@@ -78,5 +78,5 @@ body {
 }
 
 .upperMenu{
-  transition: 1.5s;
+  transition: 1s;
 }
