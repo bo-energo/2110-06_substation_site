@@ -36,11 +36,20 @@ async function initMainDisplay(_urlGetListStatesAssets, _urlAssets) {
 //Подписка оборудования на событие клика(По клику на оборудование загружаются данные выбраного оборудования)
 function loadTargetAsset(){
     $('.disp').click((e) => {
+        console.log(e);
         targetAsset = {
             title: e.currentTarget.innerText.split('\n')[0].split('-')[0],
             type: e.currentTarget.innerText.split('\n')[0].split('-')[1].trim()
         }
 
+        loadAsset(targetAsset)
+        if (lMenu.checkStateMenu()) {
+            lMenu.hide();
+        }
+    });
+
+    $('.listAssetInLeftMenu').click((e) => {
+        targetAsset = lMenu.getSelectedAsset(e.target.innerText)[0];
         loadAsset(targetAsset)
         if (lMenu.checkStateMenu()) {
             lMenu.hide();
@@ -63,6 +72,8 @@ function refresh(){
 $(`#dropdownMenuButton1`).click(() => console.log("lol"));
 
 initMainDisplay(urlGetListStatesAssets, urlGetAssets);
+
+
 
 
 

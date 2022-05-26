@@ -43,8 +43,20 @@
 }
 
 .accordion-body>a{
-    margin-top: -10px;
     text-decoration: none;
+}
+
+.listAssetInLeftMenu{
+    color: white;
+    user-select: none;
+    font-size: 1.5em;
+}
+
+.listAssetInLeftMenu:hover{
+    cursor: pointer;
+    color: white;
+    padding: 2%;
+    font-weight: bold;
 }
 
 
