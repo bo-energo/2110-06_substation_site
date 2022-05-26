@@ -3,7 +3,7 @@ body {
   margin: 0;
   padding: 0;
   height: 100vh;
-  transition: 3s;
+  transition: 1.5s;
 }
 
 .barMneu {
@@ -14,11 +14,13 @@ body {
 .leftPnael{
   width: 3%;
   min-width: 3%;
+  transition: 1.5s;
 }
 
 .innerContiner{
   width: 100%;
   margin-left: 5px;
+  transition: 1.5s;
 }
 
 
@@ -73,4 +75,8 @@ body {
 
 #dataTableInModalWindow{
   width: 100%;
+}
+
+.upperMenu{
+  transition: 1.5s;
 }
