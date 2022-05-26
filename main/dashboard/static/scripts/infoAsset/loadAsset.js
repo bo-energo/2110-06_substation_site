@@ -62,7 +62,10 @@ function loadDataTableAsset(titleAsset){
             $(`.innerContiner`).css('opacity', '0.2');
             $(`.leftPnael`).css('opacity', '0.2');
             $(`body`).css("background-color", "rgb(44 44 44)");
-            $(`.modalWindow`).css('opacity', '1');
+            $(`.modalWindow`).css({
+                'opacity': '1',
+                'z-index': '2'
+            });
             $('.innerContiner').css('pointer-events', 'none');
             console.log(data.tabsData);
 
@@ -72,7 +75,10 @@ function loadDataTableAsset(titleAsset){
                 $(`.innerContiner`).css('opacity', '1');
                 $(`.leftPnael`).css('opacity', '1');
                 $(`body`).css("background-color", "#fff");
-                $(`.modalWindow`).css('opacity', '0');
+                $(`.modalWindow`).css({
+                    'opacity': '0',
+                    'z-index': '-1'
+                });
                 $('.innerContiner').css('pointer-events', 'all');
             });
 
