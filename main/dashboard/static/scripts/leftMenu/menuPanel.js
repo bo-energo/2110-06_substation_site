@@ -67,7 +67,7 @@ class LeftMenu{
                     <h2 class="accordion-header" id="panelsStayOpen-headingOne">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" 
                         aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
-                        Title database
+                        Список объектов
                       </button>
                 </h2>
                 </div>

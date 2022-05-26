@@ -43,17 +43,15 @@ function loadTargetAsset(){
         }
 
         loadAsset(targetAsset)
-        if (lMenu.checkStateMenu()) {
+        if (lMenu.checkStateMenu()) 
             lMenu.hide();
-        }
     });
 
     $('.listAssetInLeftMenu').click((e) => {
         targetAsset = lMenu.getSelectedAsset(e.target.innerText)[0];
         loadAsset(targetAsset)
-        if (lMenu.checkStateMenu()) {
+        if (lMenu.checkStateMenu())
             lMenu.hide();
-        }
     });
 }
 
