@@ -1,8 +1,8 @@
 class LeftMenu{
-    componentsInit;
-    checkStateMenu;    
-    display;
-    hide;
+    // componentsInit;
+    // checkStateMenu;    
+    // display;
+    // hide;
 
 
     constructor(transforms){

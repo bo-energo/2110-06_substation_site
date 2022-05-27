@@ -1,0 +1,42 @@
+.upperMenu {
+    transition: 1s;
+}
+
+
+.subMenu {
+    display: none;
+}
+
+
+.item>ul>li {
+    border: 1px solid #d9d9d9;
+    background-color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.item>ul>li>text {
+    color: rebeccapurple;
+}
+
+.item:hover {
+    position: relative;
+}
+
+.item>ul {
+    position: absolute;
+    padding: 0;
+    margin: 0;
+}
+
+.item:hover .subMenu {
+    display: block;
+    left: 100%;
+    top: 0%;
+    list-style: none;
+}
+
+#menuLabel{
+    width: 200px;
+}

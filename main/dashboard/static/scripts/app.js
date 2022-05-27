@@ -12,6 +12,7 @@ let categories = []; //Список категорий
 let targetAsset; //Выбраное оборудование
 let targetTypeAsset; //Тип выбраного оборудования
 let lMenu; //Боковое меню
+let upperMenu;//Верхнее меню
 
 //Получение данных с сервера
 //Аргументы: URL адресс на какой api делать запрос
@@ -25,6 +26,8 @@ async function initMainDisplay(_urlGetListStatesAssets, _urlAssets) {
     response = await fetch(_urlAssets).then(response => response.json());
 
     assets = response.assets;
+    upperMenu = new UpperMenu();
+    upperMenu.create();
     initMainWindow(categories, assets);
     lMenu = new LeftMenu(assets);
     lMenu.componentsInit();
