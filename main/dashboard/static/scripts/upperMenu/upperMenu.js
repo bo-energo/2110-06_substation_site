@@ -1,42 +1,12 @@
 class UpperMenu{
 
     constructor(){
+        
         let menuItems = [
             {
                 title: 'File',
                 translateMenuItem: 'Файл',
                 subItems: [
-                    {
-                        to:'SettingConnect',
-                        title:'Настройки подключения',
-                        innerItems:[]
-                    }, 
-                    {
-                        to: 'DataArchive',
-                        title: 'Архивные данные',
-                        innerItems: [
-                            {
-                                classTitle: 'deg',
-                                title: 'Газы',
-                                type: 'text'
-                            },
-                            {
-                                classTitle: 'deg',
-                                title: 'Рабочие параметры',
-                                type: 'text'
-                            },
-                            {
-                                classTitle: 'deg',
-                                title: 'Мониторинг высоковольтных вводов',
-                                type: 'text'
-                            },
-                            {
-                                classTitle: 'deg',
-                                title: 'Данные измерений и расчётов влажности масла и бумажной изоляции',
-                                type: 'text'
-                            },
-                        ]
-                    }, 
                     {
                         to: 'DataRefresh',
                         title: 'Обновить данные',
@@ -53,11 +23,6 @@ class UpperMenu{
                 title: 'Interface',
                 translateMenuItem: 'Интерфейс',
                 subItems: [
-                    {
-                        to: 'ByDefault',
-                        title: 'Сбрость по умолчанию',
-                        innerItems: []
-                    },
                     {
                         to: 'Display',
                         title: 'Отображение',
@@ -91,16 +56,6 @@ class UpperMenu{
                 title: 'Settings',
                 translateMenuItem: 'Настройки',
                 subItems: [
-                    {
-                        to: 'ForecastAnalyze',
-                        title: 'Анализ прогноза',
-                        innerItems: []
-                    },
-                    {
-                        to: 'GestHumidity',
-                        title: 'Гистерезис влажности',
-                        innerItems: []
-                    },
                     {
                         to: 'TimeRepair',
                         title: 'Время ремонтов',
@@ -144,8 +99,11 @@ class UpperMenu{
                     continue;
 
                 factoryList(menuItems[i].subItems, menuItems[i].title);
-                
             }
+
+            $('#DataRefresh').click(() => refresh());
+            $('#SingInSystem').attr('href', 'http://10.0.1.9:8000/admin/');
+
         }
 
         function factoryList(arrItems, toAddUl){
@@ -159,7 +117,7 @@ class UpperMenu{
                     
                     for (let i = 0; i < arrItems[j].innerItems.length; i++) {
                         switch (arrItems[j].innerItems[i].type) {
-                            case 'dateTimePicker': $(`<li><input type="date"></li>`).appendTo(`.${arrItems[j].to}_Sub`);
+                            case 'dateTimePicker': $(`<li><input type="date" value="${getLastWeek().lastWeek}"></li>`).appendTo(`.${arrItems[j].to}_Sub`);
                                 break;
                             case 'checkbox': 
                                 $(`<li>
@@ -168,7 +126,11 @@ class UpperMenu{
                                 </li>`)
                                 .appendTo(`.${arrItems[j].to}_Sub`);
                                 break;
-                            case 'inNumber': $(`<li><input type="number"></li>`).appendTo(`.${arrItems[j].to}_Sub`);
+                            case 'inNumber': 
+                                $(`<li>
+                                    <input type="number" id="hour">
+                                    <label id="hourLabel"> ч </label>
+                                    </li>`).appendTo(`.${arrItems[j].to}_Sub`);
                                 break;
                             case 'text': $(`<li><a class="dropdown-item" href="#">${arrItems[j].innerItems[i].title}</a></li>`).appendTo(`.${arrItems[j].to}_Sub`);
                                 break;

@@ -47,24 +47,27 @@ body {
 }
 
 .btnCloseModalWin{
-  bottom: 96%;
-  width: 2.5vw;
-  height: 5vh;
+  bottom: 97%;
+  /* width: 1.5vw;
+  height: 3vh; */
+  width: 30px;
+  height: 30px;
   border: 2px solid black;
   border-radius: 50%;
-  left: 97%;
+  left: 98%;
   position: absolute;
   background-color: white;
   display: flex;
   justify-content: center;
   align-items: center;
   font-weight: bold;
-  font-size: 1.5em;
+  font-size: 1.2em;
 }
 
 .btnCloseModalWin:hover{
   cursor: pointer;
-  font-size: 2em;
+  font-size: 1.4em;
+  background-color: rgb(231, 189, 189);
 }
 
 .containerForModalWindow{

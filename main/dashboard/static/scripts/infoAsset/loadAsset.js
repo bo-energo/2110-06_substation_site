@@ -67,10 +67,8 @@ function loadDataTableAsset(titleAsset){
                 'z-index': '2'
             });
             $('.innerContiner').css('pointer-events', 'none');
-            console.log(data.tabsData);
 
             $(`.btnCloseModalWin`).click(() => {
-                console.log("X");
                 $(`.upperMenu`).css('opacity', '1');
                 $(`.innerContiner`).css('opacity', '1');
                 $(`.leftPnael`).css('opacity', '1');
