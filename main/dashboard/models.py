@@ -331,7 +331,7 @@ class MeasurmentsMoisture(models.Model):
 class MeasurmentsO(models.Model):
     id = models.BigAutoField(primary_key=True)
     inspection = models.ForeignKey(Inspections, models.DO_NOTHING, blank=True, null=True)
-    code = models.CharField(max_length=-1, blank=True, null=True)
+    code = models.CharField(max_length=250, blank=True, null=True)
     overvoltage_duration = models.IntegerField(blank=True, null=True)
     overvoltage_ratio = models.FloatField(blank=True, null=True)
     overvoltage_counter_01 = models.BooleanField(blank=True, null=True)
