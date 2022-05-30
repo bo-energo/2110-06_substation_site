@@ -15,23 +15,6 @@ class ModalWindow{
             `).appendTo('body');
 
             //============================================================
-            // $(`.modalWindow`).css({
-            //     "height": "50vh",
-            //     "width": "40vw",
-            //     "background-color": "rgb(255, 255, 255)",
-            //     "position": "absolute",
-            //     "z-index": "-2",
-            //     "border": "1px solid black",
-            //     "border-radius": "5px",
-            //     "opacity": "0",
-            //     "margin": "auto",
-            //     "left": "0",
-            //     "right": "0",
-            //     "top": "0",
-            //     "bottom": "0",
-            //     "transition": "1s"
-            // });
-
             $(`.modalWindow`).css({
                 "height": "50vh",
                 "width": "40vw"
@@ -117,10 +100,11 @@ class ModalWindow{
 
         }
 
+        //Отображает прелоадер с указаным текстом
         this.displayPreLoader = (text) =>{
             $(`
             <div class= "modalWindow">
-                <div class="textPreLoader">${text}</div>
+                <div class="textPreLoader">${text}...</div>
                 <div class="spinner-border text-primary" role="status"></div>
             </div >
             `).appendTo('body');
@@ -135,7 +119,9 @@ class ModalWindow{
             });
         }
 
+        //Скрывает прелоадер
         this.hidePreLoader = () => {
+            this.lightingScreen();
             $('.modalWindow').remove();
         }
 

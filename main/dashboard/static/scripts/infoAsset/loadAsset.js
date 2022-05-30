@@ -19,8 +19,10 @@ function loadAsset(targetAsset) {
 
 //Загрузить графики и информацию об оборудовании
 function loadChartAndAssetData(titleAsset){
+    modalWindow.displayPreLoader('Загрузка');
     GetData(`http://10.100.1.11:8000/asset/${targetAsset.title}`)
         .then(data => {
+            modalWindow.hidePreLoader();
             $('.innerContiner').empty();
 
             console.log(data);
@@ -61,7 +63,10 @@ function loadDataTableAsset(titleAsset){
             modalWindow.hidePreLoader();
             modalWindow.displayData(data);
         })
-        .catch(err => console.log(err));
+        .catch(err => {
+            modalWindow.hidePreLoader();
+            console.log(err)
+        });
 }
 
 //Запрос на сервер
