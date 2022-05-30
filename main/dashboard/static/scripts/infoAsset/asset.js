@@ -52,14 +52,14 @@ class Asset {
         $(`
             <div class="outterContainerChart" id='leftBlock'>
                 <div class="bg-secondary text-white p-2 rounded">График</div>
-                <div class="chart"></div>
+                <div class="chart" id="id_Chart"></div>
             </div>
         `).appendTo(".chartContent");
     }
 
     //Отрисовка графика
     paintChart = () => {
-        var data = [];//Данные которые будут отображаться
+        var dataForDisplay = [];//Данные которые будут отображаться
         let tab = $(`.active.titleTabs`)[0];//Поиск активной вкладки
 
         //Из набора данных для графика, выбираем данные по названию активной вкладки
@@ -67,51 +67,48 @@ class Asset {
 
         //Из данных выбраной вкладки, делаем массив, для перебора и добавления данных в массив для отображения
         let selectedTabsData = dataForSelectedTabs.values.map(item => item);
-
-        for (let i = 0; i < selectedTabsData.length; i++) {
-            let obj = selectedTabsData[i].x.map(item => (new Date(`${item}`)));
-            data.push({
-                x: obj,
-                y: selectedTabsData[i].y,
-                name: selectedTabsData[i].name,
-                type: 'scatter',
-                showlegend: true
-            })
-
-        }
-
+        
         //Временное решение нахождения в чём измеряются выбранные показатели
         let titleValues = [];
         let set = new Set(this.dataForTable.map(item => item.unit));
         for(let elem of set){
             titleValues.push(elem);
         }
-        console.log(this.dataForTable);
 
+        //Создаём объект с настройками графиков и осей
+        let layout = factoryLayout(factoryYAxis(titleValues));
 
-        var layout = {
-            autosize: true,
-            margin: {
-                pad: 2,
-                l: 80,
-                t: 10,
-                r: 10,
-                b: 10,
-            },
-            title: '',
-            xaxis: {
-                rangeslider: {},
-                autorange: false,
-                type: 'time',
-                range: [getLastWeek().lastWeek, getLastWeek().today],
-                //tickformat: '%d.%m.%yy'
-                tickformat: '%d.%m.%y\n%H:%M'
-            },
-            yaxis: {
-                title: titleValues[0],
-                autorange: true
+        //Создание объектов с данными и определение на какой оси отображать
+        for (let i = 0; i < selectedTabsData.length; i++) {
+            let obj = selectedTabsData[i].x.map(item => (new Date(`${item}`)));
+            let unit = selectedTabsData[i].unit;
+
+            const foundElement = Object.keys(layout).filter((el) => layout[el].title === unit);
+            let axis = foundElement[0].substring(foundElement[0].length - foundElement[0].length, 1) + foundElement[0].substring(foundElement[0].length - 1);          
+            
+            if (!Number.isInteger(parseInt(axis.substring(axis.length - 1)))){
+                dataForDisplay.push({
+                    x: obj,
+                    y: selectedTabsData[i].y,
+                    name: selectedTabsData[i].name,
+                    type: 'scatter',
+                    showlegend: true,
+                    yaxis: `y`
+                })
+                continue;
             }
-        };
+
+            dataForDisplay.push({
+                x: obj,
+                y: selectedTabsData[i].y,
+                name: selectedTabsData[i].name,
+                type: 'scatter',
+                showlegend: true,
+                yaxis: `${axis}`
+            })
+
+        }
+
         var config = {
             responsive: true,
             displayModeBar: false,
@@ -120,7 +117,11 @@ class Asset {
         }
 
 
-        Plotly.newPlot($('.chart').get(0), data, layout, config);
+        Plotly.newPlot($('.chart').get(0), dataForDisplay, layout, config);
+
+        let myPlot = $('.chart')[0].on('plotly_legendclick', (data) => {
+            setTimeout(() => controlVisibleYAxis(data, titleValues, dataForSelectedTabs, dataForDisplay, layout, config), 500);
+        });
     }
 
     //Создание вертикального сплиттера
@@ -322,4 +323,214 @@ function getLastWeek(){
     let today = yy + '-' + mm + '-' + ddToday;
 
     return {lastWeek, today};
+}
+
+//Фабрика осей Y.
+//На вход массив уникальных значений измерений. (ppm, ppm/сутки)
+//Возвращает массив объектов с настройками осей.
+function factoryYAxis(_inputValues){
+    let inputValues = _inputValues;
+    let axisObjects = [];
+
+
+    if(inputValues.length == 1){
+        axisObjects.push(
+            {
+                title: inputValues[0],
+                autorange: true,
+                tickfont: {
+                    size: 10
+                }
+            }
+        );
+    }
+    else{
+        for (let i = 0; i < inputValues.length; i++) {
+            if(i == 0){
+                axisObjects.push(
+                    {
+                        title: inputValues[i],
+                        autorange: true,
+                        tickfont: {
+                            size: 10
+                        }
+                    }
+                );
+                continue;
+            }
+            axisObjects.push(
+                {
+                    title: inputValues[i],
+                    overlaying: 'y',
+                    autorange: true,
+                    tickfont: {
+                        size: 10
+                    }
+                }
+            );
+            
+        }
+    }
+
+    return axisObjects;
+}
+
+//Фабрика объекта настройки осей и легенд
+//На вход поступают массив объектов настроект осей Y
+//Возвращает объект с настройками
+function factoryLayout(_settingsArrAxis){
+    let settingsArrAxis = _settingsArrAxis;
+
+    let settingLayout = {
+        autosize: true,
+        font:{
+            size: 10
+        },
+        margin: {
+            pad: 2,
+            l: 80,
+            t: 10,
+            r: 10,
+            b: 50,
+        },
+        title: '',
+        xaxis: {
+            autorange: false,
+            type: 'time',
+            range: [getLastWeek().lastWeek, getLastWeek().today],
+            tickformat: '%d.%m.%y\n%H:%M'
+        }
+    };
+
+    if (settingsArrAxis.length == 1){
+        settingLayout.yaxis = settingsArrAxis[0];
+    }
+    else{
+        for (let i = 0; i < settingsArrAxis.length; i++) {
+            if(i == 0){
+                settingLayout.yaxis = settingsArrAxis[i];
+            }
+            else{
+                settingLayout[`yaxis${i+1}`] = settingsArrAxis[i];
+            }
+
+        }
+    }
+
+    positionYAxisSetting(settingsArrAxis);
+
+    if (settingsArrAxis.length > 2)
+        settingLayout.xaxis.domain = [0.06 * settingsArrAxis.length, 1];
+    else
+        settingLayout.xaxis.domain = [0.12 , 1];
+
+    console.log(settingLayout);
+    return settingLayout;
+}
+
+//Настрокй позиционирования осей на графике
+function positionYAxisSetting(_settingsArrAxis){
+    let settingsArrAxis = _settingsArrAxis;
+
+    if (settingsArrAxis.length == 2)
+    {
+        settingsArrAxis[0].position = 0;
+        settingsArrAxis[1].position = 0.06;
+        return;
+    }
+
+    let pos = 0.06;
+
+    for (let i = 0, j = 0; i < settingsArrAxis.length; i++, j++) {
+
+        if(i == 0){
+            settingsArrAxis[0].position = j * pos;
+            continue;
+        }
+
+        settingsArrAxis[i].position = pos * j;
+    }
+}
+
+//Управление отрисовкой осей Y
+function controlVisibleYAxis(data, titleValues, dataForSelectedTabs, dataForDisplay, layout, config){
+    let objectsFromDom = $('.traces'); //Элементы из DOM дерева, для взятия стился opacity
+    let groupingArr = []; //Массив сгруппированых элементов
+
+    //Группировка по еденицам измерения
+    titleValues.forEach(item => groupingArr.push(
+        Object.keys(dataForSelectedTabs.values)
+            .map(index => dataForSelectedTabs.values[index])
+            .filter(arrItem => arrItem.unit == item)
+    ));
+
+    //Формирование объектов из сгруппированого массива и эелементов в ДОМ дереве
+    for (let i = 0; i < groupingArr.length; i++) {
+        for (let j = 0; j < groupingArr[i].length; j++) {
+            for (let k = 0; k < objectsFromDom.length; k++) {
+                if (groupingArr[i][j].name == objectsFromDom[k].textContent) {
+                    groupingArr[i][j].visible = objectsFromDom[k].style.opacity;
+                }
+            }
+        }
+    }
+
+    //Проверка видимости осей
+    for (let i = 0; i < groupingArr.length; i++) {
+        let titleGroup = groupingArr[i][0].unit;
+        let visibleItemGroup = 0;
+        for (let j = 0; j < groupingArr[i].length; j++) {
+            if (groupingArr[i][j].visible == '1')
+                visibleItemGroup++;
+        }
+
+        if (visibleItemGroup > 0) {
+            let propsLayout = Object.keys(data.layout).map(item => data.layout[item]);
+            for (let i = 0; i < propsLayout.length; i++) {
+                if (propsLayout[i].hasOwnProperty('title'))
+                    if (propsLayout[i].title.text == titleGroup) {
+                        propsLayout[i].visible = true;
+                        $('.chart').empty();
+                        Plotly.newPlot($('.chart').get(0), dataForDisplay, layout, config);
+                        let myPlot = $('.chart')[0].on('plotly_legendclick', (data) => {
+                            setTimeout(() => controlVisibleYAxis(data, titleValues, dataForSelectedTabs, dataForDisplay, layout, config), 500);
+                        });
+                    }
+            }
+        }
+        else {
+
+            let propsLayout = Object.keys(data.layout).map(item => data.layout[item]);
+            for (let i = 0; i < propsLayout.length; i++) {
+                if (propsLayout[i].hasOwnProperty('title'))
+                    if (propsLayout[i].title.text == titleGroup) {
+                        propsLayout[i].visible = false;
+                        $('.chart').empty();
+                        Plotly.newPlot($('.chart').get(0), dataForDisplay, layout, config);
+                        let myPlot = $('.chart')[0].on('plotly_legendclick', (data) => {
+                            setTimeout(() => controlVisibleYAxis(data, titleValues, dataForSelectedTabs, dataForDisplay, layout, config), 500);
+                        });
+                    }
+            }
+        }
+    }
+
+    
+
+    let props = Object.keys(data.layout).map(item => data.layout[item]);
+    let axises = [];
+    for (let i = 0; i < props.length; i++) {
+        if (props[i].hasOwnProperty('title')){
+            if (props[i].visible)
+                axises.push(props[i]);
+        }
+    }
+    positionYAxisSetting(axises);
+    if (axises.length > 2)
+        data.layout.xaxis.domain = [0.06 * axises.length, 1];
+    else
+        data.layout.xaxis.domain = [0.12, 1];
+    //data.layout.margin.l = axises.length*20;
+    Plotly.redraw('id_Chart', dataForDisplay, layout, config);
+    console.log(data.layout);
 }

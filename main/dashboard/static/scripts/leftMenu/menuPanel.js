@@ -1,8 +1,8 @@
 class LeftMenu{
-    componentsInit;
-    checkStateMenu;    
-    display;
-    hide;
+    // componentsInit;
+    // checkStateMenu;    
+    // display;
+    // hide;
 
 
     constructor(transforms){
@@ -60,30 +60,30 @@ class LeftMenu{
             `).appendTo('.leftPnael');
         }
         //Создание компонента под список трансформаторов и наполнение списка.
-        function fillListMenu(_disps)  {
+        function fillListMenu()  {
             $(`
             <div class="accordion listDisps" id="accordionPanelsStayOpenExample">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="panelsStayOpen-headingOne">
                       <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" 
                         aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
-                        Title database
+                        Список объектов
                       </button>
                 </h2>
                 </div>
             </div>
             `).appendTo('.leftMenu');
+            console.log(_transforms);
 
             for (let i = 0; i < _transforms.length; i++) {
                 $(`
                 <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse " aria-labelledby="panelsStayOpen-headingOne">
                     <div class="accordion-body">
-                        <a>${_transforms[i].title}</a>
+                        <a class="listAssetInLeftMenu">${_transforms[i].title}</a>
                     </div>
                 </div>
                 `)
                 .appendTo('.listDisps');
-
             }
         }
         //Инициализация компонентов меню
@@ -113,6 +113,11 @@ class LeftMenu{
         this.hide = () => {
             $('.btnMenu').off('click');
             _cancelationToke = setInterval(moveToLeftMenu, 10);
+        }
+
+        //Получить выбраный трансформатор в левом меню
+        this.getSelectedAsset = (titleAsset) => {
+            return _transforms.filter(item => item.title == titleAsset);
         }
     }
 }

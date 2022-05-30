@@ -37,7 +37,10 @@ function fillDispList(_categories, assets) {
         <div class="card ${category.bg} ${category.colorText} mt-2 mb-2 disp">
                 <div class="card-header d-flex justify-content-between fw-bold">
                     <span>${assets[i].title} - ${assets[i].type}</span>
-                    <button type="button" class="btn btn-primary">Данные</button>
+                    <button type="button" class="btn btn-primary displayDataSelectedAsset" 
+                        data-asset-name="${assets[i].title}" data-asset-type="${assets[i].type}">
+                        Данные
+                    </button>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title">${assets[i].status}</h5>
