@@ -57,7 +57,8 @@ class ATabsAsset(ABC):
             return 0 
 
     def fill_tab(self, measurment: list, _properties: list):
-
+        """Формипрование данных"""
+        
         values = []
         data = measurment.objects.filter(inspection__in = Inspections.objects\
                                                             .filter(date__lte = self._dateEnd)\
