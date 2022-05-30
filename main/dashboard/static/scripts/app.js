@@ -1,7 +1,7 @@
 
-let urlGetAssets = "http://10.0.1.9:8000/assets/"; //url получения списка трансформаторов
+let urlGetAssets = "http://10.100.1.11:8000/assets/"; //url получения списка трансформаторов
 let assets = []; // Список оборудования
-let urlGetListStatesAssets = "http://10.0.1.9:8000/levels/"; //url получения списка состоний оборудования (критический, номинальный  и т.д.)
+let urlGetListStatesAssets = "http://10.100.1.11:8000/levels/"; //url получения списка состоний оборудования (критический, номинальный  и т.д.)
 let colorsLevel = [
     { bg: "bg-success", colorText: 'text-white', id: 'normal' },
     { bg: "bg-warning", colorText: 'text-white', id: 'warning' },
@@ -13,11 +13,14 @@ let targetAsset; //Выбраное оборудование
 let targetTypeAsset; //Тип выбраного оборудования
 let lMenu; //Боковое меню
 let upperMenu;//Верхнее меню
+let modalWindow;
 
 //Получение данных с сервера
 //Аргументы: URL адресс на какой api делать запрос
 async function initMainDisplay(_urlGetListStatesAssets, _urlAssets) {
-    let response = await fetch(_urlGetListStatesAssets).then(response => response.json());
+    let response = await fetch(_urlGetListStatesAssets)
+                        .then(response => response.json())
+                        .catch(err => console.log(err));
     
     for (let i = 0; i < response.levels.length; i++) {
         categories.push({ title: response.levels[i].title, bg: colorsLevel[i].bg, colorText: colorsLevel[i].colorText, id: colorsLevel[i].id });
@@ -26,6 +29,7 @@ async function initMainDisplay(_urlGetListStatesAssets, _urlAssets) {
     response = await fetch(_urlAssets).then(response => response.json());
 
     assets = response.assets;
+    modalWindow = new ModalWindow();
     upperMenu = new UpperMenu();
     upperMenu.create();
     initMainWindow(categories, assets);

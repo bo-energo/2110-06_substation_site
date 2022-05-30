@@ -19,7 +19,7 @@ function loadAsset(targetAsset) {
 
 //Загрузить графики и информацию об оборудовании
 function loadChartAndAssetData(titleAsset){
-    GetData(`http://10.0.1.9:8000/asset/${targetAsset.title}`)
+    GetData(`http://10.100.1.11:8000/asset/${targetAsset.title}`)
         .then(data => {
             $('.innerContiner').empty();
 
@@ -55,71 +55,11 @@ function loadChartAndAssetData(titleAsset){
 
 //Загрузить таблицу данных
 function loadDataTableAsset(titleAsset){
-    GetData(`http://10.0.1.9:8000/asset/${targetAsset.title}`)
+    modalWindow.displayPreLoader('Сбор данных');
+    GetData(`http://10.100.1.11:8000/asset/${targetAsset.title}`)
         .then(data => {
-
-            $(`.upperMenu`).css('opacity', '0.2');
-            $(`.innerContiner`).css('opacity', '0.2');
-            $(`.leftPnael`).css('opacity', '0.2');
-            $(`body`).css("background-color", "rgb(44 44 44)");
-            $(`.modalWindow`).css({
-                'opacity': '1',
-                'z-index': '2'
-            });
-            $('.innerContiner').css('pointer-events', 'none');
-
-            $(`.btnCloseModalWin`).click(() => {
-                $(`.upperMenu`).css('opacity', '1');
-                $(`.innerContiner`).css('opacity', '1');
-                $(`.leftPnael`).css('opacity', '1');
-                $(`body`).css("background-color", "#fff");
-                $(`.modalWindow`).css({
-                    'opacity': '0',
-                    'z-index': '-1'
-                });
-                $('.innerContiner').css('pointer-events', 'all');
-            });
-
-            
-
-            if ($(`.containerForModalWindow`).length == 0){
-                $(`<div class="containerForModalWindow"></div>`).appendTo('.modalWindow');
-            }
-            else
-                $('.containerForModalWindow').empty();
-
-            $(`
-            <table id="dataTableInModalWindow">
-                <tr>
-                    <th>Название</th>
-                    <th>Значение</th>
-                </tr>
-            </table>
-            `).appendTo('.containerForModalWindow');
-
-            let danger = "bg-danger";
-            let warning = "bg-warning";
-            let normal = "#fff";
-            let v = "";
-            for (let i = 0; i < data.tabsData.length; i++) {
-                data.tabsData[i].values.forEach(element => {
-                    if (element.lastValue >= element.pdz)
-                        v = danger;
-                    else if (element.lastValue >= element.dz && element.lastValue < element.pdz)
-                        v = warning;
-                    else
-                        v = normal;
-
-                    $(`
-                    <tr>
-                        <td>${element.legendName}</td>
-                        <td class="${v}">${element.lastValue}</td>
-                    </tr>
-                    `).appendTo('#dataTableInModalWindow');
-                });
-                
-            }
-
+            modalWindow.hidePreLoader();
+            modalWindow.displayData(data);
         })
         .catch(err => console.log(err));
 }
