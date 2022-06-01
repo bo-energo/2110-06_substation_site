@@ -1,0 +1,27 @@
+.modalWindow{
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    z-index: -2;
+    border: 1px solid black;
+    border-radius: 5px;
+    opacity: 0;
+    margin: auto;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom:0;
+    transition: 1s;
+    display: flex;
+    align-items: center;
+}
+
+.btnCloseModalWin:hover {
+    cursor: pointer;
+    font-size: 1.4em !important;
+    background-color: rgb(231, 189, 189) !important;
+}
+
+.textPreLoader{
+    margin-right: 10%;
+    font-size: 1.3em;
+}

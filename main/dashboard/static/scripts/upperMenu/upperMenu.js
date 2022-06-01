@@ -102,7 +102,7 @@ class UpperMenu{
             }
 
             $('#DataRefresh').click(() => refresh());
-            $('#SingInSystem').attr('href', 'http://10.0.1.9:8000/admin/');
+            $('#SingInSystem').attr('href', 'http://10.100.1.11:8000/admin/');
 
         }
 

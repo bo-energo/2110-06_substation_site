@@ -29,55 +29,6 @@ body {
 }
 
 
-.modalWindow{
-  height: 50vh;
-  width: 40vw;
-  background-color: rgb(255, 255, 255);
-  position: absolute;
-  z-index: -2;
-  border: 1px solid black;
-  border-radius: 5px;
-  opacity: 0;
-  margin: auto;
-  left: 0;
-  right: 0;
-  top: 0;
-  bottom: 0;
-  transition: 1s;
-}
 
-.btnCloseModalWin{
-  bottom: 97%;
-  /* width: 1.5vw;
-  height: 3vh; */
-  width: 30px;
-  height: 30px;
-  border: 2px solid black;
-  border-radius: 50%;
-  left: 98%;
-  position: absolute;
-  background-color: white;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-weight: bold;
-  font-size: 1.2em;
-}
-
-.btnCloseModalWin:hover{
-  cursor: pointer;
-  font-size: 1.4em;
-  background-color: rgb(231, 189, 189);
-}
-
-.containerForModalWindow{
-  width: 100%;
-  height: 100%;
-  overflow: scroll;
-}
-
-#dataTableInModalWindow{
-  width: 100%;
-}
 
 
