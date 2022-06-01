@@ -166,9 +166,12 @@ class transformator(ATabsAsset):
     def tabMoisture(self, result = {}):
         """Данные по вкладке 'Влагосодержание'"""
         
-        properies = [f.name for f in MeasurmentsMoisture._meta.get_fields()][2:]
-        values = self.fill_tab(MeasurmentsMoisture, properies)
-        result['Moisture'] = values
+        try:
+            properies = [f.name for f in MeasurmentsMoisture._meta.get_fields()][2:]
+            values = self.fill_tab(MeasurmentsMoisture, properies)
+            result['Moisture'] = values
+        except:
+            result['Moisture'] = []
         return values
 
     def tabInsulationWear(self, result = {}):
