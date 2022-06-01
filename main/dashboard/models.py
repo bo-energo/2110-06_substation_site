@@ -233,36 +233,6 @@ class MeasurmentsC(models.Model):
         verbose_name = 'Замер'
 
 
-class MeasurmentsBush(models.Model):
-    id = models.BigAutoField(primary_key=True)
-    inspection = models.ForeignKey(Inspections, models.DO_NOTHING)
-    c1_a = models.FloatField(blank=True, null=True)
-    c1_b = models.FloatField(blank=True, null=True)
-    c1_c = models.FloatField(blank=True, null=True)
-    d_c1_a = models.FloatField(blank=True, null=True)
-    d_c1_b = models.FloatField(blank=True, null=True)
-    d_c1_c = models.FloatField(blank=True, null=True)
-    tgd_a = models.FloatField(blank=True, null=True)
-    tgd_b = models.FloatField(blank=True, null=True)
-    tgd_c = models.FloatField(blank=True, null=True)
-    d_tgd_a = models.FloatField(blank=True, null=True)
-    d_tgd_b = models.FloatField(blank=True, null=True)
-    d_tgd_c = models.FloatField(blank=True, null=True)
-    t_a = models.FloatField(blank=True, null=True)
-    t_b = models.FloatField(blank=True, null=True)
-    t_c = models.FloatField(blank=True, null=True)
-    pd_bush_level = models.FloatField(blank=True, null=True)
-    pd_bush_intensity = models.FloatField(blank=True, null=True)
-    bush_i_creepage = models.FloatField(blank=True, null=True)
-    bush_pres = models.FloatField(blank=True, null=True)
-    bush_overvoltage_duration = models.FloatField(blank=True, null=True)
-    bush_overvoltage_amplitude = models.FloatField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'measurments_bush'
-
-
 class MeasurmentsBushO(models.Model):
     id = models.BigAutoField(primary_key=True)
     measurment_bush = models.ForeignKey(MeasurmentsBush, models.DO_NOTHING, blank=True, null=True)
@@ -320,7 +290,7 @@ class MeasurmentsMoisture(models.Model):
     wcl_roc_month = models.FloatField(blank=True, null=True)
     wcl_tp = models.FloatField(blank=True, null=True)
     wcp = models.FloatField(blank=True, null=True)
-    wcp_roc_dayf = models.FloatField(blank=True, null=True)
+    wcp_roc_day = models.FloatField(blank=True, null=True)
     wcp_roc_month = models.FloatField(blank=True, null=True)
 
     class Meta:
